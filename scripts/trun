@@ -1,0 +1,31 @@
+#!/bin/bash
+
+usage() {
+    printf "The program you specified does not exist.\n"
+    printf "Usage: trun [commandline_app]\n"
+    printf "If no arguments are supplied trun will run in an interactive mode\n"
+    exit 1
+}
+
+wezterm="wezterm --config-file $HOME/.config/awesome/external/wezterm/wezterm.lua"
+
+if [ $1 ]; then
+    if hash $1 2> /dev/null; then
+        nohup $wezterm start $1 > /dev/null 2>&1 & disown
+        exit
+    else
+        usage
+    fi
+else
+    while true; do
+        read -p "$(tput setaf 2)=> $(tput sgr0)" -r
+
+        if [[ "$REPLY" == "exit" ]]; then
+            exit
+        fi
+
+        if hash "$REPLY" 2> /dev/null; then
+            nohup $wezterm start $REPLY > /dev/null 2>&1 & disown
+        fi
+    done
+fi

@@ -1,0 +1,13 @@
+configuration {
+	font: "JetBrains Mono Nerd Font 12";
+	padding: 20;
+	line-padding: 2;
+	separator-style: "solid";
+	hide-scrollbar: false;
+	kb-cancel: "Escape,Alt+F1";
+}
+@import "~/.config/herbstluftwm/rofi/squared-everforest.rasi"
+@theme "~/.config/herbstluftwm/rofi/squared-everforest.rasi"
+
+//@import "~/.config/herbstluftwm/rofi/theme.rasi"
+//@theme "~/.config/herbstluftwm/rofi/theme.rasi"

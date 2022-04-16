@@ -1,0 +1,120 @@
+#!/bin/bash
+
+NAME="${0##*/}"
+VER="0.8"
+OPTS=(
+	-padding 50
+	-line-padding 4
+	-hide-scrollbar
+)
+
+usage()
+{
+	cat <<EOF
+
+ USAGE:  $NAME [OPTIONS]
+
+ OPTIONS:
+
+     -h,--help          Display this message
+
+     -v,--version       Display script version
+
+     -r,--run           Run launcher
+
+     -d,--drun          Desktop application launcher
+
+     -w,--window        Switch between windows
+
+     -l,--logout        System logout dialog
+
+     -b,--browser       Browser search by keyword (requires surfraw)
+
+     -q,--qalculate     Persistant calculator dialog (requires libqalculate)
+
+     -c,--clipboard     Select previous clipboard entries (requires greenclip)
+
+     -s,--screenshot    Open a dialog for different types of screenshots (requires maim, xclip, flameshot)
+
+     -t,--trun          Open a prompt for spawning CLI apps in terminals (requires trun script)
+
+  Without any options the run dialog will be opened.
+
+EOF
+}
+
+rofi()
+{
+    command rofi -config "$HOME/.config/awesome/external/rofi/config.rasi" "$@"
+}
+
+if (( $# == 0 )); then
+	rofi -show run -columns 2 "${OPTS[@]}"
+else
+	for arg in "$@"; do
+		case $arg in
+			-h|--help)
+				usage
+				exit 0
+				;;
+			-v|--version)
+				echo -e "$NAME -- Version $VER"
+				exit 0
+				;;
+			-d|--drun)
+				rofi -modi drun -show drun -columns 2 "${OPTS[@]}" -show-icons -drun-icon-theme "ArchLabs-Dark"
+				;;
+			-r|--run)
+				rofi -show run -columns 2 "${OPTS[@]}"
+				;;
+			-w|--window)
+				rofi -show window "${OPTS[@]}"
+				;;
+			-q|--qalculate)
+				hash qalc >/dev/null 2>&1 || { echo "Requires 'libqalculate' installed"; exit 1; }
+				rofi -modi "calc:qalc +u8 -nocurrencies" -show "calc:qalc +u8 -nocurrencies" "${OPTS[@]}"
+				;;
+			-c|--clipboard)
+				hash greenclip >/dev/null 2>&1 || { echo "Requires 'greenclip' installed"; exit 1; }
+				rofi -modi "clipboard:greenclip print" -show "clipboard:greenclip print" "${OPTS[@]}"
+				;;
+			-b|--browser)
+				hash surfraw >/dev/null 2>&1 || { echo "Requires 'surfraw' installed"; exit 1; }
+				surfraw -browser="$BROWSER" "$(sr -elvi | awk -F'-' '{print $1}' | sed '/:/d' | awk '{$1=$1};1' |
+					rofi -hide-scrollbar -kb-row-select 'Tab' -kb-row-tab 'Control+space' \
+						-dmenu -mesg 'Tab for Autocomplete' -i -p 'Web Search')"
+				;;
+			-l|--logout)
+				case "$(rofi -sep '|' -dmenu -i -p 'system' -width 20 -hide-scrollbar \
+					-line-padding 4 -padding 20 -lines 5 <<< 'logout|suspend|reboot|shutdown')" in
+                    *logout) echo "awesome.quit()" | awesome-client && herbstclient quit && killall openbox && i3-msg quit ;;
+					*suspend) loginctl suspend ;;
+					*reboot) loginctl reboot ;;
+					*shutdown) loginctl -i poweroff ;;
+				esac
+				;;
+            -s|--screenshot)
+                case "$(rofi -sep '|' -dmenu -i -p 'screenshot' -width 20 -hide-scrollbar \
+                    -line-padding 4 -padding 20 -lines 6 <<< 'shot|ashot|cpshot|cpashot|flameshot|flameshot (launcher)')" in
+					shot) shot ;;
+                    ashot) ashot ;;
+                    cpshot) cpshot ;;
+					cpashot) cpashot ;;
+                    flameshot-gui) flameshot gui ;;
+                    flameshot-launcher) flameshot launcher ;;
+                esac
+				;;
+
+            -t|--trun)
+                hash trun >/dev/null 2>&1 || { echo "Requires 'trun' script"; exit 1; }
+                rofi -modi "trun:trun" -show "trun:trun"
+                ;;
+ 
+			*)
+				printf "\nOption does not exist: %s\n\n" "$arg"
+				exit 2
+		esac
+	done
+fi
+
+exit 0

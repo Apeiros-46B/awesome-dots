@@ -1,0 +1,54 @@
+#!/bin/bash
+
+usage() {
+    printf "Usage: glavautil <toggle|start>\n"
+    exit 1
+}
+
+kill() {
+    killall -q glava
+}
+
+start() {
+    glava -d &
+}
+
+notif() {
+    icon="placeholder"
+    if [ $3 ]; then
+        icon="$3"
+    fi
+
+    time="2000"
+    if [ $4 ]; then
+        icon="$4"
+    fi
+
+    # this hint allows the notification to replace previous confirmation notifications
+    dunstify -h "string:x-canonical-private-synchronous:anything" -a "glavautil" -i "$icon" -u "normal" -t "$time" "$1" "$2"
+}
+
+if [[ ! $1 ]]; then
+    usage
+fi
+
+case $1 in
+    start)
+        kill
+        start
+        ;;
+
+    toggle)
+        if pgrep -x glava > /dev/null; then
+            kill
+            notif "Audio Visualizer" "GLava disabled"
+        else
+            start
+            notif "Audio Visualizer" "GLava enabled"
+        fi
+        ;;
+
+    *)
+        usage
+        ;;
+esac

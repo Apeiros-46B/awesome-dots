@@ -1,0 +1,16 @@
+#!/bin/bash
+
+usage() {
+    printf "Usage: songinfoscrolled <max_length> <scroll_interval>\n"
+    exit 1
+}
+
+#if [[ ! $1 ]]; then
+    #usage
+#fi
+
+#if [[ ! $2 ]]; then
+    #usage
+#fi
+
+zscroll --update-check true --update-interval 0.1 -b "  " -a "  " -p "  " -l 33 -d 0.25 "bash $HOME/.config/herbstluftwm/scripts/songinfo"

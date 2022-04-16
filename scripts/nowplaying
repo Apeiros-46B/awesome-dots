@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# wip, i might add a way to show the album art later
+playerctl metadata --format '{{ artist }} - {{ title }}' --follow | while IFS= read -r line; do
+    notify-send "Now Playing:" "$line" -i "$(playerctl metadata mpris:artUrl)"
+done

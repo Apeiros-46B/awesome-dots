@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if playerctl -p spotify status 2>&- | grep "Paused" > /dev/null; then
+	echo "  "
+elif ! pgrep -x spotify > /dev/null; then
+	echo "  "
+else
+	echo "  "
+fi

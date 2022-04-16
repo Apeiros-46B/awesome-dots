@@ -1,0 +1,17 @@
+#!/bin/bash
+
+first=true
+playerctl metadata --format '{{ artist }} - {{ title }}' --follow | while IFS= read -r line; do
+    if $first; then
+        pre=""
+        first=false
+    else
+        pre="\n"
+    fi
+
+    if [[ "$line" == "" ]]; then
+        printf "$pre  Nothing playing  "
+    else
+        printf "$pre  $line  "
+    fi
+done

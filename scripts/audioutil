@@ -1,0 +1,290 @@
+#!/bin/bash
+
+usage() {
+    printf "Usage (vol): audioutil vol <cycle-default-sink|get-default-sink|inc|dec|mute|get>\n"
+    printf "Usage (media): audioutil media <prev|toggle|next>\n"
+    printf "Requires: playerctl, pamixer, and pactl\n"
+    exit 1
+}
+
+# functions for caching
+
+cache() {
+    case $1 in
+        read)
+            cat "$HOME/.cache/audioutil/$2" 2> /dev/null || echo
+            ;;
+
+        write)
+            if [ ! -e $HOME/.cache/audioutil ]; then
+                mkdir -p $HOME/.cache/audioutil
+            fi
+
+            if [ ! -e "$HOME/.cache/audioutil/$2" ]; then
+                touch "$HOME/.cache/audioutil/$2"
+            fi
+
+            echo "$3" > "$HOME/.cache/audioutil/$2"
+            ;;
+
+        remove)
+            rm "$HOME/.cache/audioutil/$2" > /dev/null 2>&1
+            ;;
+
+        *)
+            exit 1
+            ;;
+    esac
+}
+
+cache_all() {
+    direct_num="$(direct_num)"
+    cache write vol_sink_num "$direct_num"
+
+    direct_desc="$(direct_desc)"
+    cache write vol_sink_desc "$direct_desc"
+
+    direct_name="$(direct_name)"
+    cache write vol_sink_name "$direct_name"
+
+    direct_glava_index="$(direct_glava_index)"
+    cache write vol_glava_index "$direct_glava_index"
+}
+
+# directly recomputed
+
+direct_num() {
+    pamixer --get-default-sink | tail -1 | awk '{ print $1 }'
+}
+
+direct_desc() {
+    pamixer --get-default-sink | tail -1 | cut -d ' ' -f 3- | tr -d '"'
+}
+
+direct_name() {
+    pactl get-default-sink
+}
+
+direct_glava_index() {
+    pactl list source-outputs | awk '/Source Output|application.name = "glava"/ { print $3 }' | head -1 | tr -d '#'
+}
+
+# cached/recompute when necessary (i.e. sink changed and/or cache does not exist)
+
+sink_num() {
+    if [ -e "$HOME/.cache/audioutil/vol_sink_num" ]; then
+        if [[ "$(direct_name)" != "$(cache read vol_sink_name)" ]]; then
+            cache_all
+            echo $direct_num
+        else
+            cache read vol_sink_num
+        fi
+    else
+        direct_num="$(direct_num)"
+        cache write vol_sink_num "$direct_num"
+        echo $direct_num
+    fi
+}
+
+sink_desc() {
+    if [ -e "$HOME/.cache/audioutil/vol_sink_desc" ]; then
+        if [[ "$(direct_name)" != "$(cache read vol_sink_name)" ]]; then
+            cache_all
+            echo $direct_desc
+        else
+            cache read vol_sink_desc
+        fi
+    else
+        direct_desc="$(direct_desc)"
+        cache write vol_sink_desc "$direct_desc"
+        echo $direct_desc
+    fi
+}
+
+sink_name() {
+    if [ -e "$HOME/.cache/audioutil/vol_sink_name" ]; then
+        if [[ "$(direct_name)" != "$(cache read vol_sink_name)" ]]; then
+            cache_all
+            echo $direct_name
+        else
+            cache read vol_sink_name
+        fi
+    else
+        direct_name="$(direct_name)"
+        cache write vol_sink_name "$direct_name"
+        echo $direct_name
+    fi
+}
+
+glava_index() {
+    if [ -e "$HOME/.cache/audioutil/vol_glava_index" ]; then
+        if [[ "$(direct_name)" != "$(cache read vol_sink_name)" ]]; then
+            cache_all
+            echo $direct_glava_index
+        else
+            cache read vol_glava_index
+        fi
+    else
+        direct_name="$(direct_name)"
+        cache write vol_sink_name "$direct_name"
+        echo $direct_name
+    fi
+}
+
+adjust_vol() {
+    pamixer --allow-boost $1
+    vol="$(pamixer --get-volume-human)"
+    prefix=" "
+    
+    if [[ "$vol" == "muted" ]]; then
+        prefix=" "
+        vol="Muted"
+    fi
+
+    notif "${prefix}Volume: ${vol}"
+}
+
+change_sink() {
+    sink="$(sink_num)"
+    max_sink="$(pamixer --list-sinks | tail -1 | awk '{ print $1 }')"
+
+    case $1 in
+        inc)
+            new_sink="$(expr "$sink" + 1)"
+            ;;
+
+        dec)
+            new_sink="$(expr "$sink" - 1)"
+            ;;
+
+        *)
+            exit 1
+            ;;
+    esac
+
+    if [[ "$new_sink" < 0 ]]; then
+        new_sink="$max_sink"
+    elif [[ "$new_sink" > "$max_sink" ]]; then
+        new_sink="0"
+    fi
+
+    pactl set-default-sink "$new_sink"
+
+    new_sink_name="$(sink_name)"
+    new_sink_desc="$(sink_desc)"
+    
+    if pgrep -x glava; then
+        pactl move-source-output "$(glava_index)" "${new_sink_name}.monitor"
+    fi
+
+    notif " ${new_sink_desc} (#$new_sink)" "has been selected as the default sink"
+}
+
+notif() {
+    icon="placeholder"
+    if [ $3 ]; then
+        icon="$3"
+    fi
+
+    time="2000"
+    if [ $4 ]; then
+        time="$4"
+    fi
+
+    # this hint allows the notification to replace previous confirmation notifications
+    dunstify -h "string:x-canonical-private-synchronous:anything" -a "audioutil" -i "$icon" -u "normal" -t "$time" "$1" "$2"
+}
+
+if [[ ! $1 ]]; then
+    usage
+fi
+
+if [[ ! $2 ]]; then
+    usage
+fi
+
+case $1 in
+    vol)
+        case $2 in
+            inc-default-sink)
+                change_sink inc
+                ;;
+
+            dec-default-sink)
+                change_sink dec
+                ;;
+
+            get-default-sink)
+                sink_num
+                ;;
+
+            inc)
+                adjust_vol "-i 4" '+ 4'
+                ;;
+
+            dec)
+                adjust_vol "-d 4" '- 4'
+                ;;
+
+            mute)
+                adjust_vol "-t"
+                ;;
+
+            get)
+                pamixer --get-volume-human
+                ;;
+
+            # get-polybar)
+                # result="$(pamixer --get-volume-human)"
+
+                # if [[ "$result" == "muted" ]]; then
+                    # result="%{F#859289}${result}%{F-}"
+                # fi
+
+                # echo "  $result  "
+                # ;;
+
+            get-polybar)
+                result=$(pamixer --get-volume-human)
+
+                if [[ "$result" == "muted" ]]; then
+                    icon=""
+                    result="%{B#384348}%{F#859289}  ${result}  %{F-}%{B-}"
+                else
+                    icon=""
+                    result="%{B#384348}%{F#d8caac}  ${result}  %{F-}%{B-}"
+                fi
+
+                echo "%{B#a7c080}%{F#2b3339} ${icon} %{B#384348}%{F-}${result}"
+                ;;
+
+            *)
+                usage
+                ;;
+        esac
+        ;;
+          
+    media)
+        case $2 in
+            prev)
+                playerctl previous
+                ;;
+            
+            toggle)
+                playerctl play-pause
+                ;;
+
+            next)
+                playerctl next
+                ;;
+
+            *)
+                usage
+                ;;
+        esac
+        ;;
+
+    *)
+        usage
+        ;;
+esac
