@@ -5,46 +5,63 @@ local beautiful = require("beautiful")
 local dpi = beautiful.xresources.apply_dpi
 local colors = beautiful.colorscheme
 
-local helper = require("util.runelist_helper")
+local function contains(table, element)
+    for _, value in pairs(table) do
+        if value == element then
+            return true
+        end
+    end
+    return false
+end
 
 local list_update = function(widget, buttons, label, data, objects)
     widget:reset()
 
     for _, object in ipairs(objects) do
 
+        -- local tag_icon = wibox.widget {
+        --     nil,
+        --     {
+        --         nil,
+        --         {
+        --             id = "icon",
+        --             resize = true,
+        --             widget = wibox.widget.imagebox,
+        --             forced_height = 11,
+        --             forced_width = 11,
+        --         },
+        --         nil,
+        --         id = "hwrapper",
+        --         layout = wibox.layout.align.horizontal,
+        --         expand = "outside"
+        --     },
+        --     nil,
+        --     layout = wibox.layout.align.vertical,
+        --     expand = "outside"
+        -- }
+
         local tag_icon = wibox.widget {
-            nil,
-            {
-                id = "icon",
-                resize = true,
-                widget = wibox.widget.imagebox
-            },
-       nil,
-            layout = wibox.layout.align.horizontal
+            id = "icon",
+            resize = true,
+            forced_height = 11,
+            forced_width = 11,
+            widget = wibox.widget.imagebox,
         }
+
+        -- local tag_icon_margin = wibox.widget {
+        --     tag_icon,
+        --     forced_width = dpi(29),
+        --     margins = dpi(3),
+        --     widget = wibox.container.margin
+        -- }
 
         local tag_icon_margin = wibox.widget {
             tag_icon,
-            forced_width = dpi(27),
-            margins = dpi(1.5),
-            widget = wibox.container.margin
-        }
-
-        local tag_label = wibox.widget {
-            text = "",
-            align = "center",
-            valign = "center",
-            visible = true,
-            font = beautiful.taglist_font,
-            forced_width = dpi(27),
-            widget = wibox.widget.textbox
-        }
-
-        local tag_label_margin = wibox.widget {
-            tag_label,
             forced_width = dpi(29),
-            -- left = dpi(1.5),
-            -- right = dpi(1.5),
+            top = dpi(8),
+            bottom = dpi(7),
+            left = dpi(9),
+            right = dpi(9),
             widget = wibox.container.margin
         }
 
@@ -53,7 +70,7 @@ local list_update = function(widget, buttons, label, data, objects)
                 id = "widget_margin",
                 {
                     id = "container",
-                    tag_label_margin,
+                    tag_icon_margin,
                     layout = wibox.layout.fixed.horizontal
                 },
                 margins = dpi(0),
@@ -61,7 +78,6 @@ local list_update = function(widget, buttons, label, data, objects)
             },
             fg = colors.white,
             shape = function(cr, width, height)
-                -- gears.shape.rounded_rect(cr, width, height, 5)
                 gears.shape.rectangle(cr, width, height)
             end,
             widget = wibox.container.background
@@ -89,130 +105,37 @@ local list_update = function(widget, buttons, label, data, objects)
 
         tag_widget:buttons(create_buttons(buttons, object))
 
-        local text, bg_color, bg_image, icon, args = label(object, tag_label)
-        local naughty = require("naughty")
-        -- tag_label:set_text(object.index)
-        tag_label:set_text(helper.rune_table[object.index - 1])
-        -- tag_label:set_text(tag_label:get_text())
+        local tags = awful.screen.focused().selected_tags
+        local geolist_style = beautiful.geolist_style
+        local text, bg_color, bg_image, icon, args = label(object, tag_icon)
 
-        local update_timer = gears.timer {
-            timeout   = 0.03,
-            callback  = function()
-                tag_label:set_text(helper.random())
-            end
-        }
+        local next = next
 
-        local focused = false
-
-        if object.urgent then
-            tag_widget:set_bg(colors.red)
-            tag_widget:set_fg(colors.gray1)
-
-            update_timer:start()
-        elseif object == awful.screen.focused().selected_tag then
-            tag_widget:set_bg(colors.blue)
-            tag_widget:set_fg(colors.gray1)
-
-            tag_label:set_text(helper.random())
-
-            focused = true
-
-            if update_timer.started then
-                update_timer:stop()
-            end
-        else
-            tag_widget:set_bg(colors.gray3)
-
-            if update_timer.started then
-                update_timer:stop()
-            end
-        end
-
+        local focused = contains(tags, object)
+        local urgent = object.urgent
         local has_clients = false
 
-        for _, client in ipairs(object:clients()) do
+        if next(object:clients()) then
             has_clients = true
-            break
-
-            -- if focused then
-            --     tag_label_margin:set_right(0)
-            --     local icon = wibox.widget {
-            --         {
-            --             id = "icon_container",
-            --             {
-            --                 id = "icon",
-            --                 resize = true,
-            --                 widget = wibox.widget.imagebox
-            --             },
-            --             widget = wibox.container.place
-            --         },
-            --         tag_icon_margin,
-            --         forced_width = dpi(27),
-            --         margins = dpi(6),
-            --         widget = wibox.container.margin
-            --     }
-            --     icon.icon_container.icon:set_image(beautiful.awesome_icon_alt)
-            --     tag_widget.widget_margin.container:setup({
-            --         icon,
-            --         layout = wibox.layout.align.horizontal
-            --     })
-            -- end
         end
 
-        if not has_clients and not focused then
-            tag_widget:set_fg(colors.gray5)
+        if focused then
+            tag_widget:set_bg(geolist_style.selected.bg)
+            -- tag_icon.hwrapper.icon.image = geolist_style.selected.icon
+            tag_icon.image = geolist_style.selected.icon
+        elseif urgent then
+            tag_widget:set_bg(geolist_style.urgent.bg)
+            -- tag_icon.hwrapper.icon.image = geolist_style.urgent.icon
+            tag_icon.image = geolist_style.urgent.icon
+        elseif has_clients then
+            tag_widget:set_bg(geolist_style.occupied.bg)
+            -- tag_icon.hwrapper.icon.image = geolist_style.occupied.icon
+            tag_icon.image = geolist_style.occupied.icon
+        elseif not has_clients then
+            tag_widget:set_bg(geolist_style.empty.bg)
+            -- tag_icon.hwrapper.icon.image = geolist_style.empty.icon
+            tag_icon.image = geolist_style.empty.icon
         end
-
-        local old_wibox, old_cursor, old_bg
-
-        tag_widget:connect_signal(
-            "mouse::enter",
-            function()
-                update_timer:start()
-
-                local w = mouse.current_wibox
-                if w then
-                    old_cursor, old_wibox = w.cursor, w
-                    w.cursor = "hand1"
-                end
-            end
-        )
-
-        tag_widget:connect_signal(
-            "mouse::leave",
-            function()
-                if not urgent then
-                    update_timer:stop()
-                end
-
-                if old_wibox then
-                    old_wibox.cursor = old_cursor
-                    old_wibox = nil
-                end
-            end
-        )
-
-        -- tag_widget:connect_signal(
-        --     "button::press",
-        --     function()
-        --         if object == awful.screen.focused().selected_tag then
-        --             tag_widget.bg = '#bbbbbb' .. 'dd'
-        --         else
-        --             tag_widget.bg = '#3A475C' .. 'dd'
-        --         end
-        --     end
-        -- )
-        --
-        -- tag_widget:connect_signal(
-        --     "button::release",
-        --     function()
-        --         if object == awful.screen.focused().selected_tag then
-        --             tag_widget.bg = '#dddddd' .. 'dd'
-        --         else
-        --             tag_widget.bg = '#3A475C' .. 'dd'
-        --         end
-        --     end
-        -- )
 
         widget:add(tag_widget)
         widget:set_spacing(dpi(0))
@@ -220,7 +143,7 @@ local list_update = function(widget, buttons, label, data, objects)
 end
 
 local tag_list = function(s)
-    return awful.widget.taglist(
+    local taglist_main =  awful.widget.taglist(
         s,
         awful.widget.taglist.filter.all,
         gears.table.join(
@@ -244,9 +167,7 @@ local tag_list = function(s)
                 {},
                 3,
                 function(t)
-                    if client.focus then
-                        client.focus:toggle_tag(t)
-                    end
+                    awful.tag.viewtoggle(t)
                 end
             ),
             awful.button(
@@ -277,6 +198,12 @@ local tag_list = function(s)
         list_update,
         wibox.layout.fixed.horizontal()
     )
+
+    return wibox.widget {
+        taglist_main,
+        left = dpi(8),
+        widget = wibox.container.margin,
+    }
 end
 
 return tag_list

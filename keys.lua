@@ -44,7 +44,7 @@ M.globalkeys = gears.table.join(
         {description = "focus previous by index", group = "client"}
     ),
 
-    awful.key({ modkey,           }, "w", function () mymainmenu:show() end,
+    awful.key({ modkey,           }, "w", function () mainmenu:show() end,
               {description = "show main menu", group = "awesome"}),
 
     -- Layout manipulation
@@ -88,7 +88,7 @@ M.globalkeys = gears.table.join(
 
     awful.key({ modkey, s         }, "p",      function () awful.spawn(script .. "picomutil toggle", false) end,
               {description = "toggle compositor", group = "launcher"}),
-    
+
     awful.key({ modkey, s         }, "r",      awesome.restart,
               {description = "reload awesome", group = "awesome"}),
 
@@ -171,6 +171,9 @@ M.clientkeys = gears.table.join(
 
     awful.key({ modkey,           }, "t",      function (c) c.ontop = not c.ontop            end,
               {description = "toggle keep on top", group = "client"}),
+
+    awful.key({ modkey,           }, "s",      function (c) c.sticky = not c.sticky          end,
+              {description = "toggle sticky/omnipresent", group = "client"}),
 
     awful.key({ modkey,           }, "f",      function (c)
         c.fullscreen = not c.fullscreen

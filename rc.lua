@@ -117,7 +117,7 @@ local utilmenu = {
     { "file manager", "pcmanfm" },
 }
 
-local mainmenu = awful.menu({
+mainmenu = awful.menu({
     items = {
         { "awesome", awesomemenu, beautiful.awesome_icon },
         { "apps", appmenu },
@@ -166,27 +166,24 @@ awful.screen.connect_for_each_screen(function(s)
         awful.button({ }, 5, function () awful.layout.inc(-1) end)
     ))
 
-    s.taglist = require("widgets.taglist").get(s)
-    s.tasklist = require("widgets.tasklist").get(s)
-
     -- Create the wibox
-    local wibar_height = 27
-    s.wibox = awful.wibar({ position = "bottom", screen = s, height = dpi(wibar_height) })
+    s.wibox = awful.wibar({ position = "bottom", screen = s, height = dpi(27) })
 
     -- Add widgets to the wibox
     s.wibox:setup {
         layout = wibox.layout.align.horizontal,
+        expand = "none",
         { -- Left widgets
             layout = wibox.layout.fixed.horizontal,
             launcher,
-            require("widgets.runelist")(s),
-            -- s.mytaglist,
+            require("widgets.geolist")(s),
+            -- require("widgets.taglist").get(s),
             s.promptbox,
         },
         { -- Middle widgets
             layout = wibox.layout.fixed.horizontal,
             require("widgets.improved_tasklist")(s),
-            -- s.mytasklist,
+            -- require("widgets.tasklist").get(s),
         },
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
@@ -199,9 +196,9 @@ end)
 
 -- {{{ Mouse bindings
 root.buttons(gears.table.join(
-    awful.button({ }, 3, function () mymainmenu:toggle() end),
-    awful.button({ }, 4, awful.tag.viewnext),
-    awful.button({ }, 5, awful.tag.viewprev)
+    awful.button({ }, 3, function () mainmenu:toggle() end),
+    awful.button({ }, 4, awful.tag.viewprev),
+    awful.button({ }, 5, awful.tag.viewnext)
 ))
 -- }}}
 

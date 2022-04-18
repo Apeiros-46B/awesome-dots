@@ -1,17 +1,39 @@
-local recolor = require("gears").color.recolor_image
+local wibox = require("wibox")
+local awful = require("awful")
+local gears = require("gears")
 local beautiful = require("beautiful")
+local dpi = beautiful.xresources.apply_dpi
 local colors = beautiful.colorscheme
-local state_icons = beautiful.client_state_icons
 local placeholder_icon = beautiful.awesome_icon_alt
 
 local get = function(client)
     local returned = {
-        icon = placeholder_icon,
+        main_icon = placeholder_icon,
         bg = beautiful.taglist_bg_normal,
         state_icons = {}
     }
 
-    -- get the client's icon and set it as returned.icon
+    -- get the client's icon, make a widget with it and set returned.icon to the widget
+    returned.main_icon = wibox.widget {
+        nil,
+        {
+            nil,
+            {
+                id = "icon",
+                image = client.icon,
+                forced_height = dpi(21),
+                forced_width = dpi(21),
+                widget = wibox.widget.imagebox
+            },
+            nil,
+            id = "hwrapper",
+            layout = wibox.layout.align.horizontal,
+            expand = "outside"
+        },
+        nil,
+        layout = wibox.layout.align.vertical,
+        expand = "outside"
+    }
 
     -- set bg color as returned.bg based on client attributes
     -- BG AND FG SET IN THEME VARS, USE THOSE INSTEAD

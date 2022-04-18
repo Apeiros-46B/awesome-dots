@@ -14,7 +14,7 @@ return {
             keys = keys.clientkeys,
             buttons = keys.clientbuttons,
             screen = awful.screen.preferred,
-            placement = awful.placement.no_overlap+awful.placement.no_offscreen
+            placement = awful.placement.no_overlap+awful.placement.no_offscreen,
         }
     },
 
@@ -47,7 +47,7 @@ return {
           "ConfigManager",  -- Thunderbird's about:config.
           "pop-up",       -- e.g. Google Chrome's (detached) Developer Tools.
         }
-      }, properties = { floating = true }},
+      }, properties = { floating = true, ontop = true }},
 
     -- Add titlebars to normal clients and dialogs
     { rule_any = {type = { "normal", "dialog" }

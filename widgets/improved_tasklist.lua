@@ -28,23 +28,20 @@ local list_update = function(widget, buttons, label, data, objects)
 							id = "layout_icon"
 						},
 						forced_width = dpi(27),
-						margins = dpi(2),
+						margins = dpi(4),
 						widget = wibox.container.margin,
 						id = "margin"
 					},
-					{
-						text = "",
-						align = "center",
-						valign = "center",
-						visible = true,
-						widget = wibox.widget.textbox,
-						id = "title"
-					},
+					-- {
+					-- 	require("util.tasklist_helper")(object).state_icons,
+					--                         widget = wibox.layout.fixed.horizontal,
+					-- 	id = "layout_stateicons"
+					-- },
 					layout = wibox.layout.fixed.horizontal,
-					id = "layout_it"
+					id = "layout_main"
 				},
-				right = dpi(4),
-				left = dpi(4),
+				right = dpi(0),
+				left = dpi(0),
 				widget = wibox.container.margin,
 				id = "container"
 			},
@@ -54,7 +51,7 @@ local list_update = function(widget, buttons, label, data, objects)
 				gears.shape.rectangle(cr, width, height)
 			end,
 			widget = wibox.container.background
-		}
+        }
 
 		local task_tool_tip = awful.tooltip {
 			objects = { task_widget },
@@ -85,40 +82,27 @@ local list_update = function(widget, buttons, label, data, objects)
 
 		task_widget:buttons(create_buttons(buttons, object))
 
-		local text, bg, bg_image, icon, args = label(object, task_widget.container.layout_it.title)
-		if object == client.focus then
-			-- if text == nil or text == '' then
-			-- 	task_widget.container.layout_it.title:set_margins(0)
-			-- else
-			-- 	local text_full = text:match('>(.-)<')
-			-- 	if text_full then
-			-- 		text = object.class
-			-- 		task_tool_tip:set_text(text_full)
-			-- 		task_tool_tip:add_to_object(task_widget)
-			-- 	else
-			-- 		task_tool_tip:remove_from_object(task_widget)
-			-- 	end
-			-- end
+        if object == client.focus then
 			task_widget:set_bg(colors.blue)
 			task_widget:set_fg(colors.gray1)
-			-- task_widget.container.layout_it.title:set_text(text)
-		else
+        elseif object.sticky then
+            task_widget:set_bg(colors.purple)
+            task_widget:set_fg(colors.gray1)
+        else
 			task_widget:set_bg(colors.gray3)
-			-- task_widget.container.layout_it.title:set_text('')
 		end
-		task_widget.container.layout_it.margin.layout_icon.icon:set_image(beautiful.awesome_icon_alt)
+
+		task_widget.container.layout_main.margin.layout_icon.icon:set_image(object.icon)
+
 		widget:add(task_widget)
 		widget:set_spacing(dpi(0))
-		local old_wibox, old_cursor, old_bg
-		task_widget:connect_signal(
+
+		local old_wibox, old_cursor
+        -- local old_minimized
+
+        task_widget:connect_signal(
 			"mouse::enter",
 			function()
-				old_bg = task_widget.bg
-				if object == client.focus then
-					task_widget.bg = '#dddddddd'
-				else
-					task_widget.bg = '#3A475Cdd'
-				end
 				local w = mouse.current_wibox
 				if w then
 					old_cursor, old_wibox = w.cursor, w
@@ -127,38 +111,41 @@ local list_update = function(widget, buttons, label, data, objects)
 			end
 		)
 
-		task_widget:connect_signal(
-			"button::press",
-			function()
-				if object == client.focus then
-					task_widget.bg = "#ffffffaa"
-				else
-					task_widget.bg = '#3A475Caa'
-				end
-			end
-		)
-
-		task_widget:connect_signal(
-			"button::release",
-			function()
-				if object == client.focus then
-					task_widget.bg = "#ffffffdd"
-				else
-					task_widget.bg = '#3A475Cdd'
-				end
-			end
-		)
-
-		task_widget:connect_signal(
+        task_widget:connect_signal(
 			"mouse::leave",
 			function()
-				task_widget.bg = old_bg
 				if old_wibox then
 					old_wibox.cursor = old_cursor
 					old_wibox = nil
 				end
 			end
 		)
+
+		-- task_widget:connect_signal(
+		-- 	"button::press",
+		-- 	function(self, lx, ly, button, mods, find_widgets_result)
+		--                 if button == 3 then
+		--                     if object.minimized then
+		--                         old_minimized = true
+		--
+		--                         object:emit_signal(
+		--                             "request::activate", "key.unminimize", { raise = true }
+		--                         )
+		--                     end
+		--                 end
+		-- 	end
+		-- )
+		--
+		-- task_widget:connect_signal(
+		-- 	"button::release",
+		-- 	function(self, lx, ly, button, mods, find_widgets_result)
+		--                 if button == 3 then
+		--                     if old_minimized then
+		--                         object.minimized = true
+		--                     end
+		--                 end
+		-- 	end
+		-- )
 	end
 	return widget
 end
@@ -186,11 +173,13 @@ local tasklist = function(s)
 			),
 			awful.button(
 				{},
-				3,
+				2,
 				function(c)
 					c:kill()
 				end
-			)
+			),
+            awful.button({ }, 4, function() awful.client.focus.byidx(-1) end),
+            awful.button({ }, 5, function() awful.client.focus.byidx(1) end)
 		),
 		{},
 		list_update,

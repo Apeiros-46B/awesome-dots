@@ -2,6 +2,7 @@
 local theme_assets = require("beautiful.theme_assets")
 local xresources = require("beautiful.xresources")
 local dpi = xresources.apply_dpi
+local gears = require("gears")
 
 -- Themes path
 local themes_path = os.getenv("HOME") .. "/.config/awesome/themes/"
@@ -76,7 +77,7 @@ theme.border_marked = colors.red
 -- Hotkeys popup style
 theme.hotkeys_modifiers_fg = colors.gray5
 theme.hotkeys_border_width = dpi(2)
-theme.hotkeys_border_color = colors.purple
+theme.hotkeys_border_color = colors.blue
 
 -- Tasklist
 theme.tasklist_bg_focus         = colors.blue
@@ -99,7 +100,6 @@ theme.tasklist_fg_normal        = colors.white
 -- theme.tasklist_maximized = " "
 -- theme.tasklist_maximized_horizontal = " "
 -- theme.tasklist_maximized_vertical = ""
-theme.tasklist_plain_names = true
 
 -- Taglist
 theme.taglist_font = theme.font
@@ -134,36 +134,98 @@ theme.layout_tile = themes_path.."default/icons/layouts/tile.png"
 theme.layout_spiral  = themes_path.."default/icons/layouts/spiral.png"
 theme.layout_dwindle = themes_path.."default/icons/layouts/dwindle.png"
 
--- Geolist icons
-local geolist_icons = {}
+-- {{{ Geolist icons
+local geolist_base_icons = {}
 
-geolist_icons.rhomb = {
+geolist_base_icons.rhomb = {
     filled = themes_path.."default/icons/geolist/rhomb_filled.svg",
     hollow = themes_path.."default/icons/geolist/rhomb_hollow.svg",
 }
 
-geolist_icons.circle = {
+geolist_base_icons.circle = {
     filled = themes_path.."default/icons/geolist/circle_filled.svg",
     hollow = themes_path.."default/icons/geolist/circle_hollow.svg",
 }
 
-geolist_icons.square = themes_path.."default/icons/geolist/square.svg"
-geolist_icons.triangle = themes_path.."default/icons/geolist/triangle.svg"
+geolist_base_icons.square = themes_path.."default/icons/geolist/square.svg"
+geolist_base_icons.triangle = themes_path.."default/icons/geolist/triangle.svg"
 
-theme.geolist_icons = geolist_icons
+local geolist_style = {}
 
--- Tasklist client state icons
-local client_state_icons = {}
+geolist_style.empty = {
+    icon = gears.color.recolor_image(geolist_base_icons.circle.hollow, colors.gray5),
+    bg = colors.gray3
+}
 
-client_state_icons.floating     = themes_path.."default/icons/client_state/floating.svg"
-client_state_icons.max          = themes_path.."default/icons/client_state/max.svg"
-client_state_icons.max_horiz    = themes_path.."default/icons/client_state/max_horiz.svg"
-client_state_icons.max_vert     = themes_path.."default/icons/client_state/max_vert.svg"
-client_state_icons.min          = themes_path.."default/icons/client_state/min.svg"
-client_state_icons.omnipresent  = themes_path.."default/icons/client_state/omnipresent.svg"
-client_state_icons.ontop        = themes_path.."default/icons/client_state/ontop.svg"
+geolist_style.occupied = {
+    icon = gears.color.recolor_image(geolist_base_icons.circle.filled, colors.white),
+    bg = colors.gray3
+}
 
-theme.client_state_icons = client_state_icons
+geolist_style.omnipresent_unfocused = {
+    icon = gears.color.recolor_image(geolist_base_icons.circle.hollow, colors.gray5),
+    bg = colors.gray3
+}
+
+geolist_style.omnipresent_focused = {
+    icon = gears.color.recolor_image(geolist_base_icons.rhomb.hollow, colors.white),
+    bg = colors.gray3
+}
+
+geolist_style.selected = {
+    icon = gears.color.recolor_image(geolist_base_icons.rhomb.filled, colors.gray1),
+    bg = colors.blue
+}
+
+geolist_style.urgent = {
+    icon = gears.color.recolor_image(geolist_base_icons.triangle, colors.gray1),
+    bg = colors.red
+}
+
+geolist_style.volatile = {
+    icon = gears.color.recolor_image(geolist_base_icons.square, colors.gray1),
+    bg = colors.yellow
+}
+
+theme.geolist_style = geolist_style
+-- }}}
+
+-- {{{ Tasklist client state icons
+local tasklist_base_icons = {}
+
+tasklist_base_icons.floating     = themes_path.."default/icons/tasklist/floating.svg"
+tasklist_base_icons.max          = themes_path.."default/icons/tasklist/max.svg"
+tasklist_base_icons.max_horiz    = themes_path.."default/icons/tasklist/max_horiz.svg"
+tasklist_base_icons.max_vert     = themes_path.."default/icons/tasklist/max_vert.svg"
+tasklist_base_icons.ontop        = themes_path.."default/icons/tasklist/ontop.svg"
+tasklist_base_icons.min          = themes_path.."default/icons/tasklist/min.svg"
+tasklist_base_icons.sticky       = themes_path.."default/icons/tasklist/sticky.svg"
+
+-- note that, unlike the geolist, there can be multiple icons per client widget
+
+-- subsequently, background colors are separately handled in "util/tasklist_helper.lua"
+-- instead of being defined here
+
+local tasklist_icons = {}
+
+tasklist_icons.floating = gears.color.recolor_image(tasklist_base_icons.floating, colors.white)
+tasklist_icons.floating_dark = gears.color.recolor_image(tasklist_base_icons.floating, colors.gray1)
+tasklist_icons.max = gears.color.recolor_image(tasklist_base_icons.max, colors.white)
+tasklist_icons.max_dark = gears.color.recolor_image(tasklist_base_icons.max, colors.gray1)
+tasklist_icons.max_horiz = gears.color.recolor_image(tasklist_base_icons.max_horiz, colors.white)
+tasklist_icons.max_horiz_dark = gears.color.recolor_image(tasklist_base_icons.max_horiz, colors.gray1)
+tasklist_icons.max_vert = gears.color.recolor_image(tasklist_base_icons.max_vert, colors.white)
+tasklist_icons.max_vert_dark = gears.color.recolor_image(tasklist_base_icons.max_vert, colors.gray1)
+tasklist_icons.ontop = gears.color.recolor_image(tasklist_base_icons.ontop, colors.white)
+tasklist_icons.ontop_dark = gears.color.recolor_image(tasklist_base_icons.ontop, colors.gray1)
+
+tasklist_icons.min = gears.color.recolor_image(tasklist_base_icons.min, colors.gray5) -- minimized has slightly different FG color on light variant
+tasklist_icons.min_dark = gears.color.recolor_image(tasklist_base_icons.min, colors.gray1)
+
+tasklist_icons.sticky = gears.color.recolor_image(tasklist_base_icons.sticky, colors.gray1) -- sticky already implies dark, no need for another dark variant
+
+theme.tasklist_icons = tasklist_icons
+-- }}}
 
 -- Awesome icon(s)
 theme.awesome_icon = theme_assets.awesome_icon(
