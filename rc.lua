@@ -61,7 +61,7 @@ beautiful.init(theme_path)
 local bling = require("bling")
 
 -- This is used later as the default terminal and editor to run.
-terminal = "wezterm"
+terminal = "wezterm --config-file " .. os.getenv("HOME") .. "/.config/awesome/external/wezterm/wezterm.lua"
 terminal_start_cmd = terminal .. " start " -- if you are using a terminal other than wezterm replace the start with -e
 editor = "nvim"
 editor_cmd = terminal_start_cmd .. editor
