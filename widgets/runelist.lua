@@ -17,8 +17,8 @@ local list_update = function(widget, buttons, label, data, objects)
             {
                 id = "icon",
                 resize = true,
-                widget = wibox.widget.imagebox
-            },
+    widget = wibox.widget.imagebox
+    },
             nil,
             layout = wibox.layout.align.horizontal
         }

@@ -36,7 +36,7 @@ end
 
 -- Handle runtime errors after startup
 do
-    local in_error = false
+    local in_error =false
     awesome.connect_signal("debug::error", function (err)
         -- Make sure we don't go into an endless error loop
         if in_error then return end
@@ -61,8 +61,10 @@ beautiful.init(theme_path)
 local bling = require("bling")
 
 -- This is used later as the default terminal and editor to run.
-terminal = "wezterm --config-file " .. os.getenv("HOME") .. "/.config/awesome/external/wezterm/wezterm.lua"
-terminal_start_cmd = terminal .. " start " -- if you are using a terminal other than wezterm replace the start with -e
+-- terminal = "wezterm --config-file " .. os.getenv("HOME") .. "/.config/awesome/external/wezterm/wezterm.lua"
+terminal = "kitty"
+-- terminal_start_cmd = terminal .. " start " -- if you are using a terminal other than wezterm replace the start with -e
+terminal_start_cmd = terminal .. " -e "
 editor = "nvim"
 editor_cmd = terminal_start_cmd .. editor
 
@@ -125,10 +127,10 @@ mainmenu = awful.menu({
     }
 })
 
-local launcher = awful.widget.launcher({
-    image = beautiful.awesome_icon_alt,
-    menu = mainmenu,
-})
+-- local launcher = awful.widget.launcher({
+--     image = beautiful.awesome_icon_alt,
+--     menu = mainmenu,
+-- })
 
 -- Menubar configuration
 menubar.utils.terminal = terminal -- Set the terminal for applications that require it
@@ -149,9 +151,9 @@ awful.screen.connect_for_each_screen(function(s)
     set_wallpaper(s)
 
     -- Each screen has its own tag table.
+    -- awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8" }, s, awful.layout.layouts[1])
     awful.tag({ "I", "II", "III", "IV", "V", "VI", "VII", "VIII" }, s, awful.layout.layouts[1])
     -- awful.tag({ "一", "二", "三", "四", "五", "六", "七", "八" }, s, awful.layout.layouts[1])
-    -- awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8" }, s, awful.layout.layouts[1])
 
     -- Create a promptbox for each screen
     s.promptbox = awful.widget.prompt()
@@ -160,35 +162,47 @@ awful.screen.connect_for_each_screen(function(s)
     -- We need one layoutbox per screen.
     s.layoutbox = awful.widget.layoutbox(s)
     s.layoutbox:buttons(gears.table.join(
-        awful.button({ }, 1, function () awful.layout.inc( 1) end),
-        awful.button({ }, 3, function () awful.layout.inc(-1) end),
+        awful.button({ }, 1, function () mainmenu:show()      end),
         awful.button({ }, 4, function () awful.layout.inc( 1) end),
         awful.button({ }, 5, function () awful.layout.inc(-1) end)
     ))
+
+    -- Misc widget imports
+    local sysinfo = require("widgets.sysinfo")
+    local padding = require("widgets.padding")
 
     -- Create the wibox
     s.wibox = awful.wibar({ position = "bottom", screen = s, height = dpi(27) })
 
     -- Add widgets to the wibox
     s.wibox:setup {
+        id = "layout_container",
         layout = wibox.layout.align.horizontal,
         expand = "none",
         { -- Left widgets
             layout = wibox.layout.fixed.horizontal,
-            launcher,
+
+            s.layoutbox,
+            padding,
             require("widgets.geolist")(s),
             -- require("widgets.taglist").get(s),
             s.promptbox,
         },
         { -- Middle widgets
             layout = wibox.layout.fixed.horizontal,
-            require("widgets.improved_tasklist")(s),
+
+            -- require("widgets.improved_tasklist")(s),
             -- require("widgets.tasklist").get(s),
         },
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
+
             require("widgets.textclock"),
-            s.layoutbox,
+            padding,
+            sysinfo.cpu,
+            padding,
+            sysinfo.memory,
+            padding,
         }
     }
 end)
@@ -220,6 +234,11 @@ client.connect_signal("manage", function (c)
       and not c.size_hints.program_position then
         -- Prevent clients from being unreachable after screen count changes.
         awful.placement.no_offscreen(c)
+    end
+
+    if c.floating then
+        c.ontop = true
+        c:raise()
     end
 end)
 

@@ -28,59 +28,46 @@ local list_update = function(widget, buttons, label, data, objects)
 
         local tag_icon_margin = wibox.widget {
             tag_icon,
-            forced_width = dpi(29),
-            top = dpi(8),
-            bottom = dpi(7),
-            left = dpi(9),
-            right = dpi(9),
-            widget = wibox.container.margin
+            forced_width = dpi(27),
+            forced_height = dpi(27),
+            widget = wibox.container.place
         }
 
         local tag_widget = wibox.widget {
             {
-                id = "widget_margin",
-                {
-                    id = "container",
-                    tag_icon_margin,
-                    layout = wibox.layout.fixed.horizontal
-                },
-                margins = dpi(0),
-                widget = wibox.container.margin
+                id = "container",
+                tag_icon_margin,
+                layout = wibox.layout.fixed.horizontal
             },
             fg = colors.white,
-            shape = function(cr, width, height)
-                gears.shape.rectangle(cr, width, height)
-            end,
+            shape = gears.shape.rectangle,
             widget = wibox.container.background
         }
 
-        -- local function create_buttons(buttons, object)
-        --     if buttons then
-        --         local btns = {}
-        --         for _, b in ipairs(buttons) do
-        --             local btn = awful.button {
-        --                 modifiers = b.modifiers,
-        --                 button = b.button,
-        --                 on_press = function()
-        --                     b:emit_signal('press', object)
-        --                 end,
-        --                 on_release = function()
-        --                     b:emit_signal('release', object)
-        --                 end
-        --             }
-        --             btns[#btns + 1] = btn
-        --         end
-        --         return btns
-        --     end
-        -- end
-        --
-        -- tag_widget:buttons(create_buttons(buttons, object))
+        local function create_buttons(buttons, object)
+            if buttons then
+                local btns = {}
+                for _, b in ipairs(buttons) do
+                    local btn = awful.button {
+                        modifiers = b.modifiers,
+                        button = b.button,
+                        on_press = function()
+                            b:emit_signal('press', object)
+                        end,
+                        on_release = function()
+                            b:emit_signal('release', object)
+                        end
+                    }
+                    btns[#btns + 1] = btn
+                end
+                return btns
+            end
+        end
+
+        tag_widget:buttons(create_buttons(buttons, object))
 
         local tags = awful.screen.focused().selected_tags
         local geolist_style = beautiful.geolist_style
-        local text, bg_color, bg_image, icon, args = label(object, tag_icon)
-
-        local next = next
 
         local focused = contains(tags, object)
         local urgent = object.urgent
@@ -166,11 +153,7 @@ local tag_list = function(s)
         wibox.layout.fixed.horizontal()
     )
 
-    return wibox.widget {
-        taglist_main,
-        left = dpi(8),
-        widget = wibox.container.margin,
-    }
+    return taglist_main
 end
 
 return tag_list

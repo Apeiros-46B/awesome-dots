@@ -20,6 +20,10 @@ end)
 return {
     exit_behavior="Close",
     check_for_updates = false,
+    keys = {
+        { key="m", mods="CMD", action="DisableDefaultAssignment" },
+        { key="Enter", mods="ALT", action="DisableDefaultAssignment" }
+    },
 
     font = wezterm.font('JetBrainsMono Nerd Font'),
     font_size = 13.0,
@@ -44,7 +48,7 @@ return {
         left = "2cell",
         right = "2cell",
         top = "1cell",
-        bottom = "1cell",
+        bottom = "0cell",
     },
 
     hide_tab_bar_if_only_one_tab = true,
@@ -83,6 +87,7 @@ return {
     window_background_opacity = 1.0,
 
     bold_brightens_ansi_colors = false,
+
     color_scheme = 'Everforest',
     color_schemes = {
         ['Everforest'] = {

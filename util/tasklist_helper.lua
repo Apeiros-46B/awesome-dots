@@ -14,26 +14,27 @@ local get = function(client)
     }
 
     -- get the client's icon, make a widget with it and set returned.icon to the widget
-    returned.main_icon = wibox.widget {
-        nil,
+    local main_icon = wibox.widget {
         {
-            nil,
             {
                 id = "icon",
-                image = client.icon,
-                forced_height = dpi(21),
-                forced_width = dpi(21),
+                resize = true,
                 widget = wibox.widget.imagebox
             },
-            nil,
-            id = "hwrapper",
-            layout = wibox.layout.align.horizontal,
-            expand = "outside"
+            forced_width = dpi(27),
+            margins = dpi(4),
+            widget = wibox.container.margin,
+            id = "margin"
         },
-        nil,
-        layout = wibox.layout.align.vertical,
-        expand = "outside"
+        gears.shape.rectangle,
+        widget = wibox.container.background
     }
+
+    main_icon.margin.icon.image = client.icon
+
+    if client == client.focus then
+        main_icon.bg = colors.blue
+    end
 
     -- set bg color as returned.bg based on client attributes
     -- BG AND FG SET IN THEME VARS, USE THOSE INSTEAD
