@@ -12,24 +12,6 @@ local list_update = function(widget, buttons, label, data, objects)
 
     for _, object in ipairs(objects) do
 
-        local tag_icon = wibox.widget {
-            nil,
-            {
-                id = "icon",
-                resize = true,
-    widget = wibox.widget.imagebox
-    },
-            nil,
-            layout = wibox.layout.align.horizontal
-        }
-
-        local tag_icon_margin = wibox.widget {
-            tag_icon,
-            forced_width = dpi(27),
-            margins = dpi(1.5),
-            widget = wibox.container.margin
-        }
-
         local tag_label = wibox.widget {
             text = "",
             align = "center",

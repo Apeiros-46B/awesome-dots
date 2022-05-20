@@ -6,8 +6,5 @@ configuration {
 	hide-scrollbar: false;
 	kb-cancel: "Escape,Alt+F1";
 }
-@import "~/.config/herbstluftwm/rofi/squared-everforest.rasi"
-@theme "~/.config/herbstluftwm/rofi/squared-everforest.rasi"
-
-//@import "~/.config/herbstluftwm/rofi/theme.rasi"
-//@theme "~/.config/herbstluftwm/rofi/theme.rasi"
+@import "~/.config/awesome/external/rofi/squared-everforest.rasi"
+@theme "~/.config/awesome/external/rofi/squared-everforest.rasi"

@@ -12,5 +12,5 @@ awful.widget.watch("cat /proc/meminfo", interval, function(_, stdout)
 
     local memory = (mem_total + shmem - mem_free - buffers - cached - sreclaimable) / 1024
 
-    awesome.emit_signal("status::memory", math.floor(memory))
+    awesome.emit_signal("status::memory", math.floor(memory), math.floor(mem_total / 1024))
 end)

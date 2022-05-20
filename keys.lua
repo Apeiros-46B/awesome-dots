@@ -428,4 +428,6 @@ end
 
 --- }}}
 
+-- {{{ return
 return M
+-- }}}

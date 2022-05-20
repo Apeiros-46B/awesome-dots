@@ -13,7 +13,7 @@
 
     accent-color:     #A7C080;
     accent-color-alt: #7FBBB3;
-    urgent-color:     #E68E80;
+    urgent-color:     #E67E80;
 
     background-color:   transparent;
     text-color:         @fg0;

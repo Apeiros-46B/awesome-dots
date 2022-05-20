@@ -62,7 +62,7 @@ local bling = require("bling")
 
 -- This is used later as the default terminal and editor to run.
 -- terminal = "wezterm --config-file " .. os.getenv("HOME") .. "/.config/awesome/external/wezterm/wezterm.lua"
-terminal = "kitty"
+terminal = "kitty -c " .. os.getenv("HOME") .. "/.config/awesome/external/kitty/kitty.conf"
 -- terminal_start_cmd = terminal .. " start " -- if you are using a terminal other than wezterm replace the start with -e
 terminal_start_cmd = terminal .. " -e "
 editor = "nvim"
@@ -157,6 +157,7 @@ awful.screen.connect_for_each_screen(function(s)
 
     -- Create a promptbox for each screen
     s.promptbox = awful.widget.prompt()
+    s.promptbox.with_shell = true
 
     -- Create an imagebox widget which will contain a layout icon.
     -- We need one layoutbox per screen.
@@ -199,10 +200,11 @@ awful.screen.connect_for_each_screen(function(s)
 
             require("widgets.textclock"),
             padding,
+            sysinfo.battery,
+            padding,
             sysinfo.cpu,
             padding,
             sysinfo.memory,
-            padding,
         }
     }
 end)
@@ -216,11 +218,13 @@ root.buttons(gears.table.join(
 ))
 -- }}}
 
--- Key bindings
+-- {{{ Key bindings
 root.keys(keys.globalkeys)
+-- }}}
 
--- Rules
+-- {{{ Rules
 awful.rules.rules = rules
+-- }}}
 
 -- {{{ Signals
 -- Signal function to execute when a new client appears.
@@ -290,10 +294,11 @@ client.connect_signal("focus", function(c) c.border_color = beautiful.border_foc
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
 
--- Autostart
+-- {{{ Autostart
 require("autostart")
+-- }}}
 
--- Bling
+-- {{{ Bling
 bling.widget.window_switcher.enable {
     type = "normal", -- set to anything other than "thumbnail" to disable client previews
 
@@ -308,3 +313,4 @@ bling.widget.window_switcher.enable {
     vim_previous_key = "h",              -- Alternative key on which to select the previous client
     vim_next_key = "l",                  -- Alternative key on which to select the next client
 }
+-- }}}

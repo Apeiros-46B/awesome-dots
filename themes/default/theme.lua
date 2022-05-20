@@ -275,14 +275,31 @@ theme.layout_spiral  = themes_path.."default/icons/layouts/spiral.png"
 theme.layout_dwindle = themes_path.."default/icons/layouts/dwindle.png"
 -- }}}
 
--- {{{ Misc icons
+-- {{{ Other status bar icons
 -- Textclock
-theme.textclock_icon = recolor(themes_path.."default/icons/misc/textclock-hourglass.svg", colors.gray1)
+theme.textclock_icon = recolor(themes_path.."default/icons/datetime/fa-clock.svg", colors.gray1)
 
--- System info
-theme.sysinfo_cpu_icon = recolor(themes_path.."default/icons/misc/sysinfo-cpu.svg", colors.gray1)
-theme.sysinfo_memory_icon = recolor(themes_path.."default/icons/misc/sysinfo-memory.svg", colors.gray1)
+-- CPU
+theme.sysinfo_cpu_icon = recolor(themes_path.."default/icons/sysinfo/fa-cpu.svg", colors.gray1)
 
+-- Memory
+theme.sysinfo_mem_icon = recolor(themes_path.."default/icons/sysinfo/fa-mem.svg", colors.gray1)
+
+-- Battery
+local battery_icons = {
+    charging = {},
+    discharging = {},
+}
+
+for i = 1, 10, 1 do
+    battery_icons.charging[i] = recolor(themes_path.."default/icons/sysinfo/battery/mdi-battery-charging-"..i.."0", colors.gray1)
+    battery_icons.discharging[i] = recolor(themes_path.."default/icons/sysinfo/battery/mdi-battery-"..i.."0", colors.gray1)
+end
+
+theme.battery_icons = battery_icons
+-- }}
+
+-- {{{ Misc icons
 -- Awesome icons
 theme.awesome_icon = theme_assets.awesome_icon(64, theme.bg_focus, theme.fg_focus)
 theme.awesome_icon_alt = themes_path.."default/icons/misc/awesome-icon-largegap.png"
