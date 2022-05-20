@@ -1,22 +1,21 @@
+-- {{{ Imports and misc
+-- Libraries
 local awful = require("awful")
 local beautiful = require("beautiful")
 local gears = require("gears")
 local wibox = require("wibox")
-local dpi = beautiful.xresources.apply_dpi
 
+-- Theme
 local theme = beautiful.get()
 local colors = theme.colorscheme
 
+-- Functions
+local dpi = beautiful.xresources.apply_dpi
+
+-- Variables
 local widgets = {}
 
--- local pre = "<span foreground='" .. colors.gray1 .. "' background="
--- local bg = "<span background='" .. colors.gray3 .. "'> "
--- local purple = "'" .. colors.purple .. "'>"
--- local green = "'" .. colors.green .. "'>"
--- local red = "'" .. colors.red .. "'>"
--- local e = "</span>"
-
-local buttons = gears.table.join(
+local buttons = {
     awful.button(
         {},
         1,
@@ -24,77 +23,92 @@ local buttons = gears.table.join(
             awful.spawn(terminal_start_cmd .. "btop")
         end
     )
-),
+}
+-- }}}
 
--- Battery
+-- {{{ Battery
+-- Start watcher for battery status
 require("status.battery")
 
--- local battery = wibox.widget {
---     font = beautiful.font,
---     widget = wibox.widget.textbox
--- }
+-- {{{ Create the widget
 local battery = wibox.widget {
     {
         {
             {
+                -- Prefix icon
                 id = "prefix",
                 resize = true,
                 forced_height = dpi(17),
                 forced_width = dpi(17),
                 widget = wibox.widget.imagebox,
             },
+            -- Centers the prefix icon
             id = "prefixmargin",
             forced_width = dpi(27),
             forced_height = dpi(27),
             widget = wibox.container.place,
         },
+        -- Creates a background for the prefix icon
         id = "prefixbg",
         widget = wibox.container.background,
     },
     {
         {
+            -- Label
             id = "label",
             widget = wibox.widget.textbox,
         },
+        -- Creates a background for the label
         id = "labelbg",
         bg = colors.gray3,
         widget = wibox.container.background,
     },
+    -- Puts the prefix icon and the label side by side
     id = "layout",
     layout = wibox.layout.fixed.horizontal
 }
+-- }}}
 
+-- {{{ Connect to the watcher's status signal
 awesome.connect_signal("status::battery", function(remaining, charging)
+    -- Set the icon of the prefix depending on battery state and charge
     battery:get_children_by_id("prefix")[1].image = (
+        -- Determines whether or not the icon should be a charging icon or a normal icon
         charging and theme.battery_icons.charging
         or theme.battery_icons.discharging
-    )[math.ceil(remaining / 10)]
+    )[math.ceil(remaining / 10)] -- Determines the charge level of the icon
 
-    -- battery:get_children_by_id("prefix")[1].image = theme.battery_icons.charging[1]
-
+    -- Set background color based on remaining charge and whether or not it is charging
     battery:get_children_by_id("prefixbg")[1].bg = (
+        -- If it's charging, make the prefix icon's background green
         charging and colors.green
-        or
-        (
+        or (
+            -- If it isn't charging and remaining charge is less than 20%, make it red
             remaining < 20 and colors.red
-            or
-            (
+            or (
+                -- If it isn't charging and remaining charge is between 20% and 30%, make it yellow
                 remaining < 30 and colors.yellow
                 or colors.purple
             )
         )
     )
 
+    -- Set label text
     battery:get_children_by_id("label")[1].text = " " .. remaining .. "% "
 end)
+-- }}}
+-- }}}
 
--- CPU
+-- {{{ CPU
+-- Start watcher for cpu usage
 require("status.cpu")
 
+-- {{{ Create the widget
 local cpu = wibox.widget {
     {
         {
             {
+                -- Prefix icon
                 id = "prefix",
                 resize = true,
                 forced_height = dpi(15),
@@ -102,39 +116,63 @@ local cpu = wibox.widget {
                 image = theme.sysinfo_cpu_icon,
                 widget = wibox.widget.imagebox,
             },
+            -- Centers the prefix icon
             id = "prefixmargin",
             forced_width = dpi(27),
             forced_height = dpi(27),
             widget = wibox.container.place,
         },
+        -- Creates a background for the prefix icon
         id = "prefixbg",
         widget = wibox.container.background,
     },
     {
         {
+            -- Label
             id = "label",
             widget = wibox.widget.textbox,
         },
+        -- Creates a background for the label
         id = "labelbg",
         bg = colors.gray3,
         widget = wibox.container.background,
     },
+    -- Puts the prefix icon and the label side by side
     id = "layout",
     layout = wibox.layout.fixed.horizontal
 }
+-- }}}
 
+-- {{{ Connect to the watcher's status signal
 awesome.connect_signal("status::cpu", function(usage)
-    cpu:get_children_by_id("prefixbg")[1].bg = (usage > 80 and colors.red or colors.purple)
+    -- Set background color based on usage
+    cpu:get_children_by_id("prefixbg")[1].bg = (
+        -- If usage is over 80, make the prefix icon's background red
+        usage > 80 and colors.red
+        or (
+            -- If usage is between 50 and 80, make it yellow
+            usage > 50 and colors.yellow
+            -- Otherwise, make it purple
+            or colors.purple
+        )
+    )
+
+    -- Set label text
     cpu:get_children_by_id("label")[1].text = " " .. usage .. "% "
 end)
+-- }}}
+-- }}}
 
--- Memory
+-- {{{ Memory
+-- Start watcher for memory usage
 require("status.memory")
 
+-- {{{ Create the widget
 local memory = wibox.widget {
     {
         {
             {
+                -- Prefix icon
                 id = "prefix",
                 resize = true,
                 forced_height = dpi(15),
@@ -142,32 +180,54 @@ local memory = wibox.widget {
                 image = theme.sysinfo_mem_icon,
                 widget = wibox.widget.imagebox,
             },
+            -- Centers the prefix icon
             id = "prefixmargin",
             forced_width = dpi(27),
             forced_height = dpi(27),
             widget = wibox.container.place,
         },
+        -- Creates a background for the prefix icon
         id = "prefixbg",
         widget = wibox.container.background,
     },
     {
         {
+            -- Label
             id = "label",
             widget = wibox.widget.textbox,
         },
+        -- Creates a background for the label
         id = "labelbg",
         bg = colors.gray3,
         widget = wibox.container.background,
     },
+    -- Puts the prefix icon and the label side by side
     id = "layout",
     layout = wibox.layout.fixed.horizontal
 }
+-- }}}
 
-awesome.connect_signal("status::memory", function(usage, total)
-    memory:get_children_by_id("prefixbg")[1].bg = (((usage / total) * 100) > 80 and colors.red or colors.purple)
+-- {{{ Connect to the watcher's status signal
+awesome.connect_signal("status::memory", function(usage, percent)
+    -- Set background color based on usage
+    memory:get_children_by_id("prefixbg")[1].bg = (
+        -- If usage is over 80, make the prefix icon's background red
+        percent > 80 and colors.red
+        or (
+            -- If usage is between 50 and 80, make it yellow
+            percent > 50 and colors.yellow
+            -- Otherwise, make it purple
+            or colors.purple
+        )
+    )
+
+    -- Set label text
     memory:get_children_by_id("label")[1].text = " " .. usage .. " mb "
 end)
+-- }}}
+-- }}}
 
+-- {{{ Finishing up
 -- Add buttons
 battery:buttons(buttons)
 cpu:buttons(buttons)
@@ -180,3 +240,4 @@ widgets.memory = memory
 
 -- Return the table
 return widgets
+-- }}}

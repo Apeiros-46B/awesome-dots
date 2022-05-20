@@ -10,7 +10,8 @@ awful.widget.watch("cat /proc/meminfo", interval, function(_, stdout)
     local cached = tonumber(stdout:match("Cached: *(%d*) kB"))
     local sreclaimable = tonumber(stdout:match("SReclaimable: *(%d*) kB"))
 
-    local memory = (mem_total + shmem - mem_free - buffers - cached - sreclaimable) / 1024
+    local usage = math.floor((mem_total + shmem - mem_free - buffers - cached - sreclaimable) / 1024)
+    local total = math.floor(mem_total / 1024)
 
-    awesome.emit_signal("status::memory", math.floor(memory), math.floor(mem_total / 1024))
+    awesome.emit_signal("status::memory", usage, usage / total * 100)
 end)
