@@ -9,12 +9,12 @@ local colors = theme.colorscheme
 
 local widgets = {}
 
-local pre = "<span foreground='" .. colors.gray1 .. "' background="
-local bg = "<span background='" .. colors.gray3 .. "'> "
-local purple = "'" .. colors.purple .. "'>"
-local green = "'" .. colors.green .. "'>"
-local red = "'" .. colors.red .. "'>"
-local e = "</span>"
+-- local pre = "<span foreground='" .. colors.gray1 .. "' background="
+-- local bg = "<span background='" .. colors.gray3 .. "'> "
+-- local purple = "'" .. colors.purple .. "'>"
+-- local green = "'" .. colors.green .. "'>"
+-- local red = "'" .. colors.red .. "'>"
+-- local e = "</span>"
 
 local buttons = gears.table.join(
     awful.button(
@@ -29,53 +29,63 @@ local buttons = gears.table.join(
 -- Battery
 require("status.battery")
 
-local battery = wibox.widget {
-    font = beautiful.font,
-    widget = wibox.widget.textbox
-}
 -- local battery = wibox.widget {
---     {
---         {
---             {
---                 id = "prefix",
---                 resize = true,
---                 forced_height = dpi(15),
---                 widget = wibox.widget.imagebox,
---             },
---             id = "prefixmargin",
---             forced_width = dpi(27),
---             forced_height = dpi(27),
---             widget = wibox.container.place,
---         },
---         id = "prefixbg",
---         bg = colors.teal,
---         widget = wibox.container.background,
---     },
---     {
---         {
---             id = "label",
---             widget = wibox.widget.textbox,
---         },
---         id = "batterybg",
---         bg = colors.gray3,
---         widget = wibox.container.background,
---     },
---     id = "layout",
---     layout = wibox.layout.fixed.horizontal
+--     font = beautiful.font,
+--     widget = wibox.widget.textbox
 -- }
+local battery = wibox.widget {
+    {
+        {
+            {
+                id = "prefix",
+                resize = true,
+                forced_height = dpi(17),
+                forced_width = dpi(17),
+                widget = wibox.widget.imagebox,
+            },
+            id = "prefixmargin",
+            forced_width = dpi(27),
+            forced_height = dpi(27),
+            widget = wibox.container.place,
+        },
+        id = "prefixbg",
+        widget = wibox.container.background,
+    },
+    {
+        {
+            id = "label",
+            widget = wibox.widget.textbox,
+        },
+        id = "labelbg",
+        bg = colors.gray3,
+        widget = wibox.container.background,
+    },
+    id = "layout",
+    layout = wibox.layout.fixed.horizontal
+}
 
-awesome.connect_signal("status::battery", function(capacity, charging)
-    local prefix = (charging and " +bat " or " bat ")
-    local color = (
-        charging and green
+awesome.connect_signal("status::battery", function(remaining, charging)
+    battery:get_children_by_id("prefix")[1].image = (
+        charging and theme.battery_icons.charging
+        or theme.battery_icons.discharging
+    )[math.ceil(remaining / 10)]
+
+    -- battery:get_children_by_id("prefix")[1].image = theme.battery_icons.charging[1]
+
+    battery:get_children_by_id("prefixbg")[1].bg = (
+        charging and colors.green
         or
         (
-            capacity < 20 and red
-            or purple
+            remaining < 20 and colors.red
+            or
+            (
+                remaining < 30 and colors.yellow
+                or colors.purple
+            )
         )
     )
 
-    battery.markup = pre .. color .. prefix .. e .. bg .. capacity .. "% " .. e
+    battery:get_children_by_id("label")[1].text = " " .. remaining .. "% "
 end)
 
 -- CPU
@@ -154,7 +164,7 @@ local memory = wibox.widget {
 }
 
 awesome.connect_signal("status::memory", function(usage, total)
-    memory:get_children_by_id("prefixbg")[1].bg = (((usage/total) * 100) > 80 and colors.red or colors.purple)
+    memory:get_children_by_id("prefixbg")[1].bg = (((usage / total) * 100) > 80 and colors.red or colors.purple)
     memory:get_children_by_id("label")[1].text = " " .. usage .. " mb "
 end)
 

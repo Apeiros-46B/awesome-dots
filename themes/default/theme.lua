@@ -279,12 +279,6 @@ theme.layout_dwindle = themes_path.."default/icons/layouts/dwindle.png"
 -- Textclock
 theme.textclock_icon = recolor(themes_path.."default/icons/datetime/fa-clock.svg", colors.gray1)
 
--- CPU
-theme.sysinfo_cpu_icon = recolor(themes_path.."default/icons/sysinfo/fa-cpu.svg", colors.gray1)
-
--- Memory
-theme.sysinfo_mem_icon = recolor(themes_path.."default/icons/sysinfo/fa-mem.svg", colors.gray1)
-
 -- Battery
 local battery_icons = {
     charging = {},
@@ -292,11 +286,17 @@ local battery_icons = {
 }
 
 for i = 1, 10, 1 do
-    battery_icons.charging[i] = recolor(themes_path.."default/icons/sysinfo/battery/mdi-battery-charging-"..i.."0", colors.gray1)
-    battery_icons.discharging[i] = recolor(themes_path.."default/icons/sysinfo/battery/mdi-battery-"..i.."0", colors.gray1)
+    battery_icons.charging[i] = recolor(themes_path.."default/icons/sysinfo/battery/mdi-battery-charging-"..i.."0.svg", colors.gray1)
+    battery_icons.discharging[i] = recolor(themes_path.."default/icons/sysinfo/battery/mdi-battery-"..i.."0.svg", colors.gray1)
 end
 
 theme.battery_icons = battery_icons
+
+-- CPU
+theme.sysinfo_cpu_icon = recolor(themes_path.."default/icons/sysinfo/fa-cpu.svg", colors.gray1)
+
+-- Memory
+theme.sysinfo_mem_icon = recolor(themes_path.."default/icons/sysinfo/fa-mem.svg", colors.gray1)
 -- }}
 
 -- {{{ Misc icons
