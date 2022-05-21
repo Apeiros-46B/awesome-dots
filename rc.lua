@@ -186,6 +186,8 @@ awful.screen.connect_for_each_screen(function(s)
             s.layoutbox,
             padding,
             require("widgets.geolist")(s),
+            padding,
+            require("widgets.tasklist").get(s),
             -- require("widgets.taglist").get(s),
             s.promptbox,
         },
