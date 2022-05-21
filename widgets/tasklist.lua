@@ -61,25 +61,14 @@ function tasklist.get(s)
             {
                 {
                     {
-                        {
-                            id = 'icon_role',
-                            widget = wibox.widget.imagebox,
-                        },
-                        margins = dpi(tasklist_padding * 2),
-                        forced_width = 24,
-                        -- right = dpi(tasklist_padding * 4),
-                        widget = wibox.container.margin,
+                        id = 'icon_role',
+                        widget = wibox.widget.imagebox,
                     },
-                    -- {
-                    --    id     = 'text_role',
-                    --    widget = wibox.widget.textbox,
-                    -- },
-                    layout = wibox.layout.fixed.horizontal,
+                    margins = dpi(tasklist_padding * 2),
+                    widget = wibox.container.margin,
                 },
-                left = dpi(tasklist_padding),
-                right = dpi(tasklist_padding),
-                -- right = dpi(tasklist_padding * 4),
-                widget = wibox.container.margin
+                id = 'container',
+                widget = wibox.container.place,
             },
             id = 'background_role',
             widget = wibox.container.background,

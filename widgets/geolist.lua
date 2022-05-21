@@ -1,9 +1,15 @@
-local wibox = require("wibox")
+-- {{{ Imports/util
+-- Libraries
 local awful = require("awful")
-local gears = require("gears")
 local beautiful = require("beautiful")
+local gears = require("gears")
+local wibox = require("wibox")
+
+-- Theme
+local geolist_style = beautiful.geolist_style
+
+-- Functions
 local dpi = beautiful.xresources.apply_dpi
-local colors = beautiful.colorscheme
 
 local function contains(table, element)
     for _, value in pairs(table) do
@@ -13,37 +19,40 @@ local function contains(table, element)
     end
     return false
 end
+-- }}}
 
+-- {{{ Update callback
 local list_update = function(widget, buttons, label, data, objects)
+    -- Reset the widget
     widget:reset()
 
-    for _, object in ipairs(objects) do
-        local tag_icon = wibox.widget {
-            id = "icon",
-            resize = true,
-            forced_height = 11,
-            forced_width = 11,
-            widget = wibox.widget.imagebox,
-        }
-
-        local tag_icon_margin = wibox.widget {
-            tag_icon,
-            forced_width = dpi(27),
-            forced_height = dpi(27),
-            widget = wibox.container.place
-        }
-
+    -- Loop through tags
+    for _, tag in ipairs(objects) do
+        -- {{{ Create the tag widget
         local tag_widget = wibox.widget {
             {
-                id = "container",
-                tag_icon_margin,
-                layout = wibox.layout.fixed.horizontal
+                {
+                    -- Tag's icon, image will be set later based on tag state
+                    id = 'icon',
+                    resize = true,
+                    forced_height = 11,
+                    forced_width = 11,
+                    widget = wibox.widget.imagebox,
+                },
+                -- Place container to center the icon
+                id = 'container',
+                forced_width = dpi(27),
+                forced_height = dpi(27),
+                widget = wibox.container.place
             },
-            fg = colors.white,
-            shape = gears.shape.rectangle,
+            -- Background container, colors will be set later based on tag state
+            id = 'background',
+            bg = geolist_style.empty.bg,
             widget = wibox.container.background
         }
+        -- }}}
 
+        -- {{{ Create buttons
         local function create_buttons(buttons, object)
             if buttons then
                 local btns = {}
@@ -64,19 +73,19 @@ local list_update = function(widget, buttons, label, data, objects)
             end
         end
 
-        tag_widget:buttons(create_buttons(buttons, object))
+        tag_widget:buttons(create_buttons(buttons, tag))
+        -- }}}
 
+        -- {{{ Variable definitions
         local tags = awful.screen.focused().selected_tags
-        local geolist_style = beautiful.geolist_style
+        local focused = contains(tags, tag)
+        local urgent = tag.urgent
+        local has_clients = (tag:clients()[1] and true or false)
 
-        local focused = contains(tags, object)
-        local urgent = object.urgent
-        local has_clients = false
+        local tag_icon = tag_widget:get_children_by_id('icon')[1]
+        -- }}}
 
-        if object:clients()[1] then
-            has_clients = true
-        end
-
+        -- {{{ Set bg color and fg image based on tag state
         if focused then
             tag_widget:set_bg(geolist_style.selected.bg)
             tag_icon.image = geolist_style.selected.icon
@@ -90,17 +99,53 @@ local list_update = function(widget, buttons, label, data, objects)
             tag_widget:set_bg(geolist_style.empty.bg)
             tag_icon.image = geolist_style.empty.icon
         end
+        -- }}}
 
+        -- {{{ Add tag widget to taglist
         widget:add(tag_widget)
         widget:set_spacing(dpi(0))
+        -- }}}
+
+        -- {{{ Change mouse cursor on hover
+        local old_wibox, old_cursor
+
+        tag_widget:connect_signal(
+        "mouse::enter",
+        function()
+            local w = mouse.current_wibox
+            if w then
+                old_cursor, old_wibox = w.cursor, w
+                w.cursor = "hand1"
+            end
+        end
+        )
+
+        tag_widget:connect_signal(
+        "mouse::leave",
+        function()
+            if old_wibox then
+                old_wibox.cursor = old_cursor
+                old_wibox = nil
+            end
+        end
+        )
+        -- }}}
     end
 end
+-- }}}
 
-local tag_list = function(s)
-    local taglist_main =  awful.widget.taglist(
+-- {{{ Return the widget
+-- Function that returns the taglist widget
+local taglist = function(s)
+    return awful.widget.taglist(
+        -- Screen of the taglist
         s,
+        -- Filter all tags
         awful.widget.taglist.filter.all,
+        -- {{{ Buttons
         gears.table.join(
+            -- {{{ Main buttons
+            -- Left click -> view tag
             awful.button(
                 {},
                 1,
@@ -108,6 +153,7 @@ local tag_list = function(s)
                     t:view_only()
                 end
             ),
+            -- Mod+Left click -> move focused client to tag
             awful.button(
                 { modkey },
                 1,
@@ -117,6 +163,7 @@ local tag_list = function(s)
                     end
                 end
             ),
+            -- Right click -> toggle tag visibility
             awful.button(
                 {},
                 3,
@@ -124,6 +171,7 @@ local tag_list = function(s)
                     awful.tag.viewtoggle(t)
                 end
             ),
+            -- Mod+Right click -> toggle focused client on the tag
             awful.button(
                 { modkey },
                 3,
@@ -133,6 +181,9 @@ local tag_list = function(s)
                     end
                 end
             ),
+            -- }}}
+
+            -- {{{ Scrolling to change tags
             awful.button(
                 {},
                 4,
@@ -147,13 +198,18 @@ local tag_list = function(s)
                     awful.tag.viewnext(t.screen)
                 end
             )
+            -- }}}
         ),
+        -- }}}
+        -- Honestly no idea what this is :laugh4:
         {},
+        -- Update callback function
         list_update,
+        -- Set layout to fixed+horizontal
         wibox.layout.fixed.horizontal()
     )
-
-    return taglist_main
 end
 
-return tag_list
+-- Return the function
+return taglist
+-- }}}

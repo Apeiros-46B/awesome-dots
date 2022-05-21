@@ -14,18 +14,19 @@ local list_update = function(widget, buttons, label, data, objects)
         local task_widget = wibox.widget {
             {
                 {
-                    id = "icon",
+                    id = 'icon',
                     resize = true,
+                    forced_height = dpi(21),
+                    forced_width = dpi(21),
                     widget = wibox.widget.imagebox
                 },
+                id = 'container',
+                forced_height = dpi(27),
                 forced_width = dpi(27),
-                margins = dpi(4),
-                widget = wibox.container.margin,
-                id = "margin"
+                widget = wibox.container.place,
             },
+            id = 'background',
             bg = colors.blue,
-            fg = colors.gray1,
-            gears.shape.rectangle,
             widget = wibox.container.background
         }
 
@@ -68,7 +69,7 @@ local list_update = function(widget, buttons, label, data, objects)
             task_widget:set_bg(colors.gray3)
         end
 
-        task_widget.margin.icon:set_image(object.icon)
+        task_widget:get_children_by_id('icon')[1]:set_image(object.icon)
 
         widget:add(task_widget)
         widget:set_spacing(dpi(0))

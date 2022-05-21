@@ -1,4 +1,4 @@
--- If LuaRocks is installed, make sure that packages installed through it are
+-- If LuaRocks is installed, make sure that packages installed through it arerc
 -- found (e.g. lgi). If LuaRocks is not installed, do nothing.
 pcall(require, "luarocks.loader")
 
@@ -187,7 +187,8 @@ awful.screen.connect_for_each_screen(function(s)
             padding,
             require("widgets.geolist")(s),
             padding,
-            require("widgets.tasklist").get(s),
+            require("widgets.improved_tasklist")(s),
+            -- require("widgets.tasklist").get(s),
             -- require("widgets.taglist").get(s),
             s.promptbox,
         },
