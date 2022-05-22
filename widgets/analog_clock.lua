@@ -34,9 +34,9 @@ local function create_hour_pointer(hour, color)
     return img
 end
 
-local function return_widget(hand_color, bg_color)
-    local minute_pointer = create_minute_pointer(37, hand_color)
-    local hour_pointer = create_hour_pointer(17, hand_color)
+return function(min_color, hr_color, bg_color)
+    local minute_pointer = create_minute_pointer(37, min_color)
+    local hour_pointer = create_hour_pointer(17, hr_color)
 
     local minute_pointer_img = wibox.widget.imagebox()
     local hour_pointer_img = wibox.widget.imagebox()
@@ -63,8 +63,8 @@ local function return_widget(hand_color, bg_color)
         callback = function()
             minute = os.date("%M")
             hour = os.date("%H")
-            minute_pointer = create_minute_pointer(minute, hand_color)
-            hour_pointer = create_hour_pointer(hour + (minute / 60), hand_color)
+            minute_pointer = create_minute_pointer(minute, min_color)
+            hour_pointer = create_hour_pointer(hour + (minute / 60), hr_color)
             minute_pointer_img.image = minute_pointer
             hour_pointer_img.image = hour_pointer
         end
@@ -72,5 +72,3 @@ local function return_widget(hand_color, bg_color)
 
     return analog_clock
 end
-
-return return_widget
