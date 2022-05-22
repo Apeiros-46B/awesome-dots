@@ -49,8 +49,8 @@ local analog_clock = wibox.widget {
     },
     minute_pointer_img,
     hour_pointer_img,
-    forced_width = dpi(17),
-    forced_height = dpi(17),
+    -- forced_width = dpi(17),
+    -- forced_height = dpi(17),
     layout = wibox.layout.stack
 }
 

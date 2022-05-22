@@ -11,6 +11,11 @@ local colors = theme.colorscheme
 local format1 = " %m/%d:%u -> %R "
 local format2 = " %m/%d/%Y:%u -> %R:%S "
 
+-- analog clock
+local analog_clock = require('widgets.analog_clock')
+analog_clock.forced_width = dpi(17)
+analog_clock.forced_height = dpi(17)
+
 local textclock = wibox.widget {
     {
         {
@@ -22,7 +27,7 @@ local textclock = wibox.widget {
             --     image = theme.textclock_icon,
             --     widget = wibox.widget.imagebox,
             -- },
-            require('widgets.analog_clock'),
+            analog_clock,
             id = "prefixmargin",
             forced_width = dpi(27),
             forced_height = dpi(27),
