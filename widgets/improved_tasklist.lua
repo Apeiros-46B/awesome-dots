@@ -16,8 +16,8 @@ local list_update = function(widget, buttons, label, data, objects)
                 {
                     id = 'icon',
                     resize = true,
-                    forced_height = dpi(21),
                     forced_width = dpi(21),
+                    forced_height = dpi(21),
                     widget = wibox.widget.imagebox
                 },
                 id = 'container',

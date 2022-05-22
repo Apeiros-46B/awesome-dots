@@ -14,14 +14,15 @@ local format2 = " %m/%d/%Y:%u -> %R:%S "
 local textclock = wibox.widget {
     {
         {
-            {
-                id = "prefix",
-                resize = true,
-                forced_height = dpi(15),
-                forced_width = dpi(15),
-                image = theme.textclock_icon,
-                widget = wibox.widget.imagebox,
-            },
+            -- {
+            --     id = "prefix",
+            --     resize = true,
+            --     forced_height = dpi(15),
+            --     forced_width = dpi(15),
+            --     image = theme.textclock_icon,
+            --     widget = wibox.widget.imagebox,
+            -- },
+            require('widgets.analog_clock'),
             id = "prefixmargin",
             forced_width = dpi(27),
             forced_height = dpi(27),

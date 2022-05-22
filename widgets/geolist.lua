@@ -35,8 +35,8 @@ local list_update = function(widget, buttons, label, data, objects)
                     -- Tag's icon, image will be set later based on tag state
                     id = 'icon',
                     resize = true,
-                    forced_height = 11,
-                    forced_width = 11,
+                    forced_width = dpi(11),
+                    forced_height = dpi(11),
                     widget = wibox.widget.imagebox,
                 },
                 -- Place container to center the icon
