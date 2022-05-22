@@ -12,9 +12,9 @@ local format1 = " %m/%d:%u -> %R "
 local format2 = " %m/%d/%Y:%u -> %R:%S "
 
 -- analog clock
-local analog_clock = require('widgets.analog_clock')
-analog_clock.forced_width = dpi(17)
-analog_clock.forced_height = dpi(17)
+local analog_clock = require('widgets.analog_clock')(colors.teal, colors.gray1)
+analog_clock.forced_width = dpi(19)
+analog_clock.forced_height = dpi(19)
 
 local textclock = wibox.widget {
     {

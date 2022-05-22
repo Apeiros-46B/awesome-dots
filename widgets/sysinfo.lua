@@ -40,8 +40,8 @@ local battery = (has_battery and wibox.widget {
                 -- Prefix icon
                 id = "prefix",
                 resize = true,
-                forced_width = dpi(17),
-                forced_height = dpi(17),
+                forced_width = dpi(19),
+                forced_height = dpi(19),
                 widget = wibox.widget.imagebox,
             },
             -- Centers the prefix icon
@@ -115,8 +115,8 @@ local cpu = wibox.widget {
                 -- Prefix icon
                 id = "prefix",
                 resize = true,
-                forced_width = dpi(15),
-                forced_height = dpi(15),
+                forced_width = dpi(17),
+                forced_height = dpi(17),
                 image = theme.sysinfo_cpu_icon,
                 widget = wibox.widget.imagebox,
             },
@@ -179,8 +179,8 @@ local memory = wibox.widget {
                 -- Prefix icon
                 id = "prefix",
                 resize = true,
-                forced_width = dpi(15),
-                forced_height = dpi(15),
+                forced_width = dpi(17),
+                forced_height = dpi(17),
                 image = theme.sysinfo_mem_icon,
                 widget = wibox.widget.imagebox,
             },
