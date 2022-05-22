@@ -2,7 +2,7 @@
 -- Libraries
 local awful = require("awful")
 local beautiful = require("beautiful")
-local gears = require("gears")
+-- local gears = require("gears")
 local wibox = require("wibox")
 
 -- Theme
@@ -27,11 +27,20 @@ local buttons = {
 -- }}}
 
 -- {{{ Battery
+-- Check if the system has a battery
+local has_battery = false
+
+awful.spawn.easy_async('acpi', function(stdout, _, _, _)
+    has_battery = (stdout:match('Battery %d:') and true or false)
+end)
+
 -- Start watcher for battery status
-require("status.battery")
+if has_battery then
+    require("status.battery")
+end
 
 -- {{{ Create the widget
-local battery = wibox.widget {
+local battery = (has_battery and wibox.widget {
     {
         {
             {
@@ -66,36 +75,38 @@ local battery = wibox.widget {
     -- Puts the prefix icon and the label side by side
     id = "layout",
     layout = wibox.layout.fixed.horizontal
-}
+} or nil)
 -- }}}
 
 -- {{{ Connect to the watcher's status signal
-awesome.connect_signal("status::battery", function(remaining, charging)
-    -- Set the icon of the prefix depending on battery state and charge
-    battery:get_children_by_id("prefix")[1].image = (
-        -- Determines whether or not the icon should be a charging icon or a normal icon
-        charging and theme.battery_icons.charging
-        or theme.battery_icons.discharging
-    )[math.ceil(remaining / 10)] -- Determines the charge level of the icon
+if has_battery then
+    awesome.connect_signal("status::battery", function(remaining, charging)
+        -- Set the icon of the prefix depending on battery state and charge
+        battery:get_children_by_id("prefix")[1].image = (
+            -- Determines whether or not the icon should be a charging icon or a normal icon
+            charging and theme.battery_icons.charging
+            or theme.battery_icons.discharging
+        )[math.ceil(remaining / 10)] -- Determines the charge level of the icon
 
-    -- Set background color based on remaining charge and whether or not it is charging
-    battery:get_children_by_id("prefixbg")[1].bg = (
-        -- If it's charging, make the prefix icon's background green
-        charging and colors.green
-        or (
-            -- If it isn't charging and remaining charge is less than 20%, make it red
-            remaining < 20 and colors.red
+        -- Set background color based on remaining charge and whether or not it is charging
+        battery:get_children_by_id("prefixbg")[1].bg = (
+            -- If it's charging, make the prefix icon's background green
+            charging and colors.green
             or (
-                -- If it isn't charging and remaining charge is between 20% and 30%, make it yellow
-                remaining < 30 and colors.yellow
-                or colors.purple
+                -- If it isn't charging and remaining charge is less than 20%, make it red
+                remaining < 20 and colors.red
+                or (
+                    -- If it isn't charging and remaining charge is between 20% and 30%, make it yellow
+                    remaining < 30 and colors.yellow
+                    or colors.purple
+                )
             )
         )
-    )
 
-    -- Set label text
-    battery:get_children_by_id("label")[1].text = " " .. remaining .. "% "
-end)
+        -- Set label text
+        battery:get_children_by_id("label")[1].text = " " .. remaining .. "% "
+    end)
+end
 -- }}}
 -- }}}
 
@@ -229,7 +240,7 @@ end)
 
 -- {{{ Finishing up
 -- Add buttons
-battery:buttons(buttons)
+if has_battery then battery:buttons(buttons) end
 cpu:buttons(buttons)
 memory:buttons(buttons)
 

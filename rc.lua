@@ -172,6 +172,10 @@ awful.screen.connect_for_each_screen(function(s)
     local sysinfo = require("widgets.sysinfo")
     local padding = require("widgets.padding")
 
+    local function conditional_padding(condition)
+        return (condition and padding or nil)
+    end
+
     -- Create the wibox
     s.wibox = awful.wibar({ position = "bottom", screen = s, height = dpi(27) })
 
@@ -188,21 +192,17 @@ awful.screen.connect_for_each_screen(function(s)
             require("widgets.geolist")(s),
             padding,
             require("widgets.improved_tasklist")(s),
-            -- require("widgets.tasklist").get(s),
-            -- require("widgets.taglist").get(s),
+            padding,
             s.promptbox,
         },
         { -- Middle widgets
             layout = wibox.layout.fixed.horizontal,
-
-            -- require("widgets.improved_tasklist")(s),
-            -- require("widgets.tasklist").get(s),
         },
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
 
             require("widgets.textclock"),
-            padding,
+            conditional_padding(sysinfo.battery ~= nil),
             sysinfo.battery,
             padding,
             sysinfo.cpu,
