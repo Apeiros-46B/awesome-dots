@@ -26,18 +26,11 @@ local buttons = {
 }
 -- }}}
 
+-- {{{
+return function(has_battery)
 -- {{{ Battery
--- Check if the system has a battery
-local has_battery = false
-
-awful.spawn.easy_async('acpi', function(stdout, _, _, _)
-    has_battery = (stdout:match('Battery %d:') and true or false)
-end)
-
 -- Start watcher for battery status
-if has_battery then
-    require("status.battery")
-end
+if has_battery then require("status.battery") end
 
 -- {{{ Create the widget
 local battery = (has_battery and wibox.widget {
@@ -251,4 +244,6 @@ widgets.memory = memory
 
 -- Return the table
 return widgets
+-- }}}
+end
 -- }}}

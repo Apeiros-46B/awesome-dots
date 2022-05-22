@@ -169,47 +169,50 @@ awful.screen.connect_for_each_screen(function(s)
     ))
 
     -- Misc widget imports
-    local sysinfo = require("widgets.sysinfo")
     local padding = require("widgets.padding")
 
-    local function conditional_padding(condition)
-        return (condition and padding or nil)
-    end
+    awful.spawn.easy_async('acpi', function(stdout, _, _, _)
+        -- Check if system has a battery
+        local has_battery = (stdout:match('Battery %d') and true or false)
 
-    -- Create the wibox
-    s.wibox = awful.wibar({ position = "bottom", screen = s, height = dpi(27) })
+        -- Import sysinfo
+        local sysinfo = require("widgets.sysinfo")(has_battery)
 
-    -- Add widgets to the wibox
-    s.wibox:setup {
-        id = "layout_container",
-        layout = wibox.layout.align.horizontal,
-        expand = "none",
-        { -- Left widgets
-            layout = wibox.layout.fixed.horizontal,
+        -- Create the wibox
+        s.wibox = awful.wibar({ position = "bottom", screen = s, height = dpi(27) })
 
-            s.layoutbox,
-            padding,
-            require("widgets.geolist")(s),
-            padding,
-            require("widgets.improved_tasklist")(s),
-            padding,
-            s.promptbox,
-        },
-        { -- Middle widgets
-            layout = wibox.layout.fixed.horizontal,
-        },
-        { -- Right widgets
-            layout = wibox.layout.fixed.horizontal,
+        -- Add widgets to the wibox
+        s.wibox:setup {
+            id = "layout_container",
+            layout = wibox.layout.align.horizontal,
+            expand = "none",
+            { -- Left widgets
+                layout = wibox.layout.fixed.horizontal,
 
-            require("widgets.textclock"),
-            conditional_padding(sysinfo.battery ~= nil),
-            sysinfo.battery,
-            padding,
-            sysinfo.cpu,
-            padding,
-            sysinfo.memory,
+                s.layoutbox,
+                padding,
+                require("widgets.geolist")(s),
+                padding,
+                require("widgets.improved_tasklist")(s),
+                padding,
+                s.promptbox,
+            },
+            { -- Middle widgets
+                layout = wibox.layout.fixed.horizontal,
+            },
+            { -- Right widgets
+                layout = wibox.layout.fixed.horizontal,
+
+                require("widgets.textclock"),
+                (has_battery and padding or nil),
+                sysinfo.battery,
+                padding,
+                sysinfo.cpu,
+                padding,
+                sysinfo.memory,
+            }
         }
-    }
+    end)
 end)
 -- }}}
 
