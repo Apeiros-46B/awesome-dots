@@ -274,7 +274,7 @@ theme.titlebar_fg_focus  = colors.white
 theme.titlebar_bg_normal = colors.gray3
 theme.titlebar_bg_focus  = colors.gray3
 
-theme.titlebar_buttons_style = {
+theme.titlebar_button_style = {
     close = {
         shape = gears.shape.circle,
         color = colors.red

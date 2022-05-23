@@ -5,7 +5,7 @@ local wibox = require("wibox")
 
 local dpi = beautiful.xresources.apply_dpi
 local colors = beautiful.colorscheme
-local icons = beautiful.titlebar_icons
+local button_style = beautiful.titlebar_button_style
 
 return function(c)
     -- Create the buttons
@@ -24,12 +24,12 @@ return function(c)
     local titlebar = wibox.widget {
         {
             {
-                id = 'clienticon',
+                id = 'icon',
                 forced_width = dpi(21),
                 forced_height = dpi(21),
                 widget = awful.titlebar.widget.iconwidget(c)
             },
-            id = 'iconcontainer',
+            id = 'icon_container',
             forced_width = dpi(27),
             forced_height = dpi(27),
             buttons = buttons,
@@ -42,30 +42,27 @@ return function(c)
         },
         {
             {
-                {
-                    id = 'min_button',
-                    image = icons.min.normal,
-                    forced_width = dpi(11),
-                    forced_height = dpi(11),
-                    widget = wibox.widget.imagebox
-                },
-                id = 'min_button_container',
+                id = 'min_button',
+
                 forced_width = dpi(23),
                 forced_height = dpi(27),
+
                 buttons = { awful.button({ }, 1, function() c.minimized = true end) },
-                widget = wibox.container.place
+
+                bg = button_style.min.color,
+
+                shape = function(cr, _, _)
+                    return button_style.min.shape(cr, 11, 9.6)
+                end,
+
+                widget = wibox.container.background
             },
             {
-                {
-                    id = 'max_button',
-                    image = icons.max.normal,
-                    forced_width = dpi(11),
-                    forced_height = dpi(11),
-                    widget = wibox.widget.imagebox
-                },
-                id = 'max_button_container',
+                id = 'max_button',
+
                 forced_width = dpi(23),
                 forced_height = dpi(27),
+
                 buttons = {
                     awful.button(
                         { },
@@ -85,22 +82,31 @@ return function(c)
                         end
                     )
                 },
-                widget = wibox.container.place
+
+                bg = button_style.max.color,
+
+                shape = function(cr, _, _)
+                    return button_style.max.shape(cr, 11, 11)
+                end,
+
+                widget = wibox.container.background
             },
             {
                 {
-                    {
-                        id = 'close_button',
-                        image = icons.close.normal,
-                        forced_width = dpi(11),
-                        forced_height = dpi(11),
-                        widget = wibox.widget.imagebox
-                    },
-                    id = 'close_button_container',
+                    id = 'close_button',
+
                     forced_width = dpi(23),
                     forced_height = dpi(27),
+
                     buttons = { awful.button({ }, 1, function() c:kill() end) },
-                    widget = wibox.container.place
+
+                    bg = button_style.close.color,
+
+                    shape = function(cr, _, _)
+                        return button_style.close.shape(cr, 11, 11, 5.5)
+                    end,
+
+                    widget = wibox.container.background
                 },
                 id = 'close_button_margin',
                 right = dpi(2),
