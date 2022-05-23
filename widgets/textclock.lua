@@ -1,6 +1,10 @@
 -- libs
-local wibox = require("wibox")
+local awful = require("awful")
 local beautiful = require("beautiful")
+local gears = require("gears")
+local wibox = require("wibox")
+
+-- functions
 local dpi = beautiful.xresources.apply_dpi
 
 -- theme
@@ -12,21 +16,14 @@ local format1 = " %m/%d:%u -> %R "
 local format2 = " %m/%d/%Y:%u -> %R:%S "
 
 -- analog clock
-local analog_clock = require('widgets.analog_clock')(colors.teal, colors.teal, colors.gray1)
+local analog_clock = require('widgets.analog_clock')(nil, colors.teal, colors.teal, colors.gray1, 1)
+
 analog_clock.forced_width = dpi(19)
 analog_clock.forced_height = dpi(19)
 
 local textclock = wibox.widget {
     {
         {
-            -- {
-            --     id = "prefix",
-            --     resize = true,
-            --     forced_height = dpi(15),
-            --     forced_width = dpi(15),
-            --     image = theme.textclock_icon,
-            --     widget = wibox.widget.imagebox,
-            -- },
             analog_clock,
             id = "prefixmargin",
             forced_width = dpi(27),
@@ -50,5 +47,24 @@ local textclock = wibox.widget {
     id = "layout",
     layout = wibox.layout.fixed.horizontal
 }
+
+textclock:buttons(gears.table.join(
+    awful.button({}, 1, function () textclock:emit_signal("textclock::format_change") end),
+    -- next 2 are wip
+    awful.button({}, 4, function () textclock:emit_signal("textclock::timezone_change",  1) end),
+    awful.button({}, 5, function () textclock:emit_signal("textclock::timezone_change", -1) end)
+))
+
+textclock:connect_signal("textclock::format_change", function(_)
+    local widget = textclock:get_children_by_id("clock")[1]
+
+    if widget.format == format1 then
+        widget.format  = format2
+        widget.refresh = 1
+    else
+        widget.format  = format1
+        widget.refresh = 45
+    end
+end)
 
 return textclock

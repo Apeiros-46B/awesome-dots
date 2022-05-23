@@ -8,6 +8,7 @@ local naughty = require("naughty")
 
 -- {{{ Util
 local recolor = gears.color.recolor_image
+local shape = gears.shape
 local themes_path = os.getenv("HOME") .. "/.config/awesome/themes/"
 
 local theme = {}
@@ -44,20 +45,20 @@ theme.font          = "JetBrainsMono Nerd Font Bold 10"
 -- }}}
 
 -- {{{ Background
-theme.bg_normal     = colors.gray1
-theme.bg_focus      = colors.blue
-theme.bg_urgent     = colors.red
-theme.bg_minimize   = colors.gray3
-theme.bg_systray    = colors.gray3
+theme.bg_normal          = colors.gray1
+theme.bg_focus           = colors.blue
+theme.bg_urgent          = colors.red
+theme.bg_minimize        = colors.gray3
+theme.bg_systray         = colors.gray3
 -- }}}
 
 -- {{{ Foreground
-theme.fg_normal     = colors.white
-theme.fg_focus      = colors.gray1
-theme.fg_urgent     = colors.gray1
-theme.fg_minimize   = colors.gray5
-theme.fg_minimize_2 = colors.gray4
-theme.fg_minimize_3 = colors.gray3
+theme.fg_normal          = colors.white
+theme.fg_focus           = colors.gray1
+theme.fg_urgent          = colors.gray1
+theme.fg_minimize        = colors.gray5
+theme.fg_minimize_2      = colors.gray4
+theme.fg_minimize_3      = colors.gray3
 -- }}}
 
 -- {{{ Gaps/Borders
@@ -97,7 +98,7 @@ theme.window_switcher_icon_width = 40                             -- The width o
 -- }}}
 
 -- {{{ Notifications
-naughty.config.padding = dpi(18)
+naughty.config.padding = dpi(16)
 naughty.config.spacing = dpi(8)
 naughty.config.defaults.icon_size = dpi(48)
 naughty.config.defaults.margin = dpi(12)
@@ -110,6 +111,7 @@ theme.notification_bg = colors.gray2
 theme.menu_submenu_icon = themes_path.."default/icons/misc/submenu.png"
 theme.menu_height = dpi(15)
 theme.menu_width  = dpi(125)
+theme.menu_border_width = 0
 -- }}}
 
 -- {{{ Tasklist
@@ -267,6 +269,29 @@ geolist_style.volatile = {
 theme.geolist_style = geolist_style
 -- }}}
 
+-- {{{ Titlebar
+theme.titlebar_fg_focus  = colors.white
+theme.titlebar_bg_normal = colors.gray3
+theme.titlebar_bg_focus  = colors.gray3
+
+theme.titlebar_buttons_style = {
+    close = {
+        shape = gears.shape.circle,
+        color = colors.red
+    },
+
+    max = {
+        shape = gears.shape.losange,
+        color = colors.green
+    },
+
+    min = {
+        shape = gears.shape.isosceles_triangle,
+        color = colors.yellow
+    }
+}
+-- }}}
+
 -- {{{ Layout icons
 theme.layout_fairv = themes_path.."default/icons/layouts/fairv.png"
 theme.layout_floating  = themes_path.."default/icons/layouts/floating.png"
@@ -275,7 +300,7 @@ theme.layout_spiral  = themes_path.."default/icons/layouts/spiral.png"
 theme.layout_dwindle = themes_path.."default/icons/layouts/dwindle.png"
 -- }}}
 
--- {{{ Other status bar icons
+-- {{{ Status bar icons
 -- Textclock
 theme.textclock_icon = recolor(themes_path.."default/icons/datetime/fa-clock.svg", colors.gray1)
 

@@ -347,7 +347,12 @@ M.clientkeys = gears.table.join(
         c.maximized_horizontal = not c.maximized_horizontal
         c:raise()
     end ,
-    {description = "toggle maximized horizontally", group = "client"})
+    {description = "toggle maximized horizontally", group = "client"}),
+
+    awful.key({ modkey,           }, "t",      function (c)
+        awful.titlebar.toggle(c)
+    end ,
+    {description = "toggle titlebar", group = "client"})
 -- }}}
 
 -- -- --

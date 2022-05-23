@@ -240,8 +240,8 @@ client.connect_signal("manage", function (c)
     if not awesome.startup then awful.client.setslave(c) end
 
     if awesome.startup
-      and not c.size_hints.user_position
-      and not c.size_hints.program_position then
+        and not c.size_hints.user_position
+        and not c.size_hints.program_position then
         -- Prevent clients from being unreachable after screen count changes.
         awful.placement.no_offscreen(c)
     end
@@ -266,29 +266,31 @@ client.connect_signal("request::titlebars", function(c)
         end)
     )
 
-    awful.titlebar(c) : setup {
-        { -- Left
-            { -- Title
-                align  = "left",
-                widget = awful.titlebar.widget.titlewidget(c)
-            },
-            buttons = buttons,
-            layout  = wibox.layout.fixed.horizontal
-        },
-        { -- Middle
-            buttons = buttons,
-            layout  = wibox.layout.flex.horizontal
-        },
-        { -- Right
-            awful.titlebar.widget.floatingbutton (c),
-            awful.titlebar.widget.maximizedbutton(c),
-            awful.titlebar.widget.stickybutton   (c),
-            awful.titlebar.widget.ontopbutton    (c),
-            awful.titlebar.widget.closebutton    (c),
-            layout = wibox.layout.fixed.horizontal()
-        },
-        layout = wibox.layout.align.horizontal
-    }
+    -- awful.titlebar(c) : setup {
+    --     { -- Left
+    --         { -- Title
+    --             align  = "left",
+    --             widget = awful.titlebar.widget.titlewidget(c)
+    --         },
+    --         buttons = buttons,
+    --         layout  = wibox.layout.fixed.horizontal
+    --     },
+    --     { -- Middle
+    --         buttons = buttons,
+    --         layout  = wibox.layout.flex.horizontal
+    --     },
+    --     { -- Right
+    --         awful.titlebar.widget.floatingbutton (c),
+    --         awful.titlebar.widget.maximizedbutton(c),
+    --         awful.titlebar.widget.stickybutton   (c),
+    --         awful.titlebar.widget.ontopbutton    (c),
+    --         awful.titlebar.widget.closebutton    (c),
+    --         layout = wibox.layout.fixed.horizontal()
+    --     },
+    --     layout = wibox.layout.align.horizontal
+    -- }
+
+    awful.titlebar(c, { size = 27 }):set_widget(require("widgets.titlebar")(c))
 end)
 
 -- Enable sloppy focus, so that focus follows mouse.

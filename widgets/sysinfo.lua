@@ -2,7 +2,7 @@
 -- Libraries
 local awful = require("awful")
 local beautiful = require("beautiful")
--- local gears = require("gears")
+local gears = require("gears")
 local wibox = require("wibox")
 
 -- Theme
@@ -18,7 +18,7 @@ local widgets = {}
 local buttons = {
     awful.button(
         {},
-        1,
+        3,
         function()
             awful.spawn(terminal_start_cmd .. "btop")
         end
@@ -209,10 +209,11 @@ local memory = wibox.widget {
     id = "layout",
     layout = wibox.layout.fixed.horizontal
 }
+
 -- }}}
 
 -- {{{ Connect to the watcher's status signal
-awesome.connect_signal("status::memory", function(usage, percent)
+awesome.connect_signal("status::memory", function(usage, percent, symbol)
     -- Set background color based on usage
     memory:get_children_by_id("prefixbg")[1].bg = (
         -- If usage is over 80, make the prefix icon's background red
@@ -226,7 +227,7 @@ awesome.connect_signal("status::memory", function(usage, percent)
     )
 
     -- Set label text
-    memory:get_children_by_id("label")[1].text = " " .. usage .. " mb "
+    memory:get_children_by_id("label")[1].text = " " .. usage .. " " .. symbol .. " "
 end)
 -- }}}
 -- }}}
@@ -235,7 +236,22 @@ end)
 -- Add buttons
 if has_battery then battery:buttons(buttons) end
 cpu:buttons(buttons)
-memory:buttons(buttons)
+memory:buttons(gears.table.join(
+    awful.button(
+        {},
+        1,
+        function()
+            memory:emit_signal("sysinfo::memory::format_changed")
+        end
+    ),
+    awful.button(
+        {},
+        3,
+        function()
+            awful.spawn(terminal_start_cmd .. "btop")
+        end
+    )
+))
 
 -- Add widgets to the table
 widgets.battery = battery
