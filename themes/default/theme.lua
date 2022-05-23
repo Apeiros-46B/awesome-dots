@@ -8,7 +8,6 @@ local naughty = require("naughty")
 
 -- {{{ Util
 local recolor = gears.color.recolor_image
-local shape = gears.shape
 local themes_path = os.getenv("HOME") .. "/.config/awesome/themes/"
 
 local theme = {}
@@ -274,22 +273,33 @@ theme.titlebar_fg_focus  = colors.white
 theme.titlebar_bg_normal = colors.gray3
 theme.titlebar_bg_focus  = colors.gray3
 
-theme.titlebar_buttons_style = {
+local base_icons = {
+    close = themes_path .. 'default/icons/titlebar/close.svg',
+    max = themes_path .. 'default/icons/titlebar/max.svg',
+    min = themes_path .. 'default/icons/titlebar/min.svg',
+    -- close = gears.shape.circle,
+    -- max = gears.shape.losange,
+    -- min = gears.shape.isosceles_triangle,
+}
+
+local titlebar_icons = {
     close = {
-        shape = gears.shape.circle,
-        color = colors.red
+        normal = recolor(base_icons.close, colors.red),
+        dark = recolor(base_icons.close, colors.gray1)
     },
 
     max = {
-        shape = gears.shape.losange,
-        color = colors.green
+        normal = recolor(base_icons.max, colors.green),
+        dark = recolor(base_icons.max, colors.gray1)
     },
 
     min = {
-        shape = gears.shape.isosceles_triangle,
-        color = colors.yellow
-    }
+        normal = recolor(base_icons.min, colors.yellow),
+        dark = recolor(base_icons.min, colors.gray1)
+    },
 }
+
+theme.titlebar_icons = titlebar_icons
 -- }}}
 
 -- {{{ Layout icons
