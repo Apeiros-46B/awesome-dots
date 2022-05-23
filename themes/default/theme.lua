@@ -1,14 +1,20 @@
 -- {{{ Libraries
-local theme_assets = require("beautiful.theme_assets")
-local xresources = require("beautiful.xresources")
+local beautiful = require("beautiful")
+local theme_assets = beautiful.theme_assets
+local xresources = beautiful.xresources
 local dpi = xresources.apply_dpi
-local gears = require("gears")
+
 local naughty = require("naughty")
+
+local gears = require("gears")
+local cairo = require("lgi").cairo
+
+local shape = gears.shape
+local shape_load = gears.surface.load_from_shape
+local recolor = gears.color.recolor_image
 -- }}}
 
 -- {{{ Util
-local recolor = gears.color.recolor_image
-local shape = gears.shape
 local themes_path = os.getenv("HOME") .. "/.config/awesome/themes/"
 
 local theme = {}
@@ -30,11 +36,12 @@ local colors = {
 
     -- Other colors
     red = "#e67e80",
-    green = "#a7c080",
+    orange = "#e69875",
     yellow = "#ddbc7f",
+    green = "#a7c080",
+    teal = "#83c092",
     blue = "#7fbbb3",
     purple = "#d699b6",
-    teal = "#83c092"
 }
 
 theme.colorscheme = colors
@@ -270,26 +277,43 @@ theme.geolist_style = geolist_style
 -- }}}
 
 -- {{{ Titlebar
-theme.titlebar_fg_focus  = colors.white
+-- BG and FG colors
+theme.titlebar_fg_focus  = colors.gray1
 theme.titlebar_bg_normal = colors.gray3
-theme.titlebar_bg_focus  = colors.gray3
+theme.titlebar_bg_focus  = colors.blue
 
-theme.titlebar_button_style = {
-    close = {
-        shape = gears.shape.circle,
-        color = colors.red
-    },
+-- Buttons
+-- {{{ Left buttons
+theme.titlebar_sticky_button_normal_inactive = shape_load(88, 88, shape.losange, colors.purple)
+theme.titlebar_sticky_button_focus_inactive  = shape_load(88, 88, shape.losange, colors.gray1)
+theme.titlebar_sticky_button_normal_active = shape_load(88, 88, shape.rectangle, colors.purple)
+theme.titlebar_sticky_button_focus_active  = shape_load(88, 88, shape.rectangle, colors.gray1)
 
-    max = {
-        shape = gears.shape.losange,
-        color = colors.green
-    },
+theme.titlebar_floating_button_normal_inactive = shape_load(88, 88, shape.isosceles_triangle, colors.blue)
+theme.titlebar_floating_button_focus_inactive  = shape_load(88, 88, shape.isosceles_triangle, colors.gray1)
+theme.titlebar_floating_button_normal_active = shape_load(88, 88, shape.transform(shape.isosceles_triangle):rotate_at(44, 44, math.pi), colors.blue)
+theme.titlebar_floating_button_focus_active  = shape_load(88, 88, shape.transform(shape.isosceles_triangle):rotate_at(44, 44, math.pi), colors.gray1)
+-- }}}
 
-    min = {
-        shape = gears.shape.isosceles_triangle,
-        color = colors.yellow
-    }
-}
+-- {{{ Right buttons
+theme.titlebar_close_button_normal = shape_load(88, 88, shape.circle, colors.red)
+theme.titlebar_close_button_focus  = shape_load(88, 88, shape.circle, colors.gray1)
+
+theme.titlebar_minimize_button_normal = shape_load(88, 88, shape.transform(shape.isosceles_triangle):rotate_at(44, 44, math.pi), colors.yellow)
+theme.titlebar_minimize_button_focus  = shape_load(88, 88, shape.transform(shape.isosceles_triangle):rotate_at(44, 44, math.pi), colors.gray1)
+
+theme.titlebar_maximized_button_normal_inactive = shape_load(88, 88, shape.losange, colors.green)
+theme.titlebar_maximized_button_focus_inactive  = shape_load(88, 88, shape.losange, colors.gray1)
+theme.titlebar_maximized_button_normal_active = shape_load(88, 88, shape.losange, colors.teal)
+theme.titlebar_maximized_button_focus_active  = shape_load(88, 88, shape.losange, colors.gray1)
+-- }}}
+
+-- {{{ Unused
+theme.titlebar_ontop_button_normal_inactive = shape_load(88, 88, shape.isosceles_triangle, colors.orange)
+theme.titlebar_ontop_button_focus_inactive  = shape_load(88, 88, shape.isosceles_triangle, colors.gray1)
+theme.titlebar_ontop_button_normal_active = shape_load(88, 88, shape.transform(shape.isosceles_triangle):rotate_at(44, 44, math.pi), colors.orange)
+theme.titlebar_ontop_button_focus_active  = shape_load(88, 88, shape.transform(shape.isosceles_triangle):rotate_at(44, 44, math.pi), colors.gray1)
+-- }}}
 -- }}}
 
 -- {{{ Layout icons
