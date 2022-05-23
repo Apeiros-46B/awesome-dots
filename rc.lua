@@ -266,31 +266,7 @@ client.connect_signal("request::titlebars", function(c)
         end)
     )
 
-    -- awful.titlebar(c) : setup {
-    --     { -- Left
-    --         { -- Title
-    --             align  = "left",
-    --             widget = awful.titlebar.widget.titlewidget(c)
-    --         },
-    --         buttons = buttons,
-    --         layout  = wibox.layout.fixed.horizontal
-    --     },
-    --     { -- Middle
-    --         buttons = buttons,
-    --         layout  = wibox.layout.flex.horizontal
-    --     },
-    --     { -- Right
-    --         awful.titlebar.widget.floatingbutton (c),
-    --         awful.titlebar.widget.maximizedbutton(c),
-    --         awful.titlebar.widget.stickybutton   (c),
-    --         awful.titlebar.widget.ontopbutton    (c),
-    --         awful.titlebar.widget.closebutton    (c),
-    --         layout = wibox.layout.fixed.horizontal()
-    --     },
-    --     layout = wibox.layout.align.horizontal
-    -- }
-
-    awful.titlebar(c, { size = 27 }):set_widget(require("widgets.titlebar")(c))
+    awful.titlebar(c, { size = 20 }):set_widget(require("widgets.titlebar")(c))
 end)
 
 -- Enable sloppy focus, so that focus follows mouse.
@@ -316,9 +292,9 @@ bling.widget.window_switcher.enable {
     unminimize_key = "M",                -- The key on which to unminimize all clients
     kill_client_key = "q",               -- The key on which to close the selected client
     cycle_key = "Tab",                   -- The key on which to cycle through all clients
-    previous_key = "Left",               -- The key on which to select the previous client
-    next_key = "Right",                  -- The key on which to select the next client
-    vim_previous_key = "h",              -- Alternative key on which to select the previous client
-    vim_next_key = "l",                  -- Alternative key on which to select the next client
+    previous_key = "l",                  -- The key on which to select the previous client
+    next_key = "h",                      -- The key on which to select the next client
+    vim_previous_key = "j",              -- Alternative key on which to select the previous client
+    vim_next_key = "k",                  -- Alternative key on which to select the next client
 }
 -- }}}

@@ -4,7 +4,6 @@ local gears = require("gears")
 local wibox = require("wibox")
 
 local dpi = beautiful.xresources.apply_dpi
-local button_style = beautiful.titlebar_button_style
 
 -- {{{ Return function
 return function(c)
@@ -29,48 +28,48 @@ return function(c)
                 {
                     {
                         id = 'sticky_button',
-                        forced_width = dpi(11),
-                        forced_height = dpi(11),
+                        forced_width = dpi(10),
+                        forced_height = dpi(10),
                         widget = awful.titlebar.widget.stickybutton(c),
                     },
                     id = 'sticky_button_container',
-                    forced_width = dpi(23),
-                    forced_height = dpi(27),
+                    forced_width = dpi(18),
+                    forced_height = dpi(20),
                     widget = wibox.container.place
                 },
                 id = 'sticky_button_margin',
-                left = dpi(2),
+                left = dpi(1),
                 widget = wibox.container.margin
             },
             {
                 {
                     id = 'floating_button',
-                    forced_width = dpi(11),
-                    forced_height = dpi(11),
+                    forced_width = dpi(10),
+                    forced_height = dpi(10),
                     widget = awful.titlebar.widget.floatingbutton(c),
                 },
                 id = 'floating_button_container',
-                forced_width = dpi(27),
-                forced_height = dpi(27),
+                forced_width = dpi(18),
+                forced_height = dpi(20),
                 widget = wibox.container.place
             },
             layout = wibox.layout.fixed.horizontal
         }, -- }}}
         -- {{{ Title and icon
         {
-            {
-                {
-                    id = 'icon',
-                    forced_width = dpi(21),
-                    forced_height = dpi(21),
-                    widget = awful.titlebar.widget.iconwidget(c)
-                },
-                id = 'icon_container',
-                forced_width = dpi(35),
-                forced_height = dpi(27),
-                buttons = buttons,
-                widget = wibox.container.place
-            },
+            -- {
+            --     {
+            --         id = 'icon',
+            --         forced_width = dpi(21),
+            --         forced_height = dpi(21),
+            --         widget = awful.titlebar.widget.iconwidget(c)
+            --     },
+            --     id = 'icon_container',
+            --     forced_width = dpi(35),
+            --     forced_height = dpi(27),
+            --     buttons = buttons,
+            --     widget = wibox.container.place
+            -- },
             {
                 id = 'title',
                 buttons = buttons,
@@ -85,42 +84,42 @@ return function(c)
             {
                 {
                     id = 'min_button',
-                    forced_width = dpi(11),
-                    forced_height = dpi(11),
+                    forced_width = dpi(10),
+                    forced_height = dpi(10),
                     widget = awful.titlebar.widget.minimizebutton(c),
                 },
                 id = 'min_button_container',
-                forced_width = dpi(23),
-                forced_height = dpi(27),
+                forced_width = dpi(18),
+                forced_height = dpi(20),
                 widget = wibox.container.place
             },
             {
                 {
                     id = 'max_button',
-                    forced_width = dpi(11),
-                    forced_height = dpi(11),
+                    forced_width = dpi(10),
+                    forced_height = dpi(10),
                     widget = awful.titlebar.widget.maximizedbutton(c),
                 },
                 id = 'max_button_container',
-                forced_width = dpi(23),
-                forced_height = dpi(27),
+                forced_width = dpi(18),
+                forced_height = dpi(20),
                 widget = wibox.container.place
             },
             {
                 {
                     {
                         id = 'close_button',
-                        forced_width = dpi(11),
-                        forced_height = dpi(11),
+                        forced_width = dpi(10),
+                        forced_height = dpi(10),
                         widget = awful.titlebar.widget.closebutton(c),
                     },
                     id = 'close_button_container',
-                    forced_width = dpi(23),
-                    forced_height = dpi(27),
+                    forced_width = dpi(18),
+                    forced_height = dpi(20),
                     widget = wibox.container.place
                 },
                 id = 'close_button_margin',
-                right = dpi(2),
+                right = dpi(1),
                 widget = wibox.container.margin
             },
             id = 'buttons',

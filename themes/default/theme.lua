@@ -7,7 +7,6 @@ local dpi = xresources.apply_dpi
 local naughty = require("naughty")
 
 local gears = require("gears")
-local cairo = require("lgi").cairo
 
 local shape = gears.shape
 local shape_load = gears.surface.load_from_shape
@@ -277,42 +276,66 @@ theme.geolist_style = geolist_style
 -- }}}
 
 -- {{{ Titlebar
+-- Should focused titlebars be colored?
+local focus_highlight = true
+
 -- BG and FG colors
-theme.titlebar_fg_focus  = colors.gray1
+theme.titlebar_fg_focus  = (focus_highlight and colors.gray1 or colors.white)
 theme.titlebar_bg_normal = colors.gray3
-theme.titlebar_bg_focus  = colors.blue
+theme.titlebar_bg_focus  = (focus_highlight and colors.blue  or colors.gray3)
 
 -- Buttons
 -- {{{ Left buttons
-theme.titlebar_sticky_button_normal_inactive = shape_load(88, 88, shape.losange, colors.purple)
-theme.titlebar_sticky_button_focus_inactive  = shape_load(88, 88, shape.losange, colors.gray1)
-theme.titlebar_sticky_button_normal_active = shape_load(88, 88, shape.rectangle, colors.purple)
-theme.titlebar_sticky_button_focus_active  = shape_load(88, 88, shape.rectangle, colors.gray1)
+theme.titlebar_sticky_button_normal_inactive = shape_load(10, 10, shape.losange, colors.purple)
+theme.titlebar_sticky_button_focus_inactive  = shape_load(10, 10, shape.losange, (focus_highlight and colors.gray1 or colors.purple))
+theme.titlebar_sticky_button_normal_active = shape_load(10, 10, shape.rectangle, colors.purple)
+theme.titlebar_sticky_button_focus_active  = shape_load(10, 10, shape.rectangle, (focus_highlight and colors.gray1 or colors.purple))
 
-theme.titlebar_floating_button_normal_inactive = shape_load(88, 88, shape.isosceles_triangle, colors.blue)
-theme.titlebar_floating_button_focus_inactive  = shape_load(88, 88, shape.isosceles_triangle, colors.gray1)
-theme.titlebar_floating_button_normal_active = shape_load(88, 88, shape.transform(shape.isosceles_triangle):rotate_at(44, 44, math.pi), colors.blue)
-theme.titlebar_floating_button_focus_active  = shape_load(88, 88, shape.transform(shape.isosceles_triangle):rotate_at(44, 44, math.pi), colors.gray1)
+theme.titlebar_floating_button_normal_inactive = shape_load(10, 10, shape.isosceles_triangle, colors.blue)
+theme.titlebar_floating_button_focus_inactive  = shape_load(10, 10, shape.isosceles_triangle, (focus_highlight and colors.gray1 or colors.blue))
+theme.titlebar_floating_button_normal_active = shape_load(10, 10, shape.transform(shape.isosceles_triangle):rotate_at(5, 5, math.pi), colors.blue)
+theme.titlebar_floating_button_focus_active  = shape_load(
+    10, 10,
+    shape.transform(shape.isosceles_triangle)
+    :rotate_at(5, 5, math.pi),
+    (
+        focus_highlight and colors.gray1 or colors.blue
+    )
+)
 -- }}}
 
 -- {{{ Right buttons
-theme.titlebar_close_button_normal = shape_load(88, 88, shape.circle, colors.red)
-theme.titlebar_close_button_focus  = shape_load(88, 88, shape.circle, colors.gray1)
+theme.titlebar_close_button_normal = shape_load(10, 10, shape.circle, colors.red)
+theme.titlebar_close_button_focus  = shape_load(10, 10, shape.circle, (focus_highlight and colors.gray1 or colors.red))
 
-theme.titlebar_minimize_button_normal = shape_load(88, 88, shape.transform(shape.isosceles_triangle):rotate_at(44, 44, math.pi), colors.yellow)
-theme.titlebar_minimize_button_focus  = shape_load(88, 88, shape.transform(shape.isosceles_triangle):rotate_at(44, 44, math.pi), colors.gray1)
+theme.titlebar_minimize_button_normal = shape_load(10, 10, shape.transform(shape.isosceles_triangle):rotate_at(5, 5, math.pi), colors.yellow)
+theme.titlebar_minimize_button_focus  = shape_load(
+    10, 10,
+    shape.transform(shape.isosceles_triangle)
+    :rotate_at(5, 5, math.pi),
+    (
+        focus_highlight and colors.gray1 or colors.yellow
+    )
+)
 
-theme.titlebar_maximized_button_normal_inactive = shape_load(88, 88, shape.losange, colors.green)
-theme.titlebar_maximized_button_focus_inactive  = shape_load(88, 88, shape.losange, colors.gray1)
-theme.titlebar_maximized_button_normal_active = shape_load(88, 88, shape.losange, colors.teal)
-theme.titlebar_maximized_button_focus_active  = shape_load(88, 88, shape.losange, colors.gray1)
+theme.titlebar_maximized_button_normal_inactive = shape_load(10, 10, shape.losange, colors.green)
+theme.titlebar_maximized_button_focus_inactive  = shape_load(10, 10, shape.losange, (focus_highlight and colors.gray1 or colors.green))
+theme.titlebar_maximized_button_normal_active = shape_load(10, 10, shape.losange, colors.teal)
+theme.titlebar_maximized_button_focus_active  = shape_load(10, 10, shape.losange, (focus_highlight and colors.gray1 or colors.teal))
 -- }}}
 
 -- {{{ Unused
-theme.titlebar_ontop_button_normal_inactive = shape_load(88, 88, shape.isosceles_triangle, colors.orange)
-theme.titlebar_ontop_button_focus_inactive  = shape_load(88, 88, shape.isosceles_triangle, colors.gray1)
-theme.titlebar_ontop_button_normal_active = shape_load(88, 88, shape.transform(shape.isosceles_triangle):rotate_at(44, 44, math.pi), colors.orange)
-theme.titlebar_ontop_button_focus_active  = shape_load(88, 88, shape.transform(shape.isosceles_triangle):rotate_at(44, 44, math.pi), colors.gray1)
+theme.titlebar_ontop_button_normal_inactive = shape_load(10, 10, shape.isosceles_triangle, colors.orange)
+theme.titlebar_ontop_button_focus_inactive  = shape_load(10, 10, shape.isosceles_triangle, (focus_highlight and colors.gray1 or colors.orange))
+theme.titlebar_ontop_button_normal_active = shape_load(10, 10, shape.transform(shape.isosceles_triangle):rotate_at(5, 5, math.pi), colors.orange)
+theme.titlebar_ontop_button_focus_active  = shape_load(
+    10, 10,
+    shape.transform(shape.isosceles_triangle)
+    :rotate_at(5, 5, math.pi),
+    (
+        focus_highlight and colors.gray1 or colors.orange
+    )
+)
 -- }}}
 -- }}}
 
