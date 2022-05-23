@@ -266,7 +266,7 @@ client.connect_signal("request::titlebars", function(c)
         end)
     )
 
-    awful.titlebar(c, { size = 20 }):set_widget(require("widgets.titlebar")(c))
+    awful.titlebar(c, { size = 22 }):set_widget(require("widgets.titlebar")(c))
 end)
 
 -- Enable sloppy focus, so that focus follows mouse.

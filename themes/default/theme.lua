@@ -69,7 +69,7 @@ theme.fg_minimize_3      = colors.gray3
 
 -- {{{ Gaps/Borders
 theme.useless_gap   = dpi(4)
-theme.border_width  = dpi(2)
+theme.border_width  = dpi(0)
 theme.border_normal = colors.gray3
 theme.border_focus  = colors.blue
 theme.border_marked = colors.red
@@ -275,7 +275,7 @@ geolist_style.volatile = {
 theme.geolist_style = geolist_style
 -- }}}
 
--- {{{ Titlebar
+-- {{{ Titlebars
 -- Should focused titlebars be colored?
 local focus_highlight = true
 

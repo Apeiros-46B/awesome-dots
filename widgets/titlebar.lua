@@ -33,12 +33,12 @@ return function(c)
                         widget = awful.titlebar.widget.stickybutton(c),
                     },
                     id = 'sticky_button_container',
-                    forced_width = dpi(18),
-                    forced_height = dpi(20),
+                    forced_width = dpi(16),
+                    forced_height = dpi(22),
                     widget = wibox.container.place
                 },
                 id = 'sticky_button_margin',
-                left = dpi(1),
+                left = dpi(3),
                 widget = wibox.container.margin
             },
             {
@@ -49,8 +49,8 @@ return function(c)
                     widget = awful.titlebar.widget.floatingbutton(c),
                 },
                 id = 'floating_button_container',
-                forced_width = dpi(18),
-                forced_height = dpi(20),
+                forced_width = dpi(16),
+                forced_height = dpi(22),
                 widget = wibox.container.place
             },
             layout = wibox.layout.fixed.horizontal
@@ -89,8 +89,8 @@ return function(c)
                     widget = awful.titlebar.widget.minimizebutton(c),
                 },
                 id = 'min_button_container',
-                forced_width = dpi(18),
-                forced_height = dpi(20),
+                forced_width = dpi(16),
+                forced_height = dpi(22),
                 widget = wibox.container.place
             },
             {
@@ -101,8 +101,8 @@ return function(c)
                     widget = awful.titlebar.widget.maximizedbutton(c),
                 },
                 id = 'max_button_container',
-                forced_width = dpi(18),
-                forced_height = dpi(20),
+                forced_width = dpi(16),
+                forced_height = dpi(22),
                 widget = wibox.container.place
             },
             {
@@ -114,12 +114,12 @@ return function(c)
                         widget = awful.titlebar.widget.closebutton(c),
                     },
                     id = 'close_button_container',
-                    forced_width = dpi(18),
-                    forced_height = dpi(20),
+                    forced_width = dpi(16),
+                    forced_height = dpi(22),
                     widget = wibox.container.place
                 },
                 id = 'close_button_margin',
-                right = dpi(1),
+                right = dpi(3),
                 widget = wibox.container.margin
             },
             id = 'buttons',
