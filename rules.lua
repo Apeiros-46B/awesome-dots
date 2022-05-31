@@ -54,7 +54,7 @@ return {
         class = "zoom",
     }, properties = { floating = true, ontop = true, border_width = 0, placement = awful.placement.centered } },
 
-    -- No titlebars
+    -- Titlebars
     { rule_any = { type = { "normal", "dialog" } }, properties = { titlebars_enabled = true } },
 
     -- Set Firefox to always map on the tag named "2" on screen 1.
