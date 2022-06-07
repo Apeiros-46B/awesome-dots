@@ -16,7 +16,30 @@ local format1 = " %m/%d:%u -> %R "
 local format2 = " %m/%d/%Y:%u -> %R:%S "
 
 -- analog clock
-local analog_clock = require('widgets.analog_clock')(nil, colors.teal, colors.teal, colors.gray1, 1)
+local analog_clock = require('widgets.analog_clock')({
+    background = {
+        shape = gears.shape.circle,
+        color = colors.gray1
+    },
+
+    second = {
+        v = 0,
+        enable = true,
+        color = colors.gray5
+    },
+
+    minute = {
+        v = 0,
+        enable = true,
+        color = colors.teal
+    },
+
+    hour = {
+        v = 0,
+        enable = true,
+        color = colors.teal
+    }
+})
 
 analog_clock.forced_width = dpi(19)
 analog_clock.forced_height = dpi(19)
@@ -49,10 +72,7 @@ local textclock = wibox.widget {
 }
 
 textclock:buttons(gears.table.join(
-    awful.button({}, 1, function () textclock:emit_signal("textclock::format_change") end),
-    -- next 2 are wip
-    awful.button({}, 4, function () textclock:emit_signal("textclock::timezone_change",  1) end),
-    awful.button({}, 5, function () textclock:emit_signal("textclock::timezone_change", -1) end)
+    awful.button({}, 1, function () textclock:emit_signal("textclock::format_change") end)
 ))
 
 textclock:connect_signal("textclock::format_change", function(_)

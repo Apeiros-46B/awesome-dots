@@ -30,12 +30,15 @@ local list_update = function(widget, buttons, label, data, objects)
             widget = wibox.container.background
         }
 
-        -- local task_tool_tip = awful.tooltip {
-        --     objects = { task_widget },
-        --     mode = "inside",
-        --     align = "right",
-        --     delay_show = 1
-        -- }
+        local task_tooltip = awful.tooltip {
+            objects = { task_widget },
+            mode = "outside",
+            align = "top",
+            preferred_alignments = { "middle", "front", "back" },
+            delay_show = 0.4
+        }
+
+        local task_state_icons = {}
 
         local function create_buttons(buttons, object)
             if buttons then
@@ -59,23 +62,28 @@ local list_update = function(widget, buttons, label, data, objects)
 
         task_widget:buttons(create_buttons(buttons, object))
 
+        local bg = colors.gray3
+        local fg = colors.white
+
         if object == client.focus then
-            task_widget:set_bg(colors.blue)
-            task_widget:set_fg(colors.gray1)
+            bg = colors.blue
+            fg = colors.gray1
         elseif object.sticky then
-            task_widget:set_bg(colors.purple)
-            task_widget:set_fg(colors.gray1)
-        else
-            task_widget:set_bg(colors.gray3)
+            bg = colors.purple
+            fg = colors.gray1
         end
 
+        task_widget:set_bg(bg)
+        task_widget:set_fg(fg)
+
         task_widget:get_children_by_id('icon')[1]:set_image(object.icon)
+        task_tooltip.text = object.name
 
         widget:add(task_widget)
         widget:set_spacing(dpi(0))
 
         local old_wibox, old_cursor
-        -- local old_minimized
+        local old_minimized
 
         task_widget:connect_signal(
             "mouse::enter",
@@ -98,31 +106,31 @@ local list_update = function(widget, buttons, label, data, objects)
             end
         )
 
-        -- task_widget:connect_signal(
-        --     "button::press",
-        --     function(self, lx, ly, button, mods, find_widgets_result)
-        --                 if button == 3 then
-        --                     if object.minimized then
-        --                         old_minimized = true
-        --
-        --                         object:emit_signal(
-        --                             "request::activate", "key.unminimize", { raise = true }
-        --                         )
-        --                     end
-        --                 end
-        --     end
-        -- )
-        --
-        -- task_widget:connect_signal(
-        --     "button::release",
-        --     function(self, lx, ly, button, mods, find_widgets_result)
-        --                 if button == 3 then
-        --                     if old_minimized then
-        --                         object.minimized = true
-        --                     end
-        --                 end
-        --     end
-        -- )
+        task_widget:connect_signal(
+            "button::press",
+            function(self, lx, ly, button, mods, find_widgets_result)
+                if button == 3 then
+                    if object.minimized then
+                        old_minimized = true
+
+                        object:emit_signal(
+                            "request::activate", "key.unminimize", { raise = true }
+                        )
+                    end
+                end
+            end
+        )
+
+        task_widget:connect_signal(
+            "button::release",
+            function(self, lx, ly, button, mods, find_widgets_result)
+                if button == 3 then
+                    if old_minimized then
+                        object.minimized = true
+                    end
+                end
+            end
+        )
     end
     return widget
 end

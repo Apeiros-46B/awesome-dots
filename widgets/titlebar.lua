@@ -60,13 +60,13 @@ return function(c)
             -- {
             --     {
             --         id = 'icon',
-            --         forced_width = dpi(21),
-            --         forced_height = dpi(21),
+            --         forced_width = dpi(16),
+            --         forced_height = dpi(16),
             --         widget = awful.titlebar.widget.iconwidget(c)
             --     },
             --     id = 'icon_container',
-            --     forced_width = dpi(35),
-            --     forced_height = dpi(27),
+            --     forced_width = dpi(22),
+            --     forced_height = dpi(22),
             --     buttons = buttons,
             --     widget = wibox.container.place
             -- },

@@ -227,13 +227,18 @@ M.globalkeys = gears.table.join(
     end,
     {description = "wibar", group = "toggle"}),
 
-    -- picom
+    --- picom
     awful.key({ modkey, s         }, "p",      function () awful.spawn(script .. "picomutil toggle", false) end,
               {description = "compositor", group = "toggle"}),
 
-    -- glava
+    --- glava
     awful.key({ modkey, s         }, "g",      function () awful.spawn(script .. "glavautil toggle", false) end,
               {description = "audio visualizer", group = "toggle"}),
+
+    -- power
+    --- suspend
+    awful.key({ modkey, alt       }, "F12",      function () awful.spawn("loginctl suspend", false) end,
+              {description = "suspend", group = "system"}),
 
     -- add typos to the clipboard
     awful.key({ modkey, s         }, "t",      function ()
