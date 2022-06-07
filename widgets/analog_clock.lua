@@ -17,8 +17,8 @@ local function create_hands(t)
         cr:rotate(angle)
         cr:translate(-500, -500)
         cr:set_source(gears.color(t.second.color))
-        -- cr:rectangle(475, 100, 50, 480)
-        cr:rectangle(460, 100, 80, 420)
+        cr:rectangle(475, 100, 50, 480)
+        -- cr:rectangle(460, 100, 80, 420)
 
         cr.antialias = cairo.Antialias.BEST
         cr:fill()
@@ -50,7 +50,7 @@ local function create_hands(t)
         cr:rotate(angle)
         cr:translate(-500, -500)
         cr:set_source(gears.color(t.hour.color))
-        cr:rectangle(447, 200, 106, 320)
+        cr:rectangle(450, 220, 100, 300)
 
         cr.antialias = cairo.Antialias.BEST
         cr:fill()

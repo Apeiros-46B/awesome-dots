@@ -25,7 +25,7 @@ local analog_clock = require('widgets.analog_clock')({
     second = {
         v = 0,
         enable = true,
-        color = colors.gray5
+        color = colors.purple
     },
 
     minute = {
@@ -41,8 +41,8 @@ local analog_clock = require('widgets.analog_clock')({
     }
 })
 
-analog_clock.forced_width = dpi(19)
-analog_clock.forced_height = dpi(19)
+analog_clock.forced_width = dpi(21)
+analog_clock.forced_height = dpi(21)
 
 local textclock = wibox.widget {
     {
