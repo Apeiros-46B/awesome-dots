@@ -86,8 +86,9 @@ else
 				;;
 			-l|--logout)
 				case "$(rofi -sep '|' -dmenu -i -p 'system' -width 20 -hide-scrollbar \
-					-line-padding 4 -padding 20 -lines 5 <<< 'logout|suspend|reboot|shutdown')" in
-                    *logout) echo "awesome.quit()" | awesome-client && herbstclient quit && killall openbox && i3-msg quit ;;
+					-line-padding 4 -padding 20 -lines 5 <<< 'lock|logout|suspend|reboot|shutdown')" in
+                    *lock) bash "$HOME/.config/awesome/scripts/lockscreen" ;;
+                    *logout) awesome-client "awesome.quit()" ;;
 					*suspend) loginctl suspend ;;
 					*reboot) loginctl reboot ;;
 					*shutdown) loginctl -i poweroff ;;
