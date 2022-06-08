@@ -37,6 +37,9 @@ local function draw_hand(cr, m2, tmp_angle, is_hour, value, options)
 
     -- Draw the hand
     cr:set_source(gears.color(options.color))
+
+    -- The subtraction for the first two parameters makes sure that
+    -- the bases of the hands are on the center of the context
     cr:rectangle(m2 - w/2, m2 - h, w, h)
 
     -- Fill the context
