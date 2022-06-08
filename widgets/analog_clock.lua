@@ -9,6 +9,8 @@ return function(options)
         nil,
 
         bgimage = function(_, cr, width, height)
+            cr.antialias = cairo.Antialias.BEST
+
             local m = math.min(width, height)
             local m2 = m / 2
 
@@ -30,7 +32,6 @@ return function(options)
                 cr:set_source(gears.color(options.second.color))
                 cr:rectangle(m2 - w/2, m2 - h, w, h)
 
-                cr.antialias = cairo.Antialias.BEST
                 cr:fill()
 
                 tmp_angle = angle
@@ -50,7 +51,6 @@ return function(options)
                 cr:set_source(gears.color(options.minute.color))
                 cr:rectangle(m2 - w/2, m2 - h, w, h)
 
-                cr.antialias = cairo.Antialias.BEST
                 cr:fill()
 
                 tmp_angle = angle
@@ -70,7 +70,6 @@ return function(options)
                 cr:set_source(gears.color(options.hour.color))
                 cr:rectangle(m2 - w/2, m2 - h, w, h)
 
-                cr.antialias = cairo.Antialias.BEST
                 cr:fill()
 
                 tmp_angle = angle
@@ -80,7 +79,7 @@ return function(options)
         bg = options.background.color,
         shape = options.background.shape,
 
-        id = 'background',
+        id = 'analog_clock',
         widget = wibox.container.background
     }
 
