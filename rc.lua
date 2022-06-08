@@ -168,6 +168,9 @@ awful.screen.connect_for_each_screen(function(s)
         awful.button({ }, 5, function () awful.layout.inc(-1) end)
     ))
 
+    -- System tray
+    s.systray = require("widgets.systray")
+
     -- Misc widget imports
     local padding = require("widgets.padding")
 
@@ -194,7 +197,7 @@ awful.screen.connect_for_each_screen(function(s)
                 require("widgets.taglist_geometric")(s),
                 padding,
                 require("widgets.tasklist")(s),
-                padding,
+                -- s.systray,
                 s.promptbox,
             },
             { -- Middle widgets
