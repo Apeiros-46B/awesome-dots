@@ -1,0 +1,120 @@
+local gears = require("gears")
+local wibox = require("wibox")
+
+local cairo = require("lgi").cairo
+local math = require("math")
+
+local function create_hands(t)
+    local img = cairo.ImageSurface(cairo.Format.ARGB32, 1000, 1000)
+    local cr = cairo.Context(img)
+
+    local tmp_angle = 0
+
+    if t.second.enable then
+        local angle = (t.second.v / 60) * 2 * math.pi
+        local w = t.second.w
+        local h = t.second.h
+
+        cr:translate(500, 500)
+        cr:rotate(angle)
+        cr:translate(-500, -500)
+        cr:set_source(gears.color(t.second.color))
+        cr:rectangle(500 - w/2, 500 - h, w, h)
+
+        cr.antialias = cairo.Antialias.BEST
+        cr:fill()
+
+        tmp_angle = angle
+    end
+
+    if t.minute.enable then
+        local angle = (t.minute.v / 60) * 2 * math.pi
+        local w = t.minute.w
+        local h = t.minute.h
+
+        cr:translate(500, 500)
+        cr:rotate(-tmp_angle)
+        cr:rotate(angle)
+        cr:translate(-500, -500)
+        cr:set_source(gears.color(t.minute.color))
+        cr:rectangle(500 - w/2, 500 - h, w, h)
+
+        cr.antialias = cairo.Antialias.BEST
+        cr:fill()
+
+        tmp_angle = angle
+    end
+
+    if t.hour.enable then
+        local angle = ((t.hour.v % 12) / 12) * 2 * math.pi
+        local w = t.hour.w
+        local h = t.hour.h
+
+        cr:translate(500, 500)
+        cr:rotate(-tmp_angle)
+        cr:rotate(angle)
+        cr:translate(-500, -500)
+        cr:set_source(gears.color(t.hour.color))
+        cr:rectangle(500 - w/2, 500 - h, w, h)
+
+        cr.antialias = cairo.Antialias.BEST
+        cr:fill()
+
+        tmp_angle = angle
+    end
+
+    return img
+end
+
+return function(options)
+    local hands = create_hands(options)
+    local hands_img = wibox.widget {
+        image = hands,
+        id = 'hands',
+        widget = wibox.widget.imagebox
+    }
+
+    local analog_clock = wibox.widget {
+        hands_img,
+
+        bg = options.background.color,
+        shape = options.background.shape,
+
+        id = 'background',
+        widget = wibox.container.background
+    }
+
+    local second, minute, hour = 0, 0, 0
+
+    gears.timer {
+        timeout = (
+            options.second.enable and 1
+            or (
+                options.minute.enable and 60
+                or (
+                    options.hour.enable and 3600
+                    or nil
+                )
+            )
+        ),
+        call_now = true,
+        autostart = true,
+        callback = function()
+            second = os.date('%S')
+
+            local minute_orig = os.date('%M')
+            minute = (options.second.enable and minute_orig + (second / 60) or minute_orig)
+
+            local hour_orig   = os.date('%H')
+            hour   = (options.minute.enable and hour_orig   + (minute / 60) or hour_orig  )
+
+            options.second.v = second
+            options.minute.v = minute
+            options.hour.v   = hour
+
+            hands_img.image = create_hands(options)
+        end
+    }
+
+    return analog_clock
+end

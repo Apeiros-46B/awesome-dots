@@ -25,19 +25,25 @@ local analog_clock = require('widgets.analog_clock')({
     second = {
         v = 0,
         enable = true,
-        color = colors.purple
+        color = colors.purple,
+        w = 1,
+        h = 10
     },
 
     minute = {
         v = 0,
         enable = true,
-        color = colors.teal
+        color = colors.teal,
+        w = 2,
+        h = 9
     },
 
     hour = {
         v = 0,
         enable = true,
-        color = colors.teal
+        color = colors.blue,
+        w = 2,
+        h = 6
     }
 })
 
