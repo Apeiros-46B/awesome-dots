@@ -62,6 +62,6 @@ i3lock \
 --screen 1					\
 --clock						\
 --indicator					\
---time-str="%I:%M %p"		\
---date-str="%b %d, %G"		\
+--time-str="%H:%M"		\
+--date-str="%m/%d/%Y:%u"		\
 --blur 10					
