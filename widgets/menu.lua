@@ -3,31 +3,31 @@ local hotkeys_popup = awful.hotkeys_popup
 
 local beautiful = require("beautiful")
 
-local awesomemenu = {
+local awesome = {
     { "hotkeys", function() hotkeys_popup.show_help(nil, awful.screen.focused()) end },
-    { "manual", terminal_start_cmd .. "man awesome" },
-    { "edit config", editor_cmd .. " " .. awesome.conffile },
+    { "manual", Terminal_start_cmd .. "man awesome" },
+    { "edit config", Editor_cmd .. " " .. awesome.conffile },
     { "restart", awesome.restart },
     { "quit", function() awesome.quit() end },
 }
 
-local appmenu = {
+local apps = {
     { "browser", "brave" },
     { "spotify", "spotify" },
-    { "txt editor", terminal_start_cmd .. "nvim" },
+    { "txt editor", Terminal_start_cmd .. "nvim" },
 }
 
-local utilmenu = {
+local utils = {
     { "screenshot", "flameshot gui" },
-    { "terminal", terminal },
-    { "btop", terminal_start_cmd .. "btop" },
+    { "terminal", Terminal },
+    { "btop", Terminal_start_cmd .. "btop" },
     { "file manager", "pcmanfm" },
 }
 
-mainmenu = awful.menu({
+Menu = awful.menu({
     items = {
-        { "awesome", awesomemenu, beautiful.awesome_icon },
-        { "apps", appmenu },
-        { "utils", utilmenu }
+        { "awesome", awesome, beautiful.awesome_icon },
+        { "apps", apps },
+        { "utils", utils }
     }
 })

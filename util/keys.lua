@@ -152,10 +152,10 @@ M.globalkeys = gears.table.join(
 -- -- --
 
     -- {{{ launchers
-    awful.key({ modkey,           }, "Return", function () awful.spawn(terminal, false) end,
+    awful.key({ modkey,           }, "Return", function () awful.spawn(Terminal, false) end,
               {description = "terminal", group = "launcher"}),
 
-    awful.key({ ctl, s            }, "Escape",  function () awful.spawn(terminal_start_cmd .. "btop", false) end,
+    awful.key({ ctl, s            }, "Escape",  function () awful.spawn(Terminal_start_cmd .. "btop", false) end,
               {description = "task manager", group = "launcher"}),
 
     awful.key({ modkey,           }, "space",  function () awful.spawn(script .. "rofiutil", false) end,
@@ -208,7 +208,7 @@ M.globalkeys = gears.table.join(
     -- awful.key({ modkey, s         }, "q",      awesome.quit,
               -- {description = "quit awesome", group = "awesome"}),
 
-    awful.key({ modkey,           }, "w", function () mainmenu:show() end,
+    awful.key({ modkey,           }, "w", function () Menu:show() end,
               {description = "show main menu", group = "awesome"}),
 
     awful.key({ modkey, s         }, "b",      hotkeys_popup.show_help,

@@ -1,7 +1,7 @@
 local awful = require("awful")
-local beautiful = require("beautiful")
+local gears = require("gears")
 
-local M = {}
+local beautiful = require("beautiful")
 
 -- Theme
 local theme_path = string.format("%s/.config/awesome/themes/%s/theme.lua", os.getenv("HOME"), "default")
@@ -36,13 +36,25 @@ bling.widget.window_switcher.enable {
 
 -- Variables
 -- Default terminal emulator and editor
-terminal = "kitty -c " .. os.getenv("HOME") .. "/.config/awesome/external/kitty/kitty.conf"
-terminal_start_cmd = terminal .. " -e "
-editor = "nvim"
-editor_cmd = terminal_start_cmd .. editor
+Terminal = "kitty -c " .. os.getenv("HOME") .. "/.config/awesome/external/kitty/kitty.conf"
+Terminal_start_cmd = Terminal .. " -e "
+Editor = os.getenv("EDITOR") or "nvim"
+Editor_cmd = Terminal_start_cmd .. Editor
 
 -- Default modkey
-modkey = "Mod4"
+Modkey = "Mod4"
 
 -- Menu
 require("widgets.menu")
+
+-- Prevent memory leaks
+gears.timer {
+  timeout = 30,
+  call_now = true,
+  autostart = true,
+  callback = function()
+    collectgarbage("step", 1024)
+    collectgarbage("setpause", 110)
+    collectgarbage("setstepmul", 1000)
+  end,
+}

@@ -214,7 +214,7 @@ local tag_list = function(s)
                 end
             ),
             awful.button(
-                { modkey },
+                { Modkey },
                 1,
                 function(t)
                     if client.focus then
@@ -232,7 +232,7 @@ local tag_list = function(s)
                 end
             ),
             awful.button(
-                { modkey },
+                { Modkey },
                 3,
                 function(t)
                     if client.focus then

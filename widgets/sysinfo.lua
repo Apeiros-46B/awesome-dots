@@ -20,7 +20,7 @@ local buttons = {
         {},
         3,
         function()
-            awful.spawn(terminal_start_cmd .. "btop")
+            awful.spawn(Terminal_start_cmd .. "btop")
         end
     )
 }
@@ -248,7 +248,7 @@ memory:buttons(gears.table.join(
         {},
         3,
         function()
-            awful.spawn(terminal_start_cmd .. "btop")
+            awful.spawn(Terminal_start_cmd .. "btop")
         end
     )
 ))

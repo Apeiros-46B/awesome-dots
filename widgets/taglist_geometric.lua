@@ -155,7 +155,7 @@ local taglist = function(s)
             ),
             -- Mod+Left click -> move focused client to tag
             awful.button(
-                { modkey },
+                { Modkey },
                 1,
                 function(t)
                     if client.focus then
@@ -173,7 +173,7 @@ local taglist = function(s)
             ),
             -- Mod+Right click -> toggle focused client on the tag
             awful.button(
-                { modkey },
+                { Modkey },
                 3,
                 function(t)
                     if client.focus then
