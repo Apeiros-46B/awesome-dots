@@ -7,8 +7,11 @@ local dpi = beautiful.xresources.apply_dpi
 
 local colors = beautiful.colorscheme
 
+local padding = require("widgets.padding")
+
 local list_update = function(widget, buttons, label, data, objects)
     widget:reset()
+    local iterated_over_clients = false
 
     for _, object in ipairs(objects) do
         local task_widget = wibox.widget {
@@ -131,7 +134,12 @@ local list_update = function(widget, buttons, label, data, objects)
                 end
             end
         )
+
+        iterated_over_clients = true
     end
+
+    if iterated_over_clients then widget:add(padding) end
+
     return widget
 end
 
