@@ -1,4 +1,4 @@
--- Find luarocks packages
+-- Autoload luarocks modules
 pcall(require, "luarocks.loader")
 
 -- Autofocus
