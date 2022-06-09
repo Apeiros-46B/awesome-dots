@@ -4,11 +4,8 @@ local wibox = require("wibox")
 local dpi = require("beautiful.xresources").apply_dpi
 
 local get = function(s) awful.spawn.easy_async('acpi', function(stdout, _, _, _)
-    -- Check if system has a battery
-    local has_battery = (stdout:match('Battery %d') and true or false)
-
-    -- Import sysinfo
-    local sysinfo = require("widgets.sysinfo")(has_battery)
+    -- Import sysinfo                          -- Check if system has a battery
+    local sysinfo = require("widgets.sysinfo")(stdout:match('Battery %d') and true or false)
 
     -- Promptbox
     s.promptbox = awful.widget.prompt()

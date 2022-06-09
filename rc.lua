@@ -5,22 +5,22 @@ pcall(require, "luarocks.loader")
 require("awful.autofocus")
 
 -- Error handling
-require("util.error_handling")
+require("core.error_handling")
 
 -- Theme, layouts, Bling, variables and menu
-require("util.misc")
+require("core.misc")
 
 -- Screen setup (wallpaper, tags, and wibar)
-require("util.screen_setup")
+require("core.screen_setup")
 
 -- Set key and mouse bindings
-require("util.bindings_init")
+require("core.bindings")
 
 -- Set client rules
-require("util.rules")
+require("core.rules")
 
 -- Connect to signals
-require("util.signal")
+require("core.signal")
 
 -- Start external programs (e.g. picom)
-require("util.autostart")
+require("core.autostart")

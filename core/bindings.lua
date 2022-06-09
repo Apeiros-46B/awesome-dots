@@ -1,7 +1,7 @@
 local awful = require("awful")
 local gears = require("gears")
 
-local keys = require("util.keys")
+local keys = require("core.keys")
 
 -- Mouse bindings
 root.buttons(gears.table.join(
