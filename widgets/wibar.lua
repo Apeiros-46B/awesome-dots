@@ -3,13 +3,18 @@ local gears = require("gears")
 local wibox = require("wibox")
 local dpi = require("beautiful.xresources").apply_dpi
 
-local get = function(s)
-    -- Create a promptbox for each screen
+local get = function(s) awful.spawn.easy_async('acpi', function(stdout, _, _, _)
+    -- Check if system has a battery
+    local has_battery = (stdout:match('Battery %d') and true or false)
+
+    -- Import sysinfo
+    local sysinfo = require("widgets.sysinfo")(has_battery)
+
+    -- Promptbox
     s.promptbox = awful.widget.prompt()
     s.promptbox.with_shell = true
 
-    -- Create an imagebox widget which will contain a layout icon.
-    -- We need one layoutbox per screen.
+    -- Layout indicator
     s.layoutbox = awful.widget.layoutbox(s)
     s.layoutbox:buttons(gears.table.join(
         awful.button({ }, 1, function () mainmenu:show()      end),
@@ -17,8 +22,10 @@ local get = function(s)
         awful.button({ }, 5, function () awful.layout.inc(-1) end)
     ))
 
-    -- Misc widget imports
-    local sysinfo = require("widgets.sysinfo")
+    -- System tray
+    s.systray = require("widgets.systray")
+
+    -- Misc
     local padding = require("widgets.padding")
 
     -- Create the wibox
@@ -34,21 +41,20 @@ local get = function(s)
 
             s.layoutbox,
             padding,
-            require("widgets.geolist")(s),
-            -- require("widgets.taglist").get(s),
+            require("widgets.taglist_geometric")(s),
+            padding,
+            require("widgets.tasklist")(s),
+            -- s.systray,
             s.promptbox,
         },
         { -- Middle widgets
             layout = wibox.layout.fixed.horizontal,
-
-            -- require("widgets.improved_tasklist")(s),
-            -- require("widgets.tasklist").get(s),
         },
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
 
             require("widgets.textclock"),
-            padding,
+            (has_battery and padding or nil),
             sysinfo.battery,
             padding,
             sysinfo.cpu,
@@ -56,6 +62,6 @@ local get = function(s)
             sysinfo.memory,
         }
     }
-end
+end) end
 
 return get

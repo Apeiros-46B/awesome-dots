@@ -41,7 +41,7 @@ local analog_clock = require('widgets.analog_clock')({
     hour = {
         v = 0,
         enable = true,
-        color = colors.blue,
+        color = colors.teal,
         w = dpi(2),
         h = dpi(6)
     }
