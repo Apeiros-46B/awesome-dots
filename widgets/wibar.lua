@@ -14,7 +14,7 @@ local get = function(s) awful.spawn.easy_async('acpi', function(stdout, _, _, _)
     -- Layout indicator
     s.layoutbox = awful.widget.layoutbox(s)
     s.layoutbox:buttons(gears.table.join(
-        awful.button({ }, 1, function () Menu:show()      end),
+        awful.button({ }, 1, function () Menu:toggle()        end),
         awful.button({ }, 4, function () awful.layout.inc( 1) end),
         awful.button({ }, 5, function () awful.layout.inc(-1) end)
     ))

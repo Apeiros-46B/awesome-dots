@@ -22,6 +22,7 @@ local ctl = "Control"
 
 -- misc
 local script = "bash " .. os.getenv("HOME") .. "/.config/awesome/scripts/"
+-- local notify = require("util.notify")
 -- }}}
 
 -- == -- == --
@@ -144,7 +145,7 @@ M.globalkeys = gears.table.join(
 
     awful.key({ modkey            }, "y",      function () awful.layout.inc( 1)                end,
               {description = "select next", group = "layout"}),
-
+    
     awful.key({ modkey, s         }, "y",      function () awful.layout.inc(-1)                end,
               {description = "select previous", group = "layout"}),
     -- }}}
@@ -170,7 +171,7 @@ M.globalkeys = gears.table.join(
     awful.key({ modkey, s         }, "c",      function () awful.spawn(script .. "rofiutil -q", false) end,
               {description = "calculator menu", group = "launcher"}),
 
-    awful.key({ modkey, ctl       }, "s",      function () awful.spawn(script .. "rofiutil -s", false) end,
+    awful.key({ modkey, alt       }, "s",      function () awful.spawn(script .. "rofiutil -s", false) end,
               {description = "screenshot menu", group = "launcher"}),
 
     awful.key({ modkey, s         }, "s",      function () awful.spawn("flameshot gui", false) end,
@@ -237,14 +238,14 @@ M.globalkeys = gears.table.join(
 
     -- power
     --- suspend
-    awful.key({ modkey, alt       }, "F12",      function () awful.spawn("loginctl suspend", false) end,
+    awful.key({ modkey, alt       }, "F12",    function () awful.spawn("loginctl suspend", false) end,
               {description = "suspend", group = "system"}),
 
     -- add typos to the clipboard
     awful.key({ modkey, s         }, "t",      function ()
         local typogen = require("util.typo_generator")
 
-        awful.spawn.easy_async("xclip -o -selection clipboard", function(stdout, stderr, reason, exit_code)
+        awful.spawn.easy_async("xclip -o -selection clipboard", function(stdout, _, _, _)
             clipboard_contents = typogen.mainfunc(stdout, 10, typogen.keymaps.qwerty)
             new_clipboard = clipboard_contents:gsub("\n[^\n]*$", "")
 
@@ -252,10 +253,42 @@ M.globalkeys = gears.table.join(
                 title = "Clipboard Typo-ified",
                 text = new_clipboard
             })
-            awful.spawn.easy_async_with_shell("printf \"" .. new_clipboard .. "\" | xclip -selection clipboard", nil)
+            awful.spawn.with_shell("printf \"" .. new_clipboard .. "\" | xclip -selection clipboard", nil)
         end)
     end,
     {description = "add typos to clipboard contents", group = "misc"}),
+
+    awful.key({ modkey, s         }, "n",      function () notify(
+        {
+            title    = "This is a test notification",
+            message  = "This is the notification content",
+            app_name = "tester",
+            replaces = true,
+            -- replaces = false,
+            actions  = {
+                naughty.action { name = "Action 1", position = 1, selected = true  },
+                naughty.action { name = "Action 2", position = 2, selected = false },
+                naughty.action { name = "Action 3", position = 3, selected = false }
+            }
+        })
+    end,
+    {description = "send a test notification", group = "misc"}),
+
+    awful.key({ modkey,           }, "n",      function () notify(
+        {
+            title    = "This is another test notification",
+            message  = "This is the notification content",
+            app_name = "tester2",
+            replaces = true,
+            -- replaces = false,
+            actions  = {
+                naughty.action { name = "Action 1", position = 1, selected = true  },
+                naughty.action { name = "Action 2", position = 2, selected = false },
+                naughty.action { name = "Action 3", position = 3, selected = false }
+            }
+        })
+    end,
+    {description = "send a different test notification", group = "misc"}),
     -- }}}
 
 -- -- --
@@ -314,7 +347,7 @@ M.clientkeys = gears.table.join(
     awful.key({ modkey,           }, "t",      function (c) c.ontop = not c.ontop            end,
               {description = "toggle keep on top", group = "client"}),
 
-    awful.key({ modkey,           }, "s",      function (c) c.sticky = not c.sticky          end,
+    awful.key({ modkey, ctl       }, "s",      function (c) c.sticky = not c.sticky          end,
               {description = "toggle sticky/omnipresent", group = "client"}),
 
     awful.key({ modkey,           }, "f",      function (c)
@@ -423,7 +456,7 @@ for i = 1, 8 do
         {description = "move focused client to tag #"..i, group = "tag"}),
 
         -- Toggle tag on focused client.
-        awful.key({ modkey, ctl      , s       }, "#" .. i + 9, function ()
+        awful.key({ modkey, ctl, s  }, "#" .. i + 9, function ()
             if client.focus then
                 local tag = client.focus.screen.tags[i]
                 if tag then

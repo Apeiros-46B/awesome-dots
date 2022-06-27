@@ -12,8 +12,8 @@ local theme = beautiful.get()
 local colors = theme.colorscheme
 
 -- clock formats
-local format1 = " %m/%d:%u -> %R "
-local format2 = " %m/%d/%Y:%u -> %R:%S "
+local format1 = " %d/%m:%u -> %R "
+local format2 = " %d/%m/%Y:%u -> %R:%S "
 
 -- analog clock
 local analog_clock = require('widgets.analog_clock')({

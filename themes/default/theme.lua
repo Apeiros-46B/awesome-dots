@@ -22,24 +22,24 @@ local theme = {}
 -- {{{ Colors
 local colors = {
     -- Gray
-    gray1 = "#2b3339",
-    gray2 = "#303c42",
-    gray3 = "#384348",
-    gray4 = "#445055",
-    gray5 = "#607279",
-    gray6 = "#7a8487",
-    gray7 = "#859289",
+    gray1  = "#2b3339",
+    gray2  = "#303c42",
+    gray3  = "#384348",
+    gray4  = "#445055",
+    gray5  = "#607279",
+    gray6  = "#7a8487",
+    gray7  = "#859289",
 
     -- Foreground
-    white = "#d3c6aa",
+    white  = "#d3c6aa",
 
     -- Other colors
-    red = "#e67e80",
+    red    = "#e67e80",
     orange = "#e69875",
     yellow = "#ddbc7f",
-    green = "#a7c080",
-    teal = "#83c092",
-    blue = "#7fbbb3",
+    green  = "#a7c080",
+    teal   = "#83c092",
+    blue   = "#7fbbb3",
     purple = "#d699b6",
 }
 
@@ -82,25 +82,25 @@ theme.hotkeys_border_color = colors.blue
 -- }}}
 
 -- {{{ Bling window switcher
-theme.window_switcher_widget_bg = colors.gray2                    -- The bg color of the widget
-theme.window_switcher_widget_border_width = 2                     -- The border width of the widget
-theme.window_switcher_widget_border_radius = 0                    -- The border radius of the widget
-theme.window_switcher_widget_border_color = colors.gray3          -- The border color of the widget
-theme.window_switcher_clients_spacing = 16                        -- The space between each client item
-theme.window_switcher_client_icon_horizontal_spacing = 4          -- The space between client icon and text
-theme.window_switcher_client_width = 600                          -- The width of one client widget
-theme.window_switcher_client_height = 48                          -- The height of one client widget
-theme.window_switcher_client_margins = 12                         -- The margin between the content and the border of the widget
-theme.window_switcher_thumbnail_margins = 12                      -- The margin between one client thumbnail and the rest of the widget
-theme.thumbnail_scale = false                                     -- If set to true, the thumbnails fit policy will be set to "fit" instead of "auto"
-theme.window_switcher_name_margins = 10                           -- The margin of one clients title to the rest of the widget
-theme.window_switcher_name_valign = "center"                      -- How to vertically align one clients title
-theme.window_switcher_name_forced_width = 550                     -- The width of one title
-theme.window_switcher_name_font = "JetBrainsMono Nerd Font Bold"  -- The font of all titles
-theme.window_switcher_name_normal_color = colors.white            -- The color of one title if the client is unfocused
-theme.window_switcher_name_focus_color = colors.blue              -- The color of one title if the client is focused
-theme.window_switcher_icon_valign = "center"                      -- How to vertically align the one icon
-theme.window_switcher_icon_width = 40                             -- The width of one icon
+theme.window_switcher_widget_bg = colors.gray2                       -- The bg color of the widget
+theme.window_switcher_widget_border_width = 2                        -- The border width of the widget
+theme.window_switcher_widget_border_radius = 0                       -- The border radius of the widget
+theme.window_switcher_widget_border_color = colors.gray3             -- The border color of the widget
+theme.window_switcher_clients_spacing = 8                            -- The space between each client item
+theme.window_switcher_client_icon_horizontal_spacing = 6             -- The space between client icon and text
+theme.window_switcher_client_width = 400                             -- The width of one client widget
+theme.window_switcher_client_height = 36                             -- The height of one client widget
+theme.window_switcher_client_margins = 12                            -- The margin between the content and the border of the widget
+theme.window_switcher_thumbnail_margins = 6                          -- The margin between one client thumbnail and the rest of the widget
+theme.thumbnail_scale = false                                        -- If set to true, the thumbnails fit policy will be set to "fit" instead of "auto"
+theme.window_switcher_name_margins = 6                               -- The margin of one clients title to the rest of the widget
+theme.window_switcher_name_valign = "center"                         -- How to vertically align one clients title
+theme.window_switcher_name_forced_width = 350                        -- The width of one title
+theme.window_switcher_name_font = "JetBrainsMono Nerd Font Bold 10"  -- The font of all titles
+theme.window_switcher_name_normal_color = colors.white               -- The color of one title if the client is unfocused
+theme.window_switcher_name_focus_color = colors.blue                 -- The color of one title if the client is focused
+theme.window_switcher_icon_valign = "center"                         -- How to vertically align the one icon
+theme.window_switcher_icon_width = 30                                -- The width of one icon
 -- }}}
 
 -- {{{ Notifications
@@ -109,7 +109,19 @@ naughty.config.spacing = dpi(8)
 naughty.config.defaults.icon_size = dpi(48)
 naughty.config.defaults.margin = dpi(12)
 naughty.config.defaults.border_width = dpi(2)
+
+theme.notification_max_width = dpi(640)
+theme.notification_icon_size = dpi(48)
+
+theme.notification_padding = dpi(16)
+theme.notification_margin = dpi(12)
+theme.notification_spacing = dpi(8)
+theme.notification_action_spacing = dpi(0)
+theme.notification_text_spacing = dpi(4)
+
 theme.notification_border_color = colors.gray3
+theme.notification_border_width = 0
+
 theme.notification_bg = colors.gray2
 -- }}}
 
