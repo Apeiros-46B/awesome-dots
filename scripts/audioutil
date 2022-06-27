@@ -267,15 +267,15 @@ case $1 in
     media)
         case $2 in
             prev)
-                playerctl previous
+                playerctl previous -p spotify,chromium
                 ;;
             
             toggle)
-                playerctl play-pause
+                playerctl play-pause -p spotify,chromium
                 ;;
 
             next)
-                playerctl next
+                playerctl next -p spotify,chromium
                 ;;
 
             *)

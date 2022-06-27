@@ -294,9 +294,6 @@ M.globalkeys = gears.table.join(
 -- -- --
 
     -- {{{ audio control
-    -- TODO: replace `audioutil` script with custom lua script that interfaces with
-    -- libpulse instead of manually calling pactl through a shell
-
     -- volume
     awful.key({ ctl,              }, "F1",     function () awful.spawn(script .. "audioutil vol inc-default-sink", false) end,
               {description = "cycle default sink", group = "audio"}),
@@ -308,11 +305,11 @@ M.globalkeys = gears.table.join(
               {description = "toggle mute", group = "audio"}),
 
     -- media
-    awful.key({ ctl,              }, "F6",     function () awful.spawn("playerctl -p spotify previous", false) end,
+    awful.key({ ctl,              }, "F6",     function () awful.spawn(script .. "audioutil media prev", false) end,
               {description = "previous song", group = "audio"}),
-    awful.key({ ctl,              }, "F7",     function () awful.spawn("playerctl -p spotify play-pause", false) end,
+    awful.key({ ctl,              }, "F7",     function () awful.spawn(script .. "audioutil media toggle", false) end,
               {description = "play/pause", group = "audio"}),
-    awful.key({ ctl,              }, "F8",     function () awful.spawn("playerctl -p spotify next", false) end,
+    awful.key({ ctl,              }, "F8",     function () awful.spawn(script .. "audioutil media next", false) end,
               {description = "next song", group = "audio"})
     -- }}}
 
