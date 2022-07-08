@@ -21,8 +21,9 @@ local s = "Shift"
 local ctl = "Control"
 
 -- misc
+local dpi = require("beautiful.xresources").apply_dpi
 local script = "bash " .. os.getenv("HOME") .. "/.config/awesome/scripts/"
--- local notify = require("util.notify")
+-- local notify = require("module.notify")
 -- }}}
 
 -- == -- == --
@@ -226,15 +227,15 @@ M.globalkeys = gears.table.join(
             s.wibox.visible = not s.wibox.visible
         end
     end,
-    {description = "wibar", group = "toggle"}),
+    {description = "wibar", group = "global toggle"}),
 
     --- picom
     awful.key({ modkey, s         }, "p",      function () awful.spawn(script .. "picomutil toggle", false) end,
-              {description = "compositor", group = "toggle"}),
+              {description = "compositor", group = "global toggle"}),
 
     --- glava
     awful.key({ modkey, s         }, "g",      function () awful.spawn(script .. "glavautil toggle", false) end,
-              {description = "audio visualizer", group = "toggle"}),
+              {description = "audio visualizer", group = "global toggle"}),
 
     -- power
     --- suspend
@@ -386,8 +387,14 @@ M.clientkeys = gears.table.join(
 
     awful.key({ modkey,           }, "t",      function (c)
         awful.titlebar.toggle(c)
-    end ,
-    {description = "toggle titlebar", group = "client"})
+
+        if c.border_width == dpi(2) then
+            c.border_width = 0
+        else
+            c.border_width = dpi(2)
+        end
+    end,
+    {description = "toggle titlebar and borders", group = "client"})
 -- }}}
 
 -- -- --

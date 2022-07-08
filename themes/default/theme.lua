@@ -394,6 +394,9 @@ theme.awesome_icon_alt = themes_path.."default/icons/misc/awesome-icon-largegap.
 theme.icon_theme = nil
 
 -- Wallpaper
+-- theme.wallpaper = themes_path.."default/walls/car_everforest.png"
+-- theme.wallpaper = themes_path.."default/walls/everforest_stairs.jpg"
+-- theme.wallpaper = themes_path.."default/walls/fog_forest_everforest.jpg"
 theme.wallpaper = themes_path.."default/walls/light_floral_everforest.png"
 -- }}}
 

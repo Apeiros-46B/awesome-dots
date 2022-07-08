@@ -1,9 +1,6 @@
 -- Autoload luarocks modules
 pcall(require, "luarocks.loader")
 
--- Autofocus
-require("awful.autofocus")
-
 -- Error handling
 require("core.error_handling")
 

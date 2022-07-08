@@ -30,7 +30,7 @@ local buttons = {
 return function(has_battery)
     -- {{{ Battery
     -- Start watcher for battery status
-    if has_battery then require("util.status.battery") end
+    if has_battery then require("module.sysinfo.battery") end
 
     -- {{{ Create the widget
     local battery = (has_battery and wibox.widget {
@@ -105,7 +105,7 @@ return function(has_battery)
 
     -- {{{ CPU
     -- Start watcher for cpu usage
-    require("util.status.cpu")
+    require("module.sysinfo.cpu")
 
     -- {{{ Create the widget
     local cpu = wibox.widget {
@@ -169,7 +169,7 @@ return function(has_battery)
 
     -- {{{ Memory
     -- Start watcher for memory usage
-    require("util.status.memory")
+    require("module.sysinfo.memory")
 
     -- {{{ Create the widget
     local memory = wibox.widget {
