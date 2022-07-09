@@ -112,12 +112,13 @@ naughty.config.defaults.border_width = dpi(2)
 
 theme.notification_max_width = dpi(640)
 theme.notification_icon_size = dpi(48)
+theme.notification_icon_resize_strategy = "scale"
 
 theme.notification_padding = dpi(16)
 theme.notification_margin = dpi(12)
 theme.notification_spacing = dpi(8)
-theme.notification_action_spacing = dpi(0)
-theme.notification_text_spacing = dpi(4)
+theme.notification_action_spacing = 0
+theme.notification_text_spacing = 0
 
 theme.notification_border_color = colors.gray3
 theme.notification_border_width = 0

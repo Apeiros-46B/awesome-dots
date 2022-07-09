@@ -23,7 +23,7 @@ local ctl = "Control"
 -- misc
 local dpi = require("beautiful.xresources").apply_dpi
 local script = "bash " .. os.getenv("HOME") .. "/.config/awesome/scripts/"
--- local notify = require("module.notify")
+local notify = require("module.notify")
 -- }}}
 
 -- == -- == --

@@ -20,7 +20,7 @@ awful.layout.layouts = {
 }
 
 -- Bling
-require("module.bling.playerctl")
+require("module.bling.playerctl.notifier")
 require("module.bling.window_switcher")
 
 -- Variables

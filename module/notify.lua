@@ -19,6 +19,10 @@ local function has_items(t)
 end
 
 naughty.connect_signal("request::display", function(n, _)
+    -- naughty.layout.legacy {
+    --     -- Set the notification
+    --     notification = n,
+    -- }
     local actions_list = wibox.widget {
         notification = n,
         base_layout = wibox.widget {
@@ -58,8 +62,8 @@ naughty.connect_signal("request::display", function(n, _)
         cursor = "hand1",
 
         -- Styling
-        -- border_color = beautiful.notification_border_color,
-        -- border_width = beautiful.notification_border_width,
+        border_color = beautiful.notification_border_color,
+        border_width = beautiful.notification_border_width,
         widget_template = {
             {
                 {
@@ -77,7 +81,7 @@ naughty.connect_signal("request::display", function(n, _)
                             layout     = wibox.layout.fixed.horizontal,
                         },
                         actions_list,
-                        spacing = has_items(actions_list) and beautiful.notification_action_spacing or 0,
+                        spacing = 0,
                         layout  = wibox.layout.fixed.vertical,
                     },
                     margins = beautiful.notification_margin,
@@ -98,6 +102,7 @@ end)
 return function(options)
     local replaces = options.replaces
     local app_name = options.app_name
+
     if replaces and app_name then
         local noti_to_destroy = notifications[app_name]
         if noti_to_destroy then noti_to_destroy.die(naughty.notification_closed_reason.dismissedByUser) end
