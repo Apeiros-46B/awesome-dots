@@ -7,5 +7,5 @@ awful.widget.watch("ip a", interval, function(_, stdout)
 
     state = string.match(stdout, "state (UP)")
 
-    awesome.emit_signal("status::network", state)
+    awesome.emit_signal("sysinfo::network", state)
 end)

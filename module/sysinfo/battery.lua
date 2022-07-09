@@ -11,5 +11,5 @@ awful.widget.watch("acpi", interval, function(_, stdout)
         charging = true
     end
 
-    awesome.emit_signal("status::battery", remaining, charging)
+    awesome.emit_signal("sysinfo::battery", remaining, charging)
 end)

@@ -64,6 +64,8 @@ naughty.connect_signal("request::display", function(n, _)
         -- Styling
         border_color = beautiful.notification_border_color,
         border_width = beautiful.notification_border_width,
+
+        -- Custom widget template
         widget_template = {
             {
                 {
@@ -71,10 +73,15 @@ naughty.connect_signal("request::display", function(n, _)
                         {
                             naughty.widget.icon,
                             {
-                                naughty.widget.title,
-                                naughty.widget.message,
-                                spacing = beautiful.notification_text_spacing,
-                                layout  = wibox.layout.fixed.vertical,
+                                {
+                                    naughty.widget.title,
+                                    naughty.widget.message,
+                                    spacing = beautiful.notification_text_spacing,
+                                    layout  = wibox.layout.fixed.vertical,
+                                },
+                                halign = "center",
+                                valign = "center",
+                                widget = wibox.container.place
                             },
                             fill_space = true,
                             spacing    = beautiful.notification_margin,
@@ -96,6 +103,7 @@ naughty.connect_signal("request::display", function(n, _)
         }
     }
 
+    -- If the notification has an app name, add it to the table
     if n.app_name then notifications[n.app_name] = n end
 end)
 

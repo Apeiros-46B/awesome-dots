@@ -6,5 +6,5 @@ awful.widget.watch('sh -c "top -bn1 | grep \"Cpu\""', interval, function(_, stdo
     local us = tonumber(string.match(stdout, ' (.*) us'))
     local sy = tonumber(string.match(stdout, ', *(.*) sy'))
     local usage = us + sy
-    awesome.emit_signal("status::cpu", usage)
+    awesome.emit_signal("sysinfo::cpu", usage)
 end)

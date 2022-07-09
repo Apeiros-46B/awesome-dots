@@ -22,8 +22,8 @@ awful.widget.watch("cat /proc/meminfo", interval, function(_, stdout)
     end)
 
     if mb_format then
-        awesome.emit_signal("status::memory", usage, percent, "mb")
+        awesome.emit_signal("sysinfo::memory", usage, percent, "mb")
     else
-        awesome.emit_signal("status::memory", percent, percent, "%")
+        awesome.emit_signal("sysinfo::memory", percent, percent, "%")
     end
 end)

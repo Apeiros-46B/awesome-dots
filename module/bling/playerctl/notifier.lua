@@ -9,37 +9,38 @@ end
 
 -- Music notifier
 playerctl:connect_signal("metadata", function(_, title, artist, album_path, album, new, player)
+    -- Check if stuff exists
     local title_exists  = exists(title )
     local artist_exists = exists(artist)
     local album_exists  = exists(album )
     local player_exists = exists(player)
 
+    -- If the playback isn't new then return
     if not new           then return end
+    -- If there is no player (edge case) then return
     if not player_exists then return end
 
-    -- local notif_title  = " " .. title .. " [" .. player .. "]"
-    -- local notif_text_1 = artist_exists and "by " .. artist         or "No artist"
-    -- local notif_text_2 = album_exists  and " (on " .. album .. ")" or ""
-    -- local notif_text   = notif_text_1 .. notif_text_2
-
-    -- Prefix
+    -- Prefix for title
     local notif_title = " "
 
     if title_exists and artist_exists then
-
+        -- Add "artist - title" under normal conditions
         notif_title   = notif_title .. artist .. " - " .. title
-
     elseif title_exists then
-
+        -- Add just the title in the case that there is no artist (e.g. playback of videos in Discord webpage)
         notif_title   = notif_title .. title
-
     else
-        -- YouTube reports no artist when playback stops
+        -- Add "Playback stopped" when there is no title (YouTube reports no title when playback stops)
         notif_title   = notif_title .. "Playback stopped"
-
     end
 
-    local notif_text  = (album_exists and "(on " .. album .. ") " or "") .. "[" .. player .. "]"
+    -- Add player text
+    local notif_text  = "[" .. player .. "]"
+
+    if album_exists then
+        -- Add album text before player text if album exists
+        notif_text    = "(on " .. album .. ") " .. notif_text
+    end
 
     notify({ title = notif_title, message = notif_text, image = album_path, app_name = "bling_playerctl_notifier", replaces = true })
 end)

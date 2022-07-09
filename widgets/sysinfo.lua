@@ -73,7 +73,7 @@ return function(has_battery)
 
     -- {{{ Connect to the watcher's status signal
     if has_battery then
-        awesome.connect_signal("status::battery", function(remaining, charging)
+        awesome.connect_signal("sysinfo::battery", function(remaining, charging)
             -- Set the icon of the prefix depending on battery state and charge
             battery:get_children_by_id("prefix")[1].image = (
                 -- Determines whether or not the icon should be a charging icon or a normal icon
@@ -148,7 +148,7 @@ return function(has_battery)
     -- }}}
 
     -- {{{ Connect to the watcher's status signal
-    awesome.connect_signal("status::cpu", function(usage)
+    awesome.connect_signal("sysinfo::cpu", function(usage)
         -- Set background color based on usage
         cpu:get_children_by_id("prefixbg")[1].bg = (
             -- If usage is over 80, make the prefix icon's background red
@@ -213,7 +213,7 @@ return function(has_battery)
     -- }}}
 
     -- {{{ Connect to the watcher's status signal
-    awesome.connect_signal("status::memory", function(usage, percent, symbol)
+    awesome.connect_signal("sysinfo::memory", function(usage, percent, symbol)
         -- Set background color based on usage
         memory:get_children_by_id("prefixbg")[1].bg = (
             -- If usage is over 80, make the prefix icon's background red

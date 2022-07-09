@@ -104,25 +104,32 @@ theme.window_switcher_icon_width = 30                                -- The widt
 -- }}}
 
 -- {{{ Notifications
+-- Settings for legacy notifications
 naughty.config.padding = dpi(16)
 naughty.config.spacing = dpi(8)
 naughty.config.defaults.icon_size = dpi(48)
 naughty.config.defaults.margin = dpi(12)
 naughty.config.defaults.border_width = dpi(2)
 
+-- Constraints
 theme.notification_max_width = dpi(640)
+
+-- Icon scale
 theme.notification_icon_size = dpi(48)
 theme.notification_icon_resize_strategy = "scale"
 
+-- Padding and spacing
 theme.notification_padding = dpi(16)
 theme.notification_margin = dpi(12)
-theme.notification_spacing = dpi(8)
+theme.notification_spacing = dpi(16)
 theme.notification_action_spacing = 0
 theme.notification_text_spacing = 0
 
+-- Border
 theme.notification_border_color = colors.gray3
 theme.notification_border_width = 0
 
+-- Background
 theme.notification_bg = colors.gray2
 -- }}}
 
