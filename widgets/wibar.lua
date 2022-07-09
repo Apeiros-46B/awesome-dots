@@ -4,8 +4,8 @@ local wibox = require("wibox")
 local dpi = require("beautiful.xresources").apply_dpi
 
 local get = function(s) awful.spawn.easy_async('acpi', function(stdout, _, _, _)
-    -- Import sysinfo                          -- Check if system has a battery
-    local sysinfo = require("widgets.sysinfo")(stdout:match('Battery %d') and true or false)
+    -- Import sysinfo                              -- Check if system has a battery
+    local sysinfo = require("widgets.bar.sysinfo")(stdout:match('Battery %d') and true or false)
 
     -- Promptbox
     s.promptbox = awful.widget.prompt()
@@ -20,10 +20,10 @@ local get = function(s) awful.spawn.easy_async('acpi', function(stdout, _, _, _)
     ))
 
     -- System tray
-    s.systray = require("widgets.systray")
+    s.systray = require("widgets.bar.systray")
 
     -- Misc
-    local padding = require("widgets.padding")
+    local padding = require("widgets.bar.padding")
 
     -- Create the wibox
     s.wibox = awful.wibar({ position = "bottom", screen = s, height = dpi(27) })
@@ -38,20 +38,22 @@ local get = function(s) awful.spawn.easy_async('acpi', function(stdout, _, _, _)
 
             s.layoutbox,
             padding,
-            require("widgets.taglist_geometric")(s),
+            require("widgets.bar.taglist_geometric")(s),
             padding,
-            require("widgets.tasklist")(s),
+            require("widgets.bar.tasklist")(s),
             -- s.systray,
             s.promptbox,
         },
         { -- Middle widgets
             layout = wibox.layout.fixed.horizontal,
+            require("widgets.bar.playerctl"),
+            nil
         },
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
 
-            require("widgets.textclock"),
-            (has_battery and padding or nil),
+            require("widgets.bar.textclock"),
+            (sysinfo.battery ~= nil and padding or nil),
             sysinfo.battery,
             padding,
             sysinfo.cpu,

@@ -81,7 +81,7 @@ theme.hotkeys_border_width = dpi(2)
 theme.hotkeys_border_color = colors.blue
 -- }}}
 
--- {{{ Bling window switcher
+-- {{{ Window switcher
 theme.window_switcher_widget_bg = colors.gray2                       -- The bg color of the widget
 theme.window_switcher_widget_border_width = 2                        -- The border width of the widget
 theme.window_switcher_widget_border_radius = 0                       -- The border radius of the widget
@@ -131,6 +131,11 @@ theme.notification_border_width = 0
 
 -- Background
 theme.notification_bg = colors.gray2
+
+-- Fonts (text weight)
+theme.notification_font         = theme.font
+theme.notification_font_title   = theme.font
+theme.notification_font_message = theme.font:gsub("Bold", "Normal")
 -- }}}
 
 -- {{{ Menu
@@ -367,7 +372,13 @@ theme.layout_spiral  = themes_path.."default/icons/layouts/spiral.png"
 theme.layout_dwindle = themes_path.."default/icons/layouts/dwindle.png"
 -- }}}
 
--- {{{ Status bar icons
+-- {{{ Wibar icons
+-- Playerctl
+theme.playerctl_previous = recolor(themes_path.."default/icons/media/fa-previous.svg", colors.gray1)
+theme.playerctl_play     = recolor(themes_path.."default/icons/media/fa-play.svg",     colors.gray1)
+theme.playerctl_pause    = recolor(themes_path.."default/icons/media/fa-pause.svg",    colors.gray1)
+theme.playerctl_next     = recolor(themes_path.."default/icons/media/fa-next.svg",     colors.gray1)
+
 -- Textclock
 theme.textclock_icon = recolor(themes_path.."default/icons/datetime/fa-clock.svg", colors.gray1)
 

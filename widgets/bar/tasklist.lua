@@ -1,15 +1,14 @@
 local awful = require("awful")
 local wibox = require("wibox")
-local gears = require("gears")
 
 local beautiful = require("beautiful")
 local dpi = beautiful.xresources.apply_dpi
 
 local colors = beautiful.colorscheme
 
-local padding = require("widgets.padding")
+local padding = require("widgets.bar.padding")
 
-local list_update = function(widget, buttons, label, data, objects)
+local list_update = function(widget, buttons, _, _, objects)
     widget:reset()
     local iterated_over_clients = false
 

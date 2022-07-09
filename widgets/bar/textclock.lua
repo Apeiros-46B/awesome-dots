@@ -1,21 +1,20 @@
--- libs
+-- Libraries
 local awful = require("awful")
 local beautiful = require("beautiful")
 local gears = require("gears")
 local wibox = require("wibox")
 
--- functions
+-- Functions
 local dpi = beautiful.xresources.apply_dpi
 
--- theme
-local theme = beautiful.get()
-local colors = theme.colorscheme
+-- Theme
+local colors = beautiful.colorscheme
 
--- clock formats
+-- Clock formats
 local format1 = " %d/%m:%u -> %R "
 local format2 = " %d/%m/%Y:%u -> %R:%S "
 
--- analog clock
+-- Analog clock
 local analog_clock = require('widgets.analog_clock')({
     background = {
         shape = gears.shape.circle,
@@ -77,11 +76,9 @@ local textclock = wibox.widget {
     layout = wibox.layout.fixed.horizontal
 }
 
-textclock:buttons(gears.table.join(
-    awful.button({}, 1, function () textclock:emit_signal("textclock::format_change") end)
-))
+textclock:buttons(awful.button({}, 1, function() textclock:emit_signal("textclock::format_change") end))
 
-textclock:connect_signal("textclock::format_change", function(_)
+textclock:connect_signal("textclock::format_change", function()
     local widget = textclock:get_children_by_id("clock")[1]
 
     if widget.format == format1 then
@@ -89,7 +86,7 @@ textclock:connect_signal("textclock::format_change", function(_)
         widget.refresh = 1
     else
         widget.format  = format1
-        widget.refresh = 45
+        widget.refresh = 60
     end
 end)
 

@@ -19,10 +19,6 @@ local function has_items(t)
 end
 
 naughty.connect_signal("request::display", function(n, _)
-    -- naughty.layout.legacy {
-    --     -- Set the notification
-    --     notification = n,
-    -- }
     local actions_list = wibox.widget {
         notification = n,
         base_layout = wibox.widget {
@@ -74,8 +70,14 @@ naughty.connect_signal("request::display", function(n, _)
                             naughty.widget.icon,
                             {
                                 {
-                                    naughty.widget.title,
-                                    naughty.widget.message,
+                                    {
+                                        font   = beautiful.notification_font_title,
+                                        widget = naughty.widget.title
+                                    },
+                                    {
+                                        font   = beautiful.notification_font_message,
+                                        widget = naughty.widget.message
+                                    },
                                     spacing = beautiful.notification_text_spacing,
                                     layout  = wibox.layout.fixed.vertical,
                                 },
