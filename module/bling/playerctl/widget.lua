@@ -2,70 +2,43 @@
 local awful = require("awful")
 local gears = require("gears")
 local wibox = require("wibox")
-local playerctl = require("bling").signal.playerctl.lib()
+
+local core      = require("module.bling.playerctl.core")
+local playerctl = core.playerctl
 
 local beautiful = require("beautiful")
-local colors = beautiful.colorscheme
-local dpi = beautiful.xresources.apply_dpi
--- }}}
-
--- {{{ Position functions
--- Current position
-local pos = 0
--- Track length
-local max = 0
-
--- Rewind
-local function rew(seconds)
-    local new_pos = pos - seconds
-
-    -- Don't rewind before the beginning of the track
-    new_pos = new_pos < 0 and 0 or new_pos
-
-    -- Set position & return
-    pos = new_pos
-    return new_pos
-end
-
--- Fast forward
-local function fwd(seconds)
-    local new_pos = pos + seconds
-
-    -- Don't fast forward past the end of the track
-    if new_pos > max then return pos end
-
-    -- Set position & return
-    pos = new_pos
-    return new_pos
-end
--- }}}
-
--- {{{ Misc
--- Check if a string is non-nil and not empty
-local function exists(string)
-    return string ~= "" and string ~= nil
-end
+local colors    = beautiful.colorscheme
+local dpi       = beautiful.xresources.apply_dpi
 -- }}}
 
 -- {{{ Buttons
 local buttons     = {
-    shuffle       = awful.button({}, 1, function() playerctl:cycle_shuffle()                       end),
+    shuffle       = awful.button({}, 1, core.toggle_shuffle),
 
     previous      = gears.table.join(
-        awful.button({}, 1, function() playerctl:previous()                                        end),
-        awful.button({}, 3, function() playerctl:set_position(rew(5))                              end)
+        awful.button({}, 1, core.prev                      ),
+        awful.button({}, 2, function() core.rew(15)     end),
+        awful.button({}, 3, function() core.rew(5)      end)
     ),
 
-    play_pause    = awful.button({}, 1, function() playerctl:play_pause()                          end),
+    play_pause    = awful.button({}, 1, core.play_pause    ),
 
     next          = gears.table.join(
-        awful.button({}, 1, function() playerctl:next()                                            end),
-        awful.button({}, 3, function() playerctl:set_position(fwd(5))                              end)
+        awful.button({}, 1, core.next                      ),
+        awful.button({}, 2, function() core.fwd(15)     end),
+        awful.button({}, 3, function() core.fwd(5)      end)
     ),
 
-    loop          = awful.button({}, 1, function() playerctl:cycle_loop_status()                   end),
+    loop          = awful.button({}, 1, core.cycle_loop    ),
 
-    toggle_extras = awful.button({}, 1, function() awesome.emit_signal("playerctl::toggle_extras") end)
+    toggle_extras = awful.button({}, 1, function()
+        awesome.emit_signal("playerctl::toggle_extras")
+    end),
+
+    cycle_players = gears.table.join(
+        awful.button({}, 4, core.next_player),
+        awful.button({}, 5, core.prev_player)
+    )
 }
 -- }}}
 
@@ -164,8 +137,7 @@ local widget = wibox.widget {
             id = "buttonsmargin",
             -- Compensate for weird spacing issue on buttons
             left = dpi(6),
-            right = dpi(1),
-            -- right = dpi(8),
+            right = dpi(2),
             widget = wibox.container.margin
         },
         id = "buttonsbg",
@@ -198,7 +170,11 @@ local widget = wibox.widget {
 -- {{{ Update the shuffle button
 local function update_shuffle_button(shuffle)
     -- Get the widget & set the image
-    widget:get_children_by_id("shuffle")[1].image = shuffle and beautiful.playerctl_shuffle or beautiful.playerctl_shuffle_off
+    widget:get_children_by_id("shuffle")[1].image = (
+        shuffle
+            and beautiful.playerctl_shuffle
+            or beautiful.playerctl_shuffle_off
+    )
 end
 -- }}}
 
@@ -244,6 +220,12 @@ end
 
 -- {{{ Signals
 -- {{{ Change the text when the song changes
+-- Check if a string is non-nil and not empty
+local function exists(string)
+    return string ~= "" and string ~= nil
+end
+
+-- Connect to the signal
 playerctl:connect_signal("metadata", function(_, title, artist, _, _, _, player)
     -- Check if stuff exists
     local title_exists  = exists(title )
@@ -363,7 +345,7 @@ awesome.connect_signal("playerctl::toggle_extras", function()
     -- Fix margins
     if extras_visible then
         margin.left = dpi(6)
-        margin.right = dpi(1)
+        margin.right = dpi(2)
     else
         margin.left = 0
         margin.right = dpi(8)

@@ -3,6 +3,7 @@
 
 -- {{{ Library import
 local playerctl = require("bling").signal.playerctl.lib()
+local naughty = require("naughty")
 -- }}}
 
 -- {{{ Initialize table
@@ -135,7 +136,7 @@ M.shuffle    = false
 M.loop       = 1
 
 -- Valid loop states (string:number)
-M.loops_int  = { none = 1, track = 2, playlist = 3 }
+M.loops_int  = { none = 0, track = 1, playlist = 2 }
 
 -- Valid loop states (number:string)
 M.loops_str  = {"none",   "track",   "playlist"    }
@@ -160,7 +161,7 @@ function M.set_loop(loop)
         -- Cycle if no args provided
         M.cycle_loop()
     else
-        playerctl:set_loop_status(M.loops_str[M.loop])
+        playerctl:set_loop_status(loop)
     end
 end
 
@@ -169,11 +170,11 @@ function M.cycle_loop()
     -- Set the value to a local var
     local i = M.loop
 
-    -- Add 1
-    i = i + 1
+    -- Cycle
+    i = i - 1
 
-    -- Make sure the value doesn't get out of bounds
-    if i > 3 then i = i - 3 end
+    -- Make sure it doesn't get out of bounds
+    if i < 0 then i = i + 3 end
 
     -- Change the loop mode
     M.loop = i
@@ -181,10 +182,10 @@ function M.cycle_loop()
 end
 
 -- Update the shuffle state
-playerctl:connect_signal("shuffle", function(_, shuffle, _) M.shuffle = shuffle end)
+playerctl:connect_signal("shuffle",     function(_, shuffle, _)     M.shuffle = shuffle                  end)
 
 -- Update the loop state
-playerctl:connect_signal("loop_status", function(_, loop_status, _) M.loop = M.loops_int[loop_status] end)
+playerctl:connect_signal("loop_status", function(_, loop_status, _) M.loop    = M.loops_int[loop_status] end)
 -- }}}
 
 -- {{{ Return table
