@@ -1,0 +1,2 @@
+-- core file which will have functions for getting information on the fly, changing loop & shuffle, seeking, etc
+-- WIP, dont have time to work on this rn

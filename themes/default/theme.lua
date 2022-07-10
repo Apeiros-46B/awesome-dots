@@ -103,6 +103,11 @@ theme.window_switcher_icon_valign = "center"                         -- How to v
 theme.window_switcher_icon_width = 30                                -- The width of one icon
 -- }}}
 
+-- {{{ Playerctl
+theme.playerctl_player = {"spotify", "%any"}
+theme.playerctl_update_on_activity = false
+-- }}}
+
 -- {{{ Notifications
 -- Settings for legacy notifications
 naughty.config.padding = dpi(16)
@@ -374,10 +379,17 @@ theme.layout_dwindle = themes_path.."default/icons/layouts/dwindle.png"
 
 -- {{{ Wibar icons
 -- Playerctl
-theme.playerctl_previous = recolor(themes_path.."default/icons/media/fa-previous.svg", colors.gray1)
-theme.playerctl_play     = recolor(themes_path.."default/icons/media/fa-play.svg",     colors.gray1)
-theme.playerctl_pause    = recolor(themes_path.."default/icons/media/fa-pause.svg",    colors.gray1)
-theme.playerctl_next     = recolor(themes_path.."default/icons/media/fa-next.svg",     colors.gray1)
+theme.playerctl_shuffle_off = recolor(themes_path.."default/icons/media/mdi-shuffle-off.svg", colors.gray1)
+theme.playerctl_shuffle     = recolor(themes_path.."default/icons/media/mdi-shuffle.svg",     colors.gray1)
+
+theme.playerctl_previous    = recolor(themes_path.."default/icons/media/fa-previous.svg",     colors.gray1)
+theme.playerctl_play        = recolor(themes_path.."default/icons/media/fa-play.svg",         colors.gray1)
+theme.playerctl_pause       = recolor(themes_path.."default/icons/media/fa-pause.svg",        colors.gray1)
+theme.playerctl_next        = recolor(themes_path.."default/icons/media/fa-next.svg",         colors.gray1)
+
+theme.playerctl_loop_off    = recolor(themes_path.."default/icons/media/mdi-loop-off.svg",    colors.gray1)
+theme.playerctl_loop_one    = recolor(themes_path.."default/icons/media/mdi-loop-one.svg",    colors.gray1)
+theme.playerctl_loop        = recolor(themes_path.."default/icons/media/mdi-loop.svg",        colors.gray1)
 
 -- Textclock
 theme.textclock_icon = recolor(themes_path.."default/icons/datetime/fa-clock.svg", colors.gray1)

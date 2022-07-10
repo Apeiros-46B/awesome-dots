@@ -24,6 +24,7 @@ local ctl = "Control"
 local dpi = require("beautiful.xresources").apply_dpi
 local script = "bash " .. os.getenv("HOME") .. "/.config/awesome/scripts/"
 local notify = require("module.notify")
+local playerctl = require("bling").signal.playerctl.lib()
 -- }}}
 
 -- == -- == --
@@ -311,7 +312,17 @@ M.globalkeys = gears.table.join(
     awful.key({ ctl,              }, "F7",     function () awful.spawn(script .. "audioutil media toggle", false) end,
               {description = "play/pause", group = "audio"}),
     awful.key({ ctl,              }, "F8",     function () awful.spawn(script .. "audioutil media next", false) end,
-              {description = "next song", group = "audio"})
+              {description = "next song", group = "audio"}),
+
+    awful.key({ alt,              }, "F6",     function ()
+        playerctl:cycle_shuffle()
+    end,
+    {description = "toggle shuffle", group = "audio"}),
+
+    awful.key({ alt,              }, "F8",     function ()
+        playerctl:cycle_loop_status()
+    end,
+    {description = "cycle loop", group = "audio"})
     -- }}}
 
 -- -- --

@@ -15,7 +15,7 @@ local format1 = " %d/%m:%u -> %R "
 local format2 = " %d/%m/%Y:%u -> %R:%S "
 
 -- Analog clock
-local analog_clock = require('widgets.analog_clock')({
+local analog_clock = require('module.widgets.analog_clock')({
     background = {
         shape = gears.shape.circle,
         color = colors.gray1

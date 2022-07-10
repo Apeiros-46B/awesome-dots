@@ -19,6 +19,8 @@ playerctl:connect_signal("metadata", function(_, title, artist, album_path, albu
     if not new           then return end
     -- If there is no player (edge case) then return
     if not player_exists then return end
+    -- If there is no title then return
+    if not title_exists  then return end
 
     -- Prefix for title
     local notif_title = " "
@@ -29,9 +31,6 @@ playerctl:connect_signal("metadata", function(_, title, artist, album_path, albu
     elseif title_exists then
         -- Add just the title in the case that there is no artist (e.g. playback of videos in Discord webpage)
         notif_title   = notif_title .. title
-    else
-        -- Add "Playback stopped" when there is no title (YouTube reports no title when playback stops)
-        notif_title   = notif_title .. "Playback stopped"
     end
 
     -- Add player text

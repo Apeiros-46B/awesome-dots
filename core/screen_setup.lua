@@ -19,5 +19,5 @@ awful.screen.connect_for_each_screen(function(s)
     set_wallpaper(s)
 
     -- Wibar
-    require("widgets.wibar")(s)
+    require("module.wibar")(s)
 end)

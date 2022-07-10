@@ -6,7 +6,7 @@ local dpi = beautiful.xresources.apply_dpi
 
 local colors = beautiful.colorscheme
 
-local padding = require("widgets.bar.padding")
+local padding = require("module.widgets.bar.padding")
 
 local list_update = function(widget, buttons, _, _, objects)
     widget:reset()

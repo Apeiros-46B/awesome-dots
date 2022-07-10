@@ -24,7 +24,7 @@ end)
 
 -- Add a titlebar if it is enabled
 client.connect_signal("request::titlebars", function(c)
-    awful.titlebar(c, { size = dpi(22) }):set_widget(require("widgets.titlebar")(c))
+    awful.titlebar(c, { size = dpi(22) }):set_widget(require("module.titlebar")(c))
 end)
 
 -- Enable focus follows mouse

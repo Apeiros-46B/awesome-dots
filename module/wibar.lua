@@ -4,8 +4,8 @@ local wibox = require("wibox")
 local dpi = require("beautiful.xresources").apply_dpi
 
 local get = function(s) awful.spawn.easy_async('acpi', function(stdout, _, _, _)
-    -- Import sysinfo                              -- Check if system has a battery
-    local sysinfo = require("widgets.bar.sysinfo")(stdout:match('Battery %d') and true or false)
+    -- Import sysinfo                                     -- Check if system has a battery
+    local sysinfo = require("module.widgets.bar.sysinfo")(stdout:match('Battery %d') and true or false)
 
     -- Promptbox
     s.promptbox = awful.widget.prompt()
@@ -20,10 +20,10 @@ local get = function(s) awful.spawn.easy_async('acpi', function(stdout, _, _, _)
     ))
 
     -- System tray
-    s.systray = require("widgets.bar.systray")
+    s.systray = require("module.widgets.bar.systray")
 
     -- Misc
-    local padding = require("widgets.bar.padding")
+    local padding = require("module.widgets.bar.padding")
 
     -- Create the wibox
     s.wibox = awful.wibar({ position = "bottom", screen = s, height = dpi(27) })
@@ -38,21 +38,21 @@ local get = function(s) awful.spawn.easy_async('acpi', function(stdout, _, _, _)
 
             s.layoutbox,
             padding,
-            require("widgets.bar.taglist_geometric")(s),
+            require("module.widgets.bar.geometric_taglist")(s),
             padding,
-            require("widgets.bar.tasklist")(s),
+            require("module.widgets.bar.tasklist")(s),
             -- s.systray,
             s.promptbox,
         },
         { -- Middle widgets
             layout = wibox.layout.fixed.horizontal,
-            require("widgets.bar.playerctl"),
+            require("module.bling.playerctl.widget"),
             nil
         },
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
 
-            require("widgets.bar.textclock"),
+            require("module.widgets.bar.textclock"),
             (sysinfo.battery ~= nil and padding or nil),
             sysinfo.battery,
             padding,
