@@ -245,7 +245,7 @@ M.globalkeys = gears.table.join(
 
     -- add typos to the clipboard
     awful.key({ modkey, s         }, "t",      function ()
-        local typogen = require("util.typo_generator")
+        local typogen = require("module.util.typo_generator")
 
         awful.spawn.easy_async("xclip -o -selection clipboard", function(stdout, _, _, _)
             clipboard_contents = typogen.mainfunc(stdout, 10, typogen.keymaps.qwerty)

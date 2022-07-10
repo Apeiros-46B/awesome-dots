@@ -5,7 +5,7 @@ local beautiful = require("beautiful")
 local dpi = beautiful.xresources.apply_dpi
 local colors = beautiful.colorscheme
 
-local helper = require("util.runelist_helper")
+local helper = require("module.util.runelist_helper")
 
 local list_update = function(widget, buttons, label, data, objects)
     widget:reset()
