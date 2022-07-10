@@ -344,7 +344,7 @@ awesome.connect_signal("playerctl::toggle_extras", function()
     local player = info.player
     local text = info.text
 
-    -- If there isn't a player, return
+    -- If there isn't a player, don't do anything
     if player ~= nil and text ~= " Nothing playing " then
         -- Show/hide the player value on the text
         if extras_visible then
