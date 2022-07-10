@@ -256,33 +256,27 @@ playerctl:connect_signal("metadata", function(_, title, artist, _, _, _, player)
     -- If there is no player (edge case) then say "Nothing playing"
     if not player_exists then
         info:set_markup_silently(" Nothing playing ")
-        return
-    end
-    -- If there is no title then say "Nothing playing"
-    -- if not title_exists then
-    --     info:set_markup_silently(" Nothing playing ")
-    --     return
-    -- end
-
-    local text = " "
-    local player_extra = info.extras_visible and (" [" .. player .. "]") or ""
-
-    if title_exists and artist_exists then
-        -- Add "artist - title" under normal conditions
-        text   = text .. artist .. " - " .. title .. player_extra
-    elseif title_exists then
-        -- Add just the title in the case that there is no artist (e.g. playback of videos in Discord webpage)
-        text   = text .. title .. player_extra
     else
-        text   = "Nothing playing"
+        -- Create the text
+        local text = " "
+        local player_extra = info.extras_visible and (" [" .. player .. "]") or ""
+
+        if title_exists and artist_exists then
+            -- Add "artist - title" under normal conditions
+            text   = text .. artist .. " - " .. title .. player_extra
+        elseif title_exists then
+            -- Add just the title in the case that there is no artist (e.g. playback of videos in Discord)
+            text   = text .. title .. player_extra
+        else
+            text   = "Nothing playing"
+        end
+
+        -- Set the player to a widget property
+        info.player = player
+
+        -- Set the widget text
+        info:set_markup_silently(" " .. text .. " ")
     end
-
-
-    -- Set the player to a widget property
-    info.player = player
-
-    -- Set the widget text
-    info:set_markup_silently(" " .. text .. " ")
 end)
 -- }}}
 
