@@ -231,8 +231,10 @@ M.globalkeys = gears.table.join(
     {description = "wibar", group = "global toggle"}),
 
     --- picom
-    awful.key({ modkey, s         }, "p",      function () awful.spawn(script .. "picomutil toggle", false) end,
-              {description = "compositor", group = "global toggle"}),
+    awful.key({ modkey, s         }, "p",      function () awful.spawn(script .. "picomutil toggle",           false) end,
+              {description = "compositor",        group = "global toggle"}),
+    awful.key({ modkey, alt       }, "p",      function () awful.spawn(script .. "picomutil animation-toggle", false) end,
+              {description = "window animations", group = "global toggle"}),
 
     --- glava
     awful.key({ modkey, s         }, "g",      function () awful.spawn(script .. "glavautil toggle", false) end,

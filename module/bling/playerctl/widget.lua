@@ -3,6 +3,8 @@ local awful = require("awful")
 local gears = require("gears")
 local wibox = require("wibox")
 
+local naughty = require("naughty")
+
 local core      = require("module.bling.playerctl.core")
 local playerctl = core.playerctl
 
@@ -356,6 +358,10 @@ awesome.connect_signal("playerctl::toggle_extras", function()
     info.extras_visible = not extras_visible
 end)
 -- }}}
+
+-- playerctl:connect_signal("player_changed", function(_, player)
+--     naughty.notification({ title = "Player changed", message = player })
+-- end)
 -- }}}
 
 -- {{{ Return the widget

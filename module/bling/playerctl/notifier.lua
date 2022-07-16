@@ -20,7 +20,7 @@ playerctl:connect_signal("metadata", function(_, title, artist, album_path, albu
     -- If there is no player (edge case) then return
     if not player_exists then return end
     -- If there is no title then return
-    if not title_exists  then return end
+    -- if not title_exists  then return end
 
     -- Prefix for title
     local notif_title = " "

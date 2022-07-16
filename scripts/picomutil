@@ -1,7 +1,7 @@
 #!/bin/bash
 
 usage() {
-    printf "Usage: picomutil <toggle|start>\n"
+    printf "Usage: picomutil <start|toggle|animation-toggle>\n"
     exit 1
 }
 
@@ -10,7 +10,11 @@ kill() {
 }
 
 start() {
-    picom --config "$HOME/.config/awesome/external/picom/picom.conf" &
+    picom --experimental-backends --config "$HOME/.config/awesome/external/picom/picom.conf" &
+}
+
+start_animations() {
+    picom --animations --experimental-backends --config "$HOME/.config/awesome/external/picom/picom.conf" &
 }
 
 notif() {
@@ -35,7 +39,12 @@ fi
 case $1 in
     start)
         kill
-        start
+
+        if [ "$(cat ~/.cache/picom_animations)" == "true" ]; then
+            start_animations
+        else
+            start
+        fi
         ;;
 
     toggle)
@@ -43,8 +52,27 @@ case $1 in
             kill
             notif "Compositor" "Picom disabled"
         else
-            start
+            if [ "$(cat ~/.cache/picom_animations)" == "true" ]; then
+                start_animations
+            else
+                start
+            fi
+
             notif "Compositor" "Picom enabled"
+        fi
+        ;;
+
+    animation-toggle)
+        kill
+
+        if [ "$(cat ~/.cache/picom_animations)" == "true" ]; then
+            start
+            echo "false" > ~/.cache/picom_animations
+            notif "Compositor" "Window animations disabled"
+        else
+            start_animations
+            echo "true" > ~/.cache/picom_animations
+            notif "Compositor" "Window animations enabled"
         fi
         ;;
 

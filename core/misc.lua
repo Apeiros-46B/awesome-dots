@@ -25,7 +25,8 @@ require("module.bling.window_switcher")
 
 -- Variables
 -- Default terminal emulator and editor
-Terminal = "kitty -c " .. os.getenv("HOME") .. "/.config/awesome/external/kitty/kitty.conf"
+-- Terminal = "kitty -c " .. os.getenv("HOME") .. "/.config/awesome/external/kitty/kitty.conf"
+Terminal = "st"
 Terminal_start_cmd = Terminal .. " -e "
 Editor = os.getenv("EDITOR") or "nvim"
 Editor_cmd = Terminal_start_cmd .. Editor

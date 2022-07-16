@@ -1,9 +1,12 @@
 -- Wrapper around Bling's playerctl module
 -- Planned support for cycling between different players manually
 
--- {{{ Library import
+-- {{{ Library imports
 local playerctl = require("bling").signal.playerctl.lib()
-local naughty = require("naughty")
+local beautiful = require("beautiful")
+local naughty   = require("naughty")
+local gtable    = require("gears").table
+local table     = table
 -- }}}
 
 -- {{{ Initialize table
@@ -12,44 +15,59 @@ local M = {}
 
 -- {{{ Player cycling [WIP]
 -- Player variables
-M.player_name     = ""
-M.player          = nil
+M.player            = ""
+M.players           = {}
 
-M.players         = {}
+M.player_priority   = beautiful.playerctl_player
+M.update_activity   = beautiful.playerctl_update_on_activity
 
 -- Set player to the one specified
-function M.set_player(name)
-    M.player_name = name
-    M.player      = playerctl:get_player_of_name(name)
+function M.set_player(player)
+    M.player        = player
+
+    if not gtable.hasitem(M.players, player) then
+        M.add_player (player)
+    end
+
+    playerctl:emit_signal("player_changed", playerctl, player)
 end
 
+-- Add a player to the table but don't select it
+function M.add_player(player)
+    table.insert(M.players, player)
+
+    playerctl:emit_signal("player_added", playerctl, player)
+end
+
+-- Select the previous player
 function M.prev_player()
-    -- WIP
+    local idx = gtable.cycle_value(M.players, M.player, -1)
+    if idx then M.set_player(M.players[idx]) end
 end
 
+-- Select the next player
 function M.next_player()
-    -- WIP
+    local idx = gtable.cycle_value(M.players, M.player,  1)
+    if idx then M.set_player(M.players[idx]) end
 end
 
+-- Reset the player(s)
 function M.reset_players()
-    M.player_name = ""
-    M.player_idx  = 0
-    M.player      = nil
-
-    M.players     = {}
+    M.player        = ""
+    M.players       = {}
 end
 
 -- Choose a new player if the current one exits
--- playerctl:connect_signal("exit", function(_, player)
---     M.players[player] = nil
---
---     if player == M.player_name then
---         M.next_player()
---     end
--- end)
+playerctl:connect_signal("exit", function(_, player)
+    table.remove(M.players, player)
+
+    if player == M.player then
+        M.next_player()
+    end
+end)
 
 -- When there are no more players, reset the player variables
--- playerctl:connect_signal("no_players", M.reset_players)
+playerctl:connect_signal("no_players", M.reset_players)
 -- }}}
 
 -- {{{ Store metadata
@@ -61,12 +79,18 @@ M.album_art     = ""
 M.new           = ""
 
 -- Update metadata every time the track changes
-playerctl:connect_signal("metadata", function(_, title, artist, album_path, album, new, _)
+playerctl:connect_signal("metadata", function(_, title, artist, album_path, album, new, player)
     M.artist    = artist
     M.title     = title
     M.album     = album
     M.album_art = album_path
     M.new       = new
+
+    if M.update_activity then
+        M.set_player(player)
+    else
+        M.add_player(player)
+    end
 end)
 -- }}}
 
@@ -119,6 +143,7 @@ end
 -- Seek
 function M.seek(seconds)
     playerctl:set_position(seconds)
+    playerctl:emit_signal("position", seconds, M.max, M.player)
 end
 
 -- Update position
