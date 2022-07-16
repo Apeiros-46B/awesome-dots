@@ -17,6 +17,14 @@ start_animations() {
     picom --animations --experimental-backends --config "$HOME/.config/awesome/external/picom/picom.conf" &
 }
 
+use_animations() {
+    [ "$(cat $HOME/.cache/picomutil.animations)" == "true" ] && true || false
+}
+
+animations() {
+    echo "$1" > "$HOME/.cache/picomutil.animations"
+}
+
 notif() {
     icon="placeholder"
     if [ $3 ]; then
@@ -39,12 +47,7 @@ fi
 case $1 in
     start)
         kill
-
-        if [ "$(cat ~/.cache/picom_animations)" == "true" ]; then
-            start_animations
-        else
-            start
-        fi
+        use_animations && start_animations || start
         ;;
 
     toggle)
@@ -52,12 +55,7 @@ case $1 in
             kill
             notif "Compositor" "Picom disabled"
         else
-            if [ "$(cat ~/.cache/picom_animations)" == "true" ]; then
-                start_animations
-            else
-                start
-            fi
-
+            use_animations && start_animations || start
             notif "Compositor" "Picom enabled"
         fi
         ;;
@@ -65,13 +63,15 @@ case $1 in
     animation-toggle)
         kill
 
-        if [ "$(cat ~/.cache/picom_animations)" == "true" ]; then
+        if use_animations; then
             start
-            echo "false" > ~/.cache/picom_animations
+
+            animations "false"
             notif "Compositor" "Window animations disabled"
         else
             start_animations
-            echo "true" > ~/.cache/picom_animations
+
+            animations "true"
             notif "Compositor" "Window animations enabled"
         fi
         ;;
