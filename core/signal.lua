@@ -1,9 +1,11 @@
+-- {{{ Library imports
 local awful = require("awful")
 
 local beautiful = require("beautiful")
 local dpi = beautiful.xresources.apply_dpi
+-- }}}
 
--- Signal function to execute when a new client appears.
+-- {{{ Manage signal
 client.connect_signal("manage", function (c)
     -- Set the windows at the slave,
     -- i.e. put it at the end of others instead of setting it master.
@@ -21,17 +23,15 @@ client.connect_signal("manage", function (c)
         c:raise()
     end
 end)
+-- }}}
 
--- Add a titlebar if it is enabled
+-- {{{ Titlebar
 client.connect_signal("request::titlebars", function(c)
     awful.titlebar(c, { size = dpi(22) }):set_widget(require("module.titlebar")(c))
 end)
+-- }}}
 
--- Enable focus follows mouse
-client.connect_signal("mouse::enter", function(c)
-    c:emit_signal("request::activate", "mouse_enter", {raise = false})
-end)
-
--- Change border colors on focus and unfocus
+-- {{{ Change border colors on focus and unfocus
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
+-- }}}

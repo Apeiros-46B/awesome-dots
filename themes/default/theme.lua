@@ -424,11 +424,20 @@ theme.awesome_icon_alt = themes_path.."default/icons/misc/awesome-icon-largegap.
 -- Icon theme
 theme.icon_theme = nil
 
--- Wallpaper
--- theme.wallpaper = themes_path.."default/walls/car_everforest.png"
--- theme.wallpaper = themes_path.."default/walls/everforest_stairs.jpg"
--- theme.wallpaper = themes_path.."default/walls/fog_forest_everforest.jpg"
-theme.wallpaper = themes_path.."default/walls/light_floral_everforest.png"
+-- {{{ Wallpaper
+-- Whether or not to select a random wallpaper
+theme.random_wallpaper = false
+
+-- {{{ Manual selection of wallpapers
+-- theme.wallpaper        = themes_path.."default/walls/car_everforest.png"
+theme.wallpaper        = themes_path.."default/walls/everforest_stairs.jpg"
+-- theme.wallpaper        = themes_path.."default/walls/fog_forest_everforest.jpg"
+-- theme.wallpaper        = themes_path.."default/walls/light_floral_everforest.png"
+-- }}}
+
+-- Wallpaper path for randomized wallpapers
+theme.wallpaper_path   = themes_path.."default/walls/"
+-- }}}
 -- }}}
 
 -- {{{ Return

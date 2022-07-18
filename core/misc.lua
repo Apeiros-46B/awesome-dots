@@ -1,43 +1,29 @@
+-- {{{ Library imports
 local awful = require("awful")
 local gears = require("gears")
-
 local beautiful = require("beautiful")
+-- }}}
 
+-- {{{ Focus
 -- Autofocus
 require("awful.autofocus")
 
--- Theme
-local theme_path = string.format("%s/.config/awesome/themes/%s/theme.lua", os.getenv("HOME"), "default")
-beautiful.init(theme_path)
+-- Focus follows mouse
+client.connect_signal("mouse::enter", function(c)
+    c:emit_signal("request::activate", "mouse_enter", {raise = false})
+end)
+-- }}}
 
--- Layouts
-awful.layout.layouts = {
-    awful.layout.suit.tile,
-    awful.layout.suit.fair,
-    awful.layout.suit.spiral,
-    awful.layout.suit.spiral.dwindle,
-    awful.layout.suit.floating,
-}
-
--- Bling
+-- {{{ Bling
 require("module.bling.playerctl.notifier")
 require("module.bling.window_switcher")
+-- }}}
 
--- Variables
--- Default terminal emulator and editor
--- Terminal = "kitty -c " .. os.getenv("HOME") .. "/.config/awesome/external/kitty/kitty.conf"
-Terminal = "st"
-Terminal_start_cmd = Terminal .. " -e "
-Editor = os.getenv("EDITOR") or "nvim"
-Editor_cmd = Terminal_start_cmd .. Editor
-
--- Default modkey
-Modkey = "Mod4"
-
--- Menu
+-- {{{ Menu
 require("module.menu")
+-- }}}
 
--- Prevent memory leaks
+-- {{{ Prevent memory leaks
 gears.timer {
     timeout = 30,
     call_now = true,
@@ -48,3 +34,4 @@ gears.timer {
         collectgarbage("setstepmul", 1000)
     end,
 }
+-- }}}

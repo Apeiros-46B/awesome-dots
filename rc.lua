@@ -4,19 +4,22 @@ pcall(require, "luarocks.loader")
 -- Error handling
 require("core.error_handling")
 
--- Theme, layouts, Bling, variables and menu
+-- Theme & variables
+require("core.variables")
+
+-- Bling, menu, & garbage collection
 require("core.misc")
 
--- Screen setup (wallpaper, tags, and wibar)
+-- Screen setup (wallpaper, tags, layouts, & wibar)
 require("core.screen_setup")
 
--- Set key and mouse bindings
-require("core.bindings")
+-- Key & mouse buttons
+require("core.bindings.init")
 
--- Set client rules
+-- Client rules
 require("core.rules")
 
--- Connect to signals
+-- Manage signal, border colors, titlebars
 require("core.signal")
 
 -- Start external programs (e.g. picom)
