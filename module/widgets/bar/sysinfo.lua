@@ -89,9 +89,14 @@ return function(has_battery)
                     -- If it isn't charging and remaining charge is less than 20%, make it red
                     remaining < 20 and colors.red
                     or (
-                        -- If it isn't charging and remaining charge is between 20% and 30%, make it yellow
-                        remaining < 30 and colors.yellow
-                        or colors.purple
+                        -- If it isn't charging and remaining charge is between 20% and 30%, make it orange
+                        remaining < 30 and colors.orange
+                        or (
+                            -- If it isn't charging and remaining charge is between 30% and 40%, make it yellow
+                            remaining < 30 and colors.yellow
+                            -- Otherwise, make it purple
+                            or colors.purple
+                        )
                     )
                 )
             )
@@ -154,10 +159,14 @@ return function(has_battery)
             -- If usage is over 80, make the prefix icon's background red
             usage > 80 and colors.red
             or (
-                -- If usage is between 50 and 80, make it yellow
-                usage > 50 and colors.yellow
-                -- Otherwise, make it purple
-                or colors.purple
+                -- If usage is between 70 and 80, make it orange
+                usage > 70 and colors.orange
+                or (
+                    -- If usage is between 60 and 80, make it yellow
+                    usage > 60 and colors.yellow
+                    -- Otherwise, make it purple
+                    or colors.purple
+                )
             )
         )
 
@@ -219,10 +228,14 @@ return function(has_battery)
             -- If usage is over 80, make the prefix icon's background red
             percent > 80 and colors.red
             or (
-                -- If usage is between 50 and 80, make it yellow
-                percent > 50 and colors.yellow
-                -- Otherwise, make it purple
-                or colors.purple
+                -- If usage is between 70 and 80, make it orange
+                percent > 70 and colors.orange
+                or (
+                    -- If usage is between 60 and 80, make it yellow
+                    percent > 60 and colors.yellow
+                    -- Otherwise, make it purple
+                    or colors.purple
+                )
             )
         )
 

@@ -37,6 +37,7 @@ ruled.client.connect_signal("request::rules", function()
                 "Sxiv",             -- image viewer
                 "Tor Browser",      -- Needs a fixed window size to avoid fingerprinting by screen size.
                 "veromix",
+                "vimpopup",         -- custom vim popup
                 "Wpa_gui",
                 "xtightvncviewer",
             },

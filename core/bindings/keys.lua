@@ -5,12 +5,12 @@ local naughty = require("naughty")
 
 -- Hotkeys popup
 local hotkeys_popup = require("awful.hotkeys_popup")
-require("awful.hotkeys_popup.keys")
 
 -- Misc
 local dpi       = require("beautiful.xresources").apply_dpi
 local script    = "bash " .. os.getenv("HOME") .. "/.config/awesome/scripts/"
 local notify    = require("module.notify")
+local vim_popup = require("module.vim_popup")
 local playerctl = require("bling").signal.playerctl.lib()
 -- }}}
 
@@ -201,8 +201,11 @@ awful.keyboard.append_global_keybindings({
     awful.key({ Modkey,           }, "Return", function() awful.spawn(Terminal, false) end,
               {description = "terminal", group = "launcher"}),
 
-    awful.key({ Ctl, S            }, "Escape",  function() awful.spawn(Terminal_start_cmd .. "btop", false) end,
+    awful.key({ Ctl, S            }, "Escape", function() awful.spawn(Terminal_start_cmd .. "btop", false) end,
               {description = "task manager", group = "launcher"}),
+
+    awful.key({ Modkey,           }, "v",      function() vim_popup(os.getenv("HOME") .. "/.cache/awesome/vimpopup/")  end,
+              {description = "vim popup", group = "launcher"}),
 
     awful.key({ Modkey,           }, "space",  function() awful.spawn(script .. "rofiutil", false) end,
               {description = "run menu", group = "launcher"}),
@@ -216,8 +219,8 @@ awful.keyboard.append_global_keybindings({
     awful.key({ Modkey, S         }, "c",      function() awful.spawn(script .. "rofiutil -q", false) end,
               {description = "calculator menu", group = "launcher"}),
 
-    awful.key({ Modkey, Alt       }, "s",      function() awful.spawn(script .. "rofiutil -s", false) end,
-              {description = "screenshot menu", group = "launcher"}),
+    -- awful.key({ Modkey, Alt       }, "s",      function() awful.spawn(script .. "rofiutil -s", false) end,
+    --           {description = "screenshot menu", group = "launcher"}),
 
     awful.key({ Modkey, S         }, "s",      function() awful.spawn("flameshot gui", false) end,
               {description = "flameshot", group = "launcher"}),
@@ -470,7 +473,6 @@ client.connect_signal("request::default_keybindings", function()
         end,
         {description = "resize down", group = "client"}),
         -- }}}
-
 
         -- {{{ Toggle states
         awful.key({ Modkey, Alt       }, "t",      function(c) c.ontop = not c.ontop            end,

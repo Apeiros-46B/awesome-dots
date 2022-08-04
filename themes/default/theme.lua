@@ -350,7 +350,7 @@ theme.titlebar_minimize_button_focus  = shape_load(
 
 theme.titlebar_maximized_button_normal_inactive = shape_load(dpi(10), dpi(10), shape.losange, colors.green)
 theme.titlebar_maximized_button_focus_inactive  = shape_load(dpi(10), dpi(10), shape.losange, (focus_highlight and colors.gray1 or colors.green))
-theme.titlebar_maximized_button_normal_active = shape_load(dpi(10), dpi(10), shape.losange, colors.teal)
+theme.titlebar_maximized_button_normal_active = shape_load(dpi(10), dpi(10), shape.losange, colors.green)
 theme.titlebar_maximized_button_focus_active  = shape_load(dpi(10), dpi(10), shape.losange, (focus_highlight and colors.gray1 or colors.teal))
 -- }}}
 

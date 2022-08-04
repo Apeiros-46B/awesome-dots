@@ -1,0 +1,13 @@
+#!/bin/sh
+# Literally budget vim-anywhere
+
+# DONE: Move all this logic to module/vim_popup.lua because this shell version is hacky and doesnt even 100% work
+
+dir="/tmp/"        # select /tmp/ if dir is not provided
+[ $1 ] && dir="$1" # if dir is provided, select that instead
+
+filename="${dir}$(date +vimpopup-%Y-%b-%d.%H-%M-%S)" # select filename
+
+sleep 0.1; nvim "$filename"                    # open editor
+awesome-client "client.focus.minimized = true" # minimize popup
+:`xclip -r -sel clip "$filename" &`            # copy result

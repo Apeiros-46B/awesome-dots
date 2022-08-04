@@ -3,8 +3,6 @@ local awful = require("awful")
 local gears = require("gears")
 local wibox = require("wibox")
 
-local naughty = require("naughty")
-
 local core      = require("module.bling.playerctl.core")
 local playerctl = core.playerctl
 
@@ -139,7 +137,7 @@ local widget = wibox.widget {
             id = "buttonsmargin",
             -- Compensate for weird spacing issue on buttons
             left = dpi(6),
-            right = dpi(2),
+            right = dpi(1),
             widget = wibox.container.margin
         },
         id = "buttonsbg",
