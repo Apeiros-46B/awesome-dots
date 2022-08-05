@@ -162,7 +162,7 @@ local widget = wibox.widget {
                     widget = wibox.widget.textbox
                 },
                 scrolling = true,
-                id = "infoscroller",
+                id = "scroller",
                 extra_space = dpi(8),
                 max_size = dpi(280),
                 speed = 30,
@@ -260,7 +260,7 @@ playerctl:connect_signal("metadata", function(_, title, artist, _, _, _, player)
     -- Get the widgets
     local info = widget:get_children_by_id("info")[1]
     local playerinfo = widget:get_children_by_id("playerinfo")[1]
-    local infoscroller = widget:get_children_by_id("infoscroller")[1]
+    local scroller = widget:get_children_by_id("scroller")[1]
 
     -- If there is no player (edge case) then say "Nothing playing"
     if not player_exists then
@@ -287,8 +287,9 @@ playerctl:connect_signal("metadata", function(_, title, artist, _, _, _, player)
         playerinfo:set_markup_silently(info.extras_visible and (" [" .. player .. "]") or " ")
     end
 
-    -- Emit layout changed signal for scroller
-    infoscroller:emit_signal("widget::layout_changed")
+    -- Update the scroll container
+    scroller:emit_signal("widget::layout_changed")
+    scroller:emit_signal("widget::redraw_needed")
 end)
 -- }}}
 
@@ -386,7 +387,7 @@ end)
 -- {{{ Toggle scroller
 awesome.connect_signal("playerctl::toggle_scroll", function()
     -- Get the widget
-    local scroller = widget:get_children_by_id("infoscroller")[1]
+    local scroller = widget:get_children_by_id("scroller")[1]
 
     if scroller.scrolling then
         -- Effectively disable size constraint
