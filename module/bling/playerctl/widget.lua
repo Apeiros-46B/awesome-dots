@@ -6,6 +6,8 @@ local wibox = require("wibox")
 local core      = require("module.bling.playerctl.core")
 local playerctl = core.playerctl
 
+local notify    = require("module.notify")
+
 local beautiful = require("beautiful")
 local colors    = beautiful.colorscheme
 local dpi       = beautiful.xresources.apply_dpi
@@ -31,9 +33,10 @@ local buttons     = {
 
     loop          = awful.button({}, 1, core.cycle_loop    ),
 
-    toggle_extras = awful.button({}, 1, function()
-        awesome.emit_signal("playerctl::toggle_extras")
-    end),
+    toggle_extras = gears.table.join(
+        awful.button({}, 1, function() awesome.emit_signal("playerctl::toggle_extras") end),
+        awful.button({}, 3, function() awesome.emit_signal("playerctl::toggle_scroll") end)
+    ),
 
     cycle_players = gears.table.join(
         awful.button({}, 4, core.next_player),
@@ -148,11 +151,32 @@ local widget = wibox.widget {
     -- {{{ Textbox with song info
     {
         {
-            id = "info",
-            markup = " Nothing playing ",
-            player = nil,
-            extras_visible = false,
-            widget = wibox.widget.textbox
+            wibox.widget.textbox(" "),
+            {
+                {
+                    markup = "Nothing playing",
+                    player = nil,
+                    extras_visible = false,
+                    id = "info",
+                    ellipsize = "end",
+                    widget = wibox.widget.textbox
+                },
+                scrolling = true,
+                id = "infoscroller",
+                extra_space = dpi(8),
+                max_size = dpi(280),
+                speed = 30,
+                fps = 75,
+                step_function = wibox.container.scroll.step_functions.linear_increase,
+                layout = wibox.container.scroll.horizontal
+            },
+            {
+                markup = " ",
+                id = "playerinfo",
+                widget = wibox.widget.textbox,
+            },
+            id = "infolayout",
+            layout = wibox.layout.fixed.horizontal
         },
         id = "infobg",
         bg = colors.gray3,
@@ -232,23 +256,24 @@ playerctl:connect_signal("metadata", function(_, title, artist, _, _, _, player)
     local artist_exists = exists(artist)
     local player_exists = exists(player)
 
-    -- Get the widget
+    -- Get the widgets
     local info = widget:get_children_by_id("info")[1]
+    local playerinfo = widget:get_children_by_id("playerinfo")[1]
+    local infoscroller = widget:get_children_by_id("infoscroller")[1]
 
     -- If there is no player (edge case) then say "Nothing playing"
     if not player_exists then
-        info:set_markup_silently(" Nothing playing ")
+        info:set_markup_silently("Nothing playing")
     else
         -- Create the text
         local text = " "
-        local player_extra = info.extras_visible and (" [" .. player .. "]") or ""
 
         if title_exists and artist_exists then
             -- Add "artist - title" under normal conditions
-            text   = text .. artist .. " - " .. title .. player_extra
+            text   = text .. artist .. " - " .. title
         elseif title_exists then
             -- Add just the title in the case that there is no artist (e.g. playback of videos in Discord)
-            text   = text .. title .. player_extra
+            text   = text .. title
         else
             text   = "Nothing playing"
         end
@@ -256,16 +281,13 @@ playerctl:connect_signal("metadata", function(_, title, artist, _, _, _, player)
         -- Set the player to a widget property
         info.player = player
 
-        -- Set the widget text
-        info:set_markup_silently(" " .. text .. " ")
+        -- Set the widgets' text
+        info:set_markup_silently(text)
+        playerinfo:set_markup_silently(info.extras_visible and (" [" .. player .. "]") or " ")
     end
-end)
--- }}}
 
--- {{{ Update position variables
-playerctl:connect_signal("position", function(_, interval, length, _)
-    pos = interval
-    max = length
+    -- Emit layout changed signal for scroller
+    infoscroller:emit_signal("widget::layout_changed")
 end)
 -- }}}
 
@@ -313,6 +335,7 @@ end)
 awesome.connect_signal("playerctl::toggle_extras", function()
     -- Get the widget and extras_visible property
     local info = widget:get_children_by_id("info")[1]
+    local playerinfo = widget:get_children_by_id("playerinfo")[1]
     local extras_visible = info.extras_visible
 
     -- {{{ Toggle player name visibility
@@ -321,13 +344,12 @@ awesome.connect_signal("playerctl::toggle_extras", function()
     local text = info.text
 
     -- If there isn't a player, don't do anything
-    if player ~= nil and text ~= " Nothing playing " then
+    if player ~= nil and text ~= "Nothing playing" then
         -- Show/hide the player value on the text
         if extras_visible then
-            -- % sign escapes the square bracket
-            info:set_markup_silently(text:gsub("%[" .. player .. "%] ", ""))
+            playerinfo:set_markup_silently(" ")
         else
-            info:set_markup_silently(text .. "[" .. player .. "] ")
+            playerinfo:set_markup_silently(" [" .. player .. "] ")
         end
     end
     -- }}}
@@ -354,12 +376,54 @@ awesome.connect_signal("playerctl::toggle_extras", function()
 
     -- Invert extras_visible property
     info.extras_visible = not extras_visible
+
+    -- Notify
+    notify({ title = "Playerctl widget", message = (extras_visible and "Extras disabled" or "Extras enabled" ), app_name = "playerctl_widget", replaces = true })
 end)
 -- }}}
 
--- playerctl:connect_signal("player_changed", function(_, player)
---     naughty.notification({ title = "Player changed", message = player })
--- end)
+-- {{{ Toggle scroller
+awesome.connect_signal("playerctl::toggle_scroll", function()
+    -- Get the widget
+    local scroller = widget:get_children_by_id("infoscroller")[1]
+
+    if scroller.scrolling then
+        -- Effectively disable size constraint
+        scroller:set_max_size(dpi(1920))
+
+        -- Set fps as low as possible
+        -- **Setting this to 0 will cause a division by 0!**
+        scroller:set_fps(1)
+
+        -- Reset and pause scrolling
+        scroller:reset_scrolling()
+        scroller:pause()
+
+        -- Update layout
+        scroller:emit_signal("widget::layout_changed")
+
+        -- Notify
+        notify({ title = "Playerctl widget", message = "Scroll disabled", app_name = "playerctl_widget", replaces = true })
+    else
+        -- Return attributes back to normal
+        scroller:set_max_size(dpi(280))
+        scroller:set_fps(75)
+
+        -- Reset and continue scrolling
+        scroller:reset_scrolling()
+        scroller:continue()
+
+        -- Update layout
+        scroller:emit_signal("widget::layout_changed")
+
+        -- Notify
+        notify({ title = "Playerctl widget", message = "Scroll enabled", app_name = "playerctl_widget", replaces = true })
+    end
+
+    -- Update boolean
+    scroller.scrolling = not scroller.scrolling
+end)
+-- }}}
 -- }}}
 
 -- {{{ Return the widget
