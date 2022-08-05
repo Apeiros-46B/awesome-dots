@@ -167,6 +167,7 @@ local widget = wibox.widget {
                 max_size = dpi(280),
                 speed = 30,
                 fps = 75,
+                --    ^^ Change this to your refresh rate or other desired FPS
                 step_function = wibox.container.scroll.step_functions.linear_increase,
                 layout = wibox.container.scroll.horizontal
             },
@@ -390,6 +391,7 @@ awesome.connect_signal("playerctl::toggle_scroll", function()
     if scroller.scrolling then
         -- Effectively disable size constraint
         scroller:set_max_size(dpi(1920))
+        --                        ^^^^ Change this to your screen width
 
         -- Set fps as low as possible
         -- **Setting this to 0 will cause a division by 0!**
@@ -408,6 +410,7 @@ awesome.connect_signal("playerctl::toggle_scroll", function()
         -- Return attributes back to normal
         scroller:set_max_size(dpi(280))
         scroller:set_fps(75)
+        --               ^^ Change this to your refresh rate or other desired FPS
 
         -- Reset and continue scrolling
         scroller:reset_scrolling()
