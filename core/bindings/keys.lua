@@ -279,8 +279,8 @@ awful.keyboard.append_global_keybindings({
     -- Picom
     awful.key({ Modkey, S         }, "p",      function() awful.spawn(script .. "picomutil toggle",           false) end,
               {description = "compositor",        group = "global toggle"}),
-    awful.key({ Modkey, Alt       }, "p",      function() awful.spawn(script .. "picomutil animation-toggle", false) end,
-              {description = "window animations", group = "global toggle"}),
+    -- awful.key({ Modkey, Alt       }, "p",      function() awful.spawn(script .. "picomutil animation-toggle", false) end,
+    --           {description = "window animations", group = "global toggle"}),
 
     -- Glava
     awful.key({ Modkey, S         }, "g",      function() awful.spawn(script .. "glavautil toggle", false) end,
