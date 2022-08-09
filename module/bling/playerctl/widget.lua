@@ -307,7 +307,12 @@ playerctl:connect_signal("loop_status", function(_, loop_status, _) update_loop_
 -- {{{ Reset widgets when no players or exit
 playerctl:connect_signal("exit", function(_, _)
     -- Get the info widget & reset the text
-    widget:get_children_by_id("info")[1]:set_markup_silently(" Nothing playing ")
+    widget:get_children_by_id("info")[1]:set_markup_silently("Nothing playing")
+
+    -- Update the scroll container
+    local scroller = widget:get_children_by_id("scroller")[1]
+    scroller:emit_signal("widget::layout_changed")
+    scroller:emit_signal("widget::redraw_needed")
 
     -- Reset shuffle, play/pause, and loop buttons to default
     update_shuffle_button    (false )
@@ -317,10 +322,15 @@ end)
 
 playerctl:connect_signal("no_players", function(_)
     -- Get the info widget
-    local info = widget:get_children_by_id("info")[1]
+    local info     = widget:get_children_by_id("info")    [1]
+    local scroller = widget:get_children_by_id("scroller")[1]
 
     -- Reset the text
-    info:set_markup_silently(" Nothing playing ")
+    info:set_markup_silently("Nothing playing")
+
+    -- Update the scroll container
+    scroller:emit_signal("widget::layout_changed")
+    scroller:emit_signal("widget::redraw_needed")
 
     -- Reset the player
     info.player = nil
