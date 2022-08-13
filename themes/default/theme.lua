@@ -437,6 +437,10 @@ theme.wallpaper        = themes_path.."default/walls/everforest_stairs.jpg"
 
 -- Wallpaper path for randomized wallpapers
 theme.wallpaper_path   = themes_path.."default/walls/"
+
+-- Position and scale
+theme.wallpaper_position = "fit" -- Can be one of "centered" "fit" "maximized" or "tiled"
+theme.wallpaper_scale    = 1
 -- }}}
 -- }}}
 
