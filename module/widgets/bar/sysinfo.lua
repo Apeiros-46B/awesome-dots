@@ -29,50 +29,51 @@ local buttons = {
 -- {{{ Return
 return function(has_battery)
     -- {{{ Battery
-    -- Start watcher for battery status
-    if has_battery then require("module.sysinfo.battery") end
+    local battery
+    if has_battery then
+        -- Start watcher for battery status
+        require("module.sysinfo.battery")
 
-    -- {{{ Create the widget
-    local battery = (has_battery and wibox.widget {
-        {
+        -- {{{ Create the widget
+        battery = wibox.widget {
             {
                 {
-                    -- Prefix icon
-                    id = "prefix",
-                    resize = true,
-                    forced_width = dpi(19),
-                    forced_height = dpi(19),
-                    widget = wibox.widget.imagebox,
+                    {
+                        -- Prefix icon
+                        id = "prefix",
+                        resize = true,
+                        forced_width = dpi(19),
+                        forced_height = dpi(19),
+                        widget = wibox.widget.imagebox,
+                    },
+                    -- Centers the prefix icon
+                    id = "prefixmargin",
+                    forced_width = dpi(27),
+                    forced_height = dpi(27),
+                    widget = wibox.container.place,
                 },
-                -- Centers the prefix icon
-                id = "prefixmargin",
-                forced_width = dpi(27),
-                forced_height = dpi(27),
-                widget = wibox.container.place,
+                -- Creates a background for the prefix icon
+                id = "prefixbg",
+                widget = wibox.container.background,
             },
-            -- Creates a background for the prefix icon
-            id = "prefixbg",
-            widget = wibox.container.background,
-        },
-        {
             {
-                -- Label
-                id = "label",
-                widget = wibox.widget.textbox,
+                {
+                    -- Label
+                    id = "label",
+                    widget = wibox.widget.textbox,
+                },
+                -- Creates a background for the label
+                id = "labelbg",
+                bg = colors.gray3,
+                widget = wibox.container.background,
             },
-            -- Creates a background for the label
-            id = "labelbg",
-            bg = colors.gray3,
-            widget = wibox.container.background,
-        },
-        -- Puts the prefix icon and the label side by side
-        id = "layout",
-        layout = wibox.layout.fixed.horizontal
-    } or nil)
-    -- }}}
+            -- Puts the prefix icon and the label side by side
+            id = "layout",
+            layout = wibox.layout.fixed.horizontal
+        }
+        -- }}}
 
-    -- {{{ Connect to the watcher's status signal
-    if has_battery then
+        -- {{{ Connect to the watcher's status signal
         awesome.connect_signal("sysinfo::battery", function(remaining, charging)
             -- Set the icon of the prefix depending on battery state and charge
             battery:get_children_by_id("prefix")[1].image = (
@@ -104,8 +105,8 @@ return function(has_battery)
             -- Set label text
             battery:get_children_by_id("label")[1].text = " " .. remaining .. "% "
         end)
-    end
     -- }}}
+    end
     -- }}}
 
     -- {{{ CPU
@@ -247,7 +248,7 @@ return function(has_battery)
 
     -- {{{ Finishing up
     -- Add buttons
-    if has_battery then battery:buttons(buttons) end
+    if battery ~= nil then battery:buttons(buttons) end
     cpu:buttons(buttons)
     memory:buttons(gears.table.join(
         awful.button(
