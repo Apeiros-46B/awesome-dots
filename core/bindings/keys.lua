@@ -383,8 +383,16 @@ awful.keyboard.append_global_keybindings({
     awful.key({ Alt,              }, "F8",     function()
         playerctl:cycle_loop_status()
     end,
-    {description = "cycle loop", group = "audio"})
+    {description = "cycle loop", group = "audio"}),
     -- }}}
+    -- }}}
+
+    -- {{{ Brightness control
+    awful.key({ Ctl,              }, "F11",    function() awful.spawn("brightnessctl s 10%-", false) end,
+              {description = "brightness down", group = "system"}),
+
+    awful.key({ Ctl,              }, "F12",    function() awful.spawn("brightnessctl s +10%", false) end,
+              {description = "brightness up", group = "system"}),
     -- }}}
 
 })
