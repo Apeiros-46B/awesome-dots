@@ -77,10 +77,12 @@ return function(has_battery)
         awesome.connect_signal("sysinfo::battery", function(remaining, charging)
             -- Set the icon of the prefix depending on battery state and charge
             battery:get_children_by_id("prefix")[1].image = (
-                -- Determines whether or not the icon should be a charging icon or a normal icon
+                -- Determine whether or not the icon should be a charging icon or a normal icon
                 charging and theme.battery_icons.charging
-                or theme.battery_icons.discharging
-            )[math.ceil(remaining / 10)] -- Determines the charge level of the icon
+                         or  theme.battery_icons.discharging
+            -- If charge is 0, use icon for 1-10%
+            )[remaining == 0 and 1 or math.ceil(remaining / 10)]
+            --                        Otherwise, choose an icon based on the charge level
 
             -- Set background color based on remaining charge and whether or not it is charging
             battery:get_children_by_id("prefixbg")[1].bg = (
