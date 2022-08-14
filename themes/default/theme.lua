@@ -419,6 +419,7 @@ theme.sysinfo_mem_icon = recolor(themes_path.."default/icons/sysinfo/fa-mem.svg"
 theme.awesome_icon = theme_assets.awesome_icon(64, theme.bg_focus, theme.fg_focus)
 theme.awesome_icon_alt = themes_path.."default/icons/misc/awesome-icon-largegap.png"
 -- }}}
+-- }}}
 
 -- {{{ Other
 -- Icon theme
