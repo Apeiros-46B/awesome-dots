@@ -297,17 +297,17 @@ awful.keyboard.append_global_keybindings({
     awful.key({ Modkey, S         }, "t",      function()
         local typogen = require("module.util.typo_generator")
 
-        awful.spawn.easy_async("xclip -o -selection clipboard", function(stdout, _, _, _)
+        awful.spawn.easy_async("xclip -o -sel clip", function(stdout, _, _, _)
             local clipboard_contents = typogen.mainfunc(stdout, 10, typogen.keymaps.qwerty)
             local new_clipboard = clipboard_contents:gsub("\n[^\n]*$", "")
 
             notify({
-                title = "Clipboard Typo-ified",
+                title = "Typos added to clipboard",
                 text = new_clipboard,
                 app_name = "typo_generator",
                 replaces = true
             })
-            awful.spawn.with_shell("printf \"" .. new_clipboard .. "\" | xclip -selection clipboard", nil)
+            awful.spawn.with_shell([[echo "]] .. new_clipboard .. [[" | xclip -r -sel clip]])
         end)
     end,
     {description = "add typos to clipboard contents", group = "misc"}),
