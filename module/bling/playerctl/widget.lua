@@ -284,7 +284,7 @@ playerctl:connect_signal("metadata", function(_, title, artist, _, _, _, player)
 
         -- Set the widgets' text
         info:set_markup_silently(text)
-        playerinfo:set_markup_silently(info.extras_visible and (" [" .. player .. "]") or " ")
+        playerinfo:set_markup_silently(info.extras_visible and (" [" .. player .. "] ") or " ")
     end
 
     -- Update the scroll container
