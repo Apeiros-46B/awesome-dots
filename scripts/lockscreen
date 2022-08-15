@@ -53,10 +53,10 @@ i3lock \
 --date-size=18													\
 --greeter-color=${CYAN}				\
 --verif-text="verifying..."			\
---wrong-text="wrong!"				\
---noinput-text="Empty"				\
---lock-text="Locking..."			\
---lockfailed-text="Failed to lock"	\
+--wrong-text="wrong"				\
+--noinput-text="empty"				\
+--lock-text="locking..."			\
+--lockfailed-text="failed to lock"	\
 --radius 120				\
 --ring-width 8.0			\
 --screen 1					\
@@ -64,4 +64,4 @@ i3lock \
 --indicator					\
 --time-str="%H:%M"		\
 --date-str="%m/%d/%Y:%u"		\
---blur 10					
+--blur 10
