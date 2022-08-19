@@ -3,7 +3,12 @@ local awful = require("awful")
 -- {{{ Global mousebinds
 awful.mouse.append_global_mousebindings({
     awful.button({ }, 1, function () Menu:hide() end),
-    awful.button({ }, 3, function () Menu:toggle() end),
+
+    awful.button({ }, 3, function ()
+        Menu:hide()
+        Menu:show()
+    end),
+
     awful.button({ }, 4, awful.tag.viewprev),
     awful.button({ }, 5, awful.tag.viewnext),
 })
