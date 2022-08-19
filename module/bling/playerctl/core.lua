@@ -98,6 +98,7 @@ end)
 -- Previous, play/pause, and next
 function M.prev()
     playerctl:previous()
+    M.pos = 0
 end
 
 function M.play_pause()
@@ -106,6 +107,7 @@ end
 
 function M.next()
     playerctl:next()
+    M.pos = 0
 end
 -- }}}
 
