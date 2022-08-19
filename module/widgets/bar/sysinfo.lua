@@ -96,7 +96,7 @@ return function(has_battery)
                         remaining < 30 and colors.orange
                         or (
                             -- If it isn't charging and remaining charge is between 30% and 40%, make it yellow
-                            remaining < 30 and colors.yellow
+                            remaining < 40 and colors.yellow
                             -- Otherwise, make it purple
                             or colors.purple
                         )
