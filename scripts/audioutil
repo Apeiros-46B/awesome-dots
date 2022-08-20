@@ -1,290 +1,202 @@
-#!/bin/bash
+#!/bin/sh
+# shell script that controls audio and media-related things
+# see usage for current features
 
+# {{{ functions
+# {{{ show usage
 usage() {
-    printf "Usage (vol): audioutil vol <cycle-default-sink|get-default-sink|inc|dec|mute|get>\n"
-    printf "Usage (media): audioutil media <prev|toggle|next>\n"
-    printf "Requires: playerctl, pamixer, and pactl\n"
+    cat << EOF
+
+No valid command specified.
+
+ USAGE:
+    audioutil [MAIN OPTION] [OPTIONS]
+
+ MAIN OPTIONS:
+     vol              Volume/audio-related control
+     media            Media control
+     help | usage     Shows this message
+
+ OPTIONS (vol):
+     inc              Increases volume
+     dec              Decreases volume
+     get              Gets the volume
+
+     mute             Toggles the mute state
+     get_mute         Gets the mute state
+
+     inc_sink         Cycles the default sink upwards
+     dec_sink         Cycles the default sink downwards
+     get_sink         Gets the numerical index, name, and description of the default sink
+
+ OPTIONS (media):
+     next             Skips to the next song
+     toggle           Plays or pauses
+     prev             Skips to the previous song
+
+Volume options require the pactl program.
+Media options require the playerctl program.
+
+EOF
     exit 1
 }
+# }}}
 
-# functions for caching
+# {{{ get information
+# {{{ lists
+# sinks list
+sinks    () { pactl list sinks | grep -F -A3 'Sink';                      }
 
-cache() {
+# sinks list, indexes only
+sinks_idx() { pactl list sinks | awk '/Sink #/ { print $2 }' | tr -d '#'; }
+# }}}
+
+# {{{ information about the default sink
+# sink details
+sink_dtls() { sinks | grep -B2 -A1 "$(pactl get-default-sink)$";          }
+
+# sink index
+sink_idx () { sink_dtls | head -n 1 | awk '{ print $2 }' | tr -d '#';     }
+
+# sink description
+sink_desc() { sink_dtls | grep -F 'Description:' | cut -d ' ' -f 2-;      }
+
+# sink name
+sink_name() { pactl get-default-sink;                                     }
+# }}}
+
+# {{{ other
+# glava index
+glava_idx() { pactl list source-outputs | awk '/Source Output #|application.name = "glava"/ { print $3 }' | grep -F -B1 'glava' | head -n 1 | tr -d '#'; }
+# }}}
+# }}}
+
+# {{{ change volume
+vol() {
     case $1 in
-        read)
-            cat "$HOME/.cache/audioutil/$2" 2> /dev/null || echo
-            ;;
+        mute)
+            # toggle mute
+            pactl set-sink-mute @DEFAULT_SINK@ toggle
 
-        write)
-            if [ ! -e $HOME/.cache/audioutil ]; then
-                mkdir -p $HOME/.cache/audioutil
-            fi
-
-            if [ ! -e "$HOME/.cache/audioutil/$2" ]; then
-                touch "$HOME/.cache/audioutil/$2"
-            fi
-
-            echo "$3" > "$HOME/.cache/audioutil/$2"
-            ;;
-
-        remove)
-            rm "$HOME/.cache/audioutil/$2" > /dev/null 2>&1
+            # notify new mute status
+            mute="$("$0" vol get_mute)"; if [ "$mute" == "yes" ]; then prefix=" "; vol="Muted"; else prefix=" "; vol="$("$0" vol get)"; fi
+            notify "${prefix}Volume: ${vol}"
             ;;
 
         *)
-            exit 1
+            # don't adjust volume if muted
+            mute="$("$0" vol get_mute)"
+            [ "$mute" == "no" ] && pactl set-sink-volume @DEFAULT_SINK@ "$1" || return 0
+
+            # notify new volume
+            vol="$("$0" vol get)"
+            notify " Volume: ${vol}"
             ;;
     esac
 }
+# }}}
 
-cache_all() {
-    direct_num="$(direct_num)"
-    cache write vol_sink_num "$direct_num"
+# {{{ change the default sink
+# {{{ helper functions
+fnr_to_idx() { echo "$1" | awk "FNR == $2"         ; }
+idx_to_fnr() { echo "$1" | awk "/$2/ { print FNR }"; }
+# }}}
 
-    direct_desc="$(direct_desc)"
-    cache write vol_sink_desc "$direct_desc"
-
-    direct_name="$(direct_name)"
-    cache write vol_sink_name "$direct_name"
-
-    direct_glava_index="$(direct_glava_index)"
-    cache write vol_glava_index "$direct_glava_index"
-}
-
-# directly recomputed
-
-direct_num() {
-    pamixer --get-default-sink | tail -1 | awk '{ print $1 }'
-}
-
-direct_desc() {
-    pamixer --get-default-sink | tail -1 | cut -d ' ' -f 3- | tr -d '"'
-}
-
-direct_name() {
-    pactl get-default-sink
-}
-
-direct_glava_index() {
-    pactl list source-outputs | awk '/Source Output|application.name = "glava"/ { print $3 }' | head -1 | tr -d '#'
-}
-
-# cached/recompute when necessary (i.e. sink changed and/or cache does not exist)
-
-sink_num() {
-    if [ -e "$HOME/.cache/audioutil/vol_sink_num" ]; then
-        if [[ "$(direct_name)" != "$(cache read vol_sink_name)" ]]; then
-            cache_all
-            echo $direct_num
-        else
-            cache read vol_sink_num
-        fi
-    else
-        direct_num="$(direct_num)"
-        cache write vol_sink_num "$direct_num"
-        echo $direct_num
-    fi
-}
-
-sink_desc() {
-    if [ -e "$HOME/.cache/audioutil/vol_sink_desc" ]; then
-        if [[ "$(direct_name)" != "$(cache read vol_sink_name)" ]]; then
-            cache_all
-            echo $direct_desc
-        else
-            cache read vol_sink_desc
-        fi
-    else
-        direct_desc="$(direct_desc)"
-        cache write vol_sink_desc "$direct_desc"
-        echo $direct_desc
-    fi
-}
-
-sink_name() {
-    if [ -e "$HOME/.cache/audioutil/vol_sink_name" ]; then
-        if [[ "$(direct_name)" != "$(cache read vol_sink_name)" ]]; then
-            cache_all
-            echo $direct_name
-        else
-            cache read vol_sink_name
-        fi
-    else
-        direct_name="$(direct_name)"
-        cache write vol_sink_name "$direct_name"
-        echo $direct_name
-    fi
-}
-
-glava_index() {
-    if [ -e "$HOME/.cache/audioutil/vol_glava_index" ]; then
-        if [[ "$(direct_name)" != "$(cache read vol_sink_name)" ]]; then
-            cache_all
-            echo $direct_glava_index
-        else
-            cache read vol_glava_index
-        fi
-    else
-        direct_name="$(direct_name)"
-        cache write vol_sink_name "$direct_name"
-        echo $direct_name
-    fi
-}
-
-adjust_vol() {
-    pamixer --allow-boost $1
-    vol="$(pamixer --get-volume-human)"
-    prefix=" "
-    
-    if [[ "$vol" == "muted" ]]; then
-        prefix=" "
-        vol="Muted"
-    fi
-
-    notif "${prefix}Volume: ${vol}"
-}
-
+# {{{ main function
 change_sink() {
-    sink="$(sink_num)"
-    max_sink="$(pamixer --list-sinks | tail -1 | awk '{ print $1 }')"
+    # get info
+    sinks="$(sinks_idx)"
+    sink="$(sink_idx)"
 
+    # increase or decrease
     case $1 in
-        inc)
-            new_sink="$(expr "$sink" + 1)"
-            ;;
-
-        dec)
-            new_sink="$(expr "$sink" - 1)"
-            ;;
-
-        *)
-            exit 1
-            ;;
+        +) new_fnr="$(expr "$(idx_to_fnr "$sinks" "$sink")" + 1)" ;;
+        -) new_fnr="$(expr "$(idx_to_fnr "$sinks" "$sink")" - 1)" ;;
+        *) return 1                                               ;;
     esac
 
-    if [[ "$new_sink" < 0 ]]; then
-        new_sink="$max_sink"
-    elif [[ "$new_sink" > "$max_sink" ]]; then
-        new_sink="0"
+    # check if the new sink is out of bounds
+    min=1; max="$(echo "$sinks" | wc -l)"
+
+    if   [ "$new_fnr" -lt "$min" ]; then
+        new_sink="$(echo "$sinks" | tail -n 1)"
+    elif [ "$new_fnr" -gt "$max" ]; then
+        new_sink="$(echo "$sinks" | head -n 1)"
+    else
+        new_sink="$(fnr_to_idx "$sinks" "$new_fnr")"
     fi
 
+    # set the sink
     pactl set-default-sink "$new_sink"
 
+    # get new sink's info
     new_sink_name="$(sink_name)"
     new_sink_desc="$(sink_desc)"
-    
-    if pgrep -x glava; then
-        pactl move-source-output "$(glava_index)" "${new_sink_name}.monitor"
-    fi
 
-    notif " ${new_sink_desc} (#$new_sink)" "has been selected as the default sink"
+    echo $new_sink_name
+    echo $new_sink_desc
+
+    # move glava if it's running
+    echo "begin glava"
+    pgrep -x glava > /dev/null && pactl move-source-output "$(glava_idx)" "${new_sink_name}.monitor"
+    echo "end glava"
+
+    # notify user
+    notify " ${new_sink_desc} (#$new_sink)" "has been selected as the default sink"
 }
+# }}}
+# }}}
 
-notif() {
-    icon="placeholder"
-    if [ $3 ]; then
-        icon="$3"
-    fi
+# {{{ notify user
+notify() {
+    [ $3 ] && icon="$3" || icon=""
+    [ $4 ] && time="$4" || time="2000"
 
-    time="2000"
-    if [ $4 ]; then
-        time="$4"
-    fi
-
-    # this hint allows the notification to replace previous confirmation notifications
-    dunstify -h "string:x-canonical-private-synchronous:anything" -a "audioutil" -i "$icon" -u "normal" -t "$time" "$1" "$2"
+    notify-send -h "string:x-canonical-private-synchronous:anything" -a "audioutil" -i "$icon" -t "$time" "$1" "$2"
 }
+# }}}
+# }}}
 
-if [[ ! $1 ]]; then
-    usage
-fi
-
-if [[ ! $2 ]]; then
-    usage
-fi
+# {{{ driver code
+# if there aren't enough args, display usage
+[ $# -lt 2 ] && usage
 
 case $1 in
+    # {{{ volume control
     vol)
         case $2 in
-            inc-default-sink)
-                change_sink inc
-                ;;
+            inc) vol '+4%'                                                             ;;
+            dec) vol '-4%'                                                             ;;
+            get) pactl get-sink-volume @DEFAULT_SINK@ | head -n 1 | awk '{ print $5 }' ;;
 
-            dec-default-sink)
-                change_sink dec
-                ;;
+            mute) vol mute                                                             ;;
+            get_mute) pactl get-sink-mute @DEFAULT_SINK@ | awk '{ print $2 }'          ;;
 
-            get-default-sink)
-                sink_num
-                ;;
+            inc_sink) change_sink '+'                                                  ;;
+            dec_sink) change_sink '-'                                                  ;;
+            get_sink) sink_idx; sink_name; sink_desc                                   ;;
 
-            inc)
-                adjust_vol "-i 4" '+ 4'
-                ;;
-
-            dec)
-                adjust_vol "-d 4" '- 4'
-                ;;
-
-            mute)
-                adjust_vol "-t"
-                ;;
-
-            get)
-                pamixer --get-volume-human
-                ;;
-
-            # get-polybar)
-                # result="$(pamixer --get-volume-human)"
-
-                # if [[ "$result" == "muted" ]]; then
-                    # result="%{F#859289}${result}%{F-}"
-                # fi
-
-                # echo "  $result  "
-                # ;;
-
-            get-polybar)
-                result=$(pamixer --get-volume-human)
-
-                if [[ "$result" == "muted" ]]; then
-                    icon=""
-                    result="%{B#384348}%{F#859289}  ${result}  %{F-}%{B-}"
-                else
-                    icon=""
-                    result="%{B#384348}%{F#d8caac}  ${result}  %{F-}%{B-}"
-                fi
-
-                echo "%{B#a7c080}%{F#2b3339} ${icon} %{B#384348}%{F-}${result}"
-                ;;
-
-            *)
-                usage
-                ;;
+            *) usage                                                                   ;;
         esac
         ;;
-          
+    # }}}
+
+    # {{{ media control
     media)
         case $2 in
-            prev)
-                playerctl previous -p spotify,chromium
-                ;;
-            
-            toggle)
-                playerctl play-pause -p spotify,chromium
-                ;;
+            prev)   playerctl previous -p spotify,chromium   ;;
+            toggle) playerctl play-pause -p spotify,chromium ;;
+            next)   playerctl next -p spotify,chromium       ;;
 
-            next)
-                playerctl next -p spotify,chromium
-                ;;
-
-            *)
-                usage
-                ;;
+            *) usage                                         ;;
         esac
         ;;
+    # }}}
 
-    *)
-        usage
-        ;;
+    # if the args are invalid or if the user asked for help, display usage
+    help)  usage ;;
+    usage) usage ;;
+    *)     usage ;;
 esac
+
+# }}}

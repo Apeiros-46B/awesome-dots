@@ -352,8 +352,11 @@ awful.keyboard.append_global_keybindings({
 
     -- {{{ Audio control
     -- {{{ Volume
-    awful.key({ Ctl,              }, "F1",     function() awful.spawn(script .. "audioutil vol inc-default-sink", false) end,
-              {description = "cycle default sink", group = "audio"}),
+    awful.key({ Ctl,              }, "F1",     function() awful.spawn(script .. "audioutil vol inc_sink", false) end,
+              {description = "cycle default sink (up)", group = "audio"}),
+
+    awful.key({ Ctl, S            }, "F1",     function() awful.spawn(script .. "audioutil vol dec_sink", false) end,
+              {description = "cycle default sink (down)", group = "audio"}),
 
     awful.key({ Ctl,              }, "F2",     function() awful.spawn(script .. "audioutil vol dec", false) end,
               {description = "vol down", group = "audio"}),
