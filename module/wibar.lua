@@ -22,6 +22,9 @@ local get = function(s) awful.spawn.easy_async('acpi', function(stdout, _, _, _)
     -- System tray
     s.systray = require("module.widgets.bar.systray")
 
+    -- Playerctl
+    s.playerctl = require("module.bling.playerctl.init")
+
     -- Misc
     local padding = require("module.widgets.bar.padding")
 
@@ -46,7 +49,7 @@ local get = function(s) awful.spawn.easy_async('acpi', function(stdout, _, _, _)
         },
         { -- Middle widgets
             layout = wibox.layout.fixed.horizontal,
-            require("module.bling.playerctl.widget"),
+            s.playerctl.widget,
             nil
         },
         { -- Right widgets

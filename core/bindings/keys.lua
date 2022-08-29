@@ -313,6 +313,11 @@ awful.keyboard.append_global_keybindings({
     {description = "add typos to clipboard contents", group = "misc"}),
     -- }}}
 
+    -- {{{ Key repeat
+    awful.key({ Modkey,           }, "r",      function() awful.spawn("xset r rate 350 75", false) end,
+              {description = "reset key repeat rate", group = "misc"}),
+    -- }}}
+
     -- {{{ Test notifications
     awful.key({ Modkey, S         }, "n",      function() notify(
         {
