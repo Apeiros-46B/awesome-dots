@@ -17,70 +17,6 @@ local playerctl = require("bling").signal.playerctl.lib()
 -- {{{ Global keybindings
 awful.keyboard.append_global_keybindings({
 
-    -- {{{ Client focusing and swapping
-    -- {{{ Index swaps
-    awful.key({ Modkey, Ctl       }, ".", function() awful.client.swap.byidx(  1)    end,
-              {description = "swap with next client by index", group = "client"}),
-
-    awful.key({ Modkey, Ctl       }, ",", function() awful.client.swap.byidx( -1)    end,
-              {description = "swap with previous client by index", group = "client"}),
-    -- }}}
-
-    -- {{{ Index focus
-    awful.key({ Modkey, S         }, ".", function() awful.client.focus.byidx( 1) end,
-              {description = "focus next by index", group = "client"}),
-
-    awful.key({ Modkey, S         }, ",", function() awful.client.focus.byidx(-1) end,
-        {description = "focus previous by index", group = "client"}),
-    -- }}}
-
-    -- {{{ Directional focus
-    awful.key({ Modkey            }, "h", function() awful.client.focus.bydirection('left')  end,
-              {description = "focus leftwards ", group = "client"}),
-
-    awful.key({ Modkey            }, "j", function() awful.client.focus.bydirection('down')  end,
-              {description = "focus downwards", group = "client"}),
-
-    awful.key({ Modkey            }, "k", function() awful.client.focus.bydirection('up')    end,
-              {description = "focus upwards", group = "client"}),
-
-    awful.key({ Modkey            }, "l", function() awful.client.focus.bydirection('right') end,
-              {description = "focus rightwards", group = "client"}),
-    -- }}}
-
-    -- {{{ Jump
-    awful.key({ Modkey, S         }, "u", awful.client.urgent.jumpto,
-              {description = "jump to urgent client", group = "client"}),
-
-    awful.key({ Modkey,           }, "Tab", function()
-        awful.client.focus.history.previous()
-        if client.focus then
-            client.focus:raise()
-        end
-    end,
-    {description = "go back", group = "client"}),
-    -- }}}
-
-    -- {{{ Window switcher
-    awful.key({ Alt }, "Tab", function()
-        awesome.emit_signal("bling::window_switcher::turn_on")
-    end,
-    {description = "window switcher", group = "client"}),
-    -- }}}
-
-    -- {{{ Unminimize
-    awful.key({ Modkey, S         }, "m", function()
-        local c = awful.client.restore()
-        if c then
-            c:emit_signal(
-                "request::activate", "key.unminimize", {raise = true}
-            )
-        end
-    end,
-    {description = "unminimize", group = "client"}),
-    -- }}}
-    -- }}}
-
     -- {{{ Tags
     -- {{{ Tag switching based on next/prev
     awful.key({ Modkey,           }, ",",   awful.tag.viewprev,
@@ -168,10 +104,16 @@ awful.keyboard.append_global_keybindings({
     -- }}}
 
     -- {{{ Screens
-    awful.key({ Modkey, Alt       }, ".", function() awful.screen.focus_relative( 1) end,
+    awful.key({ Modkey, Alt       }, "l", function() awful.screen.focus_relative( 1) end,
               {description = "focus the next screen", group = "screen"}),
 
-    awful.key({ Modkey, Alt       }, ",", function() awful.screen.focus_relative(-1) end,
+    awful.key({ Modkey, Alt       }, "h", function() awful.screen.focus_relative(-1) end,
+              {description = "focus the previous screen", group = "screen"}),
+
+    awful.key({ Modkey, Alt       }, "k", function() awful.screen.focus_relative( 1) end,
+              {description = "focus the next screen", group = "screen"}),
+
+    awful.key({ Modkey, Alt       }, "j", function() awful.screen.focus_relative(-1) end,
               {description = "focus the previous screen", group = "screen"}),
     -- }}}
 
@@ -314,8 +256,13 @@ awful.keyboard.append_global_keybindings({
     -- }}}
 
     -- {{{ Key repeat
-    awful.key({ Modkey,           }, "r",      function() awful.spawn("xset r rate 350 75", false) end,
-              {description = "reset key repeat rate", group = "misc"}),
+    awful.key({ Modkey,           }, "r",      function()
+        awful.spawn("xset r rate 350 75", false)
+        awful.spawn('xmodmap -e "clear lock"', false)
+        awful.spawn('xmodmap -e "keycode 9 = Caps_Lock NoSymbol Caps_Lock"', false)
+        awful.spawn('xmodmap -e "keycode 66 = Escape NoSymbol Escape"', false)
+    end,
+    {description = "reset keys", group = "misc"}),
     -- }}}
 
     -- {{{ Test notifications
@@ -407,6 +354,70 @@ awful.keyboard.append_global_keybindings({
 -- }}}
 
 -- {{{ Client keybinds
+awful.keyboard.append_global_keybindings({
+    -- {{{ Index swaps
+    awful.key({ Modkey, Ctl       }, ".", function() awful.client.swap.byidx(  1)    end,
+              {description = "swap with next client by index", group = "client"}),
+
+    awful.key({ Modkey, Ctl       }, ",", function() awful.client.swap.byidx( -1)    end,
+              {description = "swap with previous client by index", group = "client"}),
+    -- }}}
+
+    -- {{{ Index focus
+    awful.key({ Modkey, S         }, ".", function() awful.client.focus.byidx( 1) end,
+              {description = "focus next by index", group = "client"}),
+
+    awful.key({ Modkey, S         }, ",", function() awful.client.focus.byidx(-1) end,
+        {description = "focus previous by index", group = "client"}),
+    -- }}}
+
+    -- {{{ Directional focus
+    awful.key({ Modkey            }, "h", function() awful.client.focus.bydirection('left')  end,
+              {description = "focus leftwards ", group = "client"}),
+
+    awful.key({ Modkey            }, "j", function() awful.client.focus.bydirection('down')  end,
+              {description = "focus downwards", group = "client"}),
+
+    awful.key({ Modkey            }, "k", function() awful.client.focus.bydirection('up')    end,
+              {description = "focus upwards", group = "client"}),
+
+    awful.key({ Modkey            }, "l", function() awful.client.focus.bydirection('right') end,
+              {description = "focus rightwards", group = "client"}),
+    -- }}}
+
+    -- {{{ Jump
+    awful.key({ Modkey, S         }, "u", awful.client.urgent.jumpto,
+              {description = "jump to urgent client", group = "client"}),
+
+    awful.key({ Modkey,           }, "Tab", function()
+        awful.client.focus.history.previous()
+        if client.focus then
+            client.focus:raise()
+        end
+    end,
+    {description = "go back", group = "client"}),
+    -- }}}
+
+    -- {{{ Window switcher
+    awful.key({ Alt }, "Tab", function()
+        awesome.emit_signal("bling::window_switcher::turn_on")
+    end,
+    {description = "window switcher", group = "client"}),
+    -- }}}
+
+    -- {{{ Unminimize
+    awful.key({ Modkey, S         }, "m", function()
+        local c = awful.client.restore()
+        if c then
+            c:emit_signal(
+                "request::activate", "key.unminimize", {raise = true}
+            )
+        end
+    end,
+    {description = "unminimize", group = "client"}),
+    -- }}}
+})
+
 client.connect_signal("request::default_keybindings", function()
     awful.keyboard.append_client_keybindings({
         -- {{{ Close
@@ -454,6 +465,43 @@ client.connect_signal("request::default_keybindings", function()
             end
         end,
         {description = "swap/move rightwards", group = "client"}),
+
+        awful.key({ Modkey, Alt, S    }, "h",      function(c)
+            if c.floating then
+                c:relative_move(-19, 0, 0, 0)
+            else
+                awful.client.swap.global_bydirection('left')
+            end
+        end,
+        {description = "global swap/move leftwards ", group = "client"}),
+
+        awful.key({ Modkey, Alt, S    }, "j",      function(c)
+            if c.floating then
+                c:relative_move(0, 19, 0, 0)
+            else
+                awful.client.swap.global_bydirection('down')
+            end
+        end,
+        {description = "global swap/move downwards", group = "client"}),
+
+        awful.key({ Modkey, Alt, S    }, "k",      function(c)
+            if c.floating then
+                c:relative_move(0, -19, 0, 0)
+            else
+                awful.client.swap.global_bydirection('up')
+            end
+        end,
+        {description = "global swap/move upwards", group = "client"}),
+
+        awful.key({ Modkey, Alt, S    }, "l",      function(c)
+            if c.floating then
+                c:relative_move(19, 0, 0, 0)
+            else
+                awful.client.swap.global_bydirection('right')
+            end
+        end,
+        {description = "global swap/move rightwards", group = "client"}),
+
         -- }}}
 
         awful.key({ Modkey,           }, "o",      function(c) c:move_to_screen()               end,
