@@ -72,7 +72,7 @@ else
 				;;
 			-q|--qalculate)
 				hash qalc >/dev/null 2>&1 || { echo "Requires 'libqalculate' installed"; exit 1; }
-				rofi -modi "calc:qalc +u8 -nocurrencies" -show "calc:qalc +u8 -nocurrencies" "${OPTS[@]}"
+				rofi -modi "calc:qalc +u8 -nocurrencies -t" -show "calc:qalc +u8 -nocurrencies -t" "${OPTS[@]}"
 				;;
 			-c|--clipboard)
 				hash greenclip >/dev/null 2>&1 || { echo "Requires 'greenclip' installed"; exit 1; }

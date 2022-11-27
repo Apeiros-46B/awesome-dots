@@ -32,7 +32,9 @@ ruled.client.connect_signal("request::rules", function()
                 "Gpick",
                 "Kruler",
                 "MessageWin",       -- kalarm.
+                "mpv",              -- media player
                 "Nsxiv",            -- image viewer
+                "preview",          -- media preview script
                 "Qalculate-gtk",    -- qalculate-gtk
                 "Sxiv",             -- image viewer
                 "Tor Browser",      -- Needs a fixed window size to avoid fingerprinting by screen size.

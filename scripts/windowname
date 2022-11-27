@@ -1,3 +1,0 @@
-#!/bin/bash
-
-echo "$(xdotool getactivewindow getwindowname 2> /dev/null || echo "Desktop")"
