@@ -161,6 +161,9 @@ awful.keyboard.append_global_keybindings({
     awful.key({ Modkey, S         }, "c",      function() awful.spawn(script .. "rofiutil -q", false) end,
               {description = "calculator menu", group = "launcher"}),
 
+    awful.key({ Modkey, S         }, "e",      function() awful.spawn(script .. "rofiutil -e", false) end,
+              {description = "emoji menu", group = "launcher"}),
+
     -- awful.key({ Modkey, Alt       }, "s",      function() awful.spawn(script .. "rofiutil -s", false) end,
     --           {description = "screenshot menu", group = "launcher"}),
 
@@ -542,7 +545,7 @@ client.connect_signal("request::default_keybindings", function()
         awful.key({ Modkey, Alt       }, "t",      function(c) c.ontop = not c.ontop            end,
                   {description = "toggle keep on top", group = "client"}),
 
-        awful.key({ Modkey, Ctl       }, "s",      function(c) c.sticky = not c.sticky          end,
+        awful.key({ Modkey,           }, "s",      function(c) c.sticky = not c.sticky          end,
                   {description = "toggle sticky/omnipresent", group = "client"}),
 
         awful.key({ Modkey,           }, "f",      function(c)

@@ -29,6 +29,7 @@ ruled.client.connect_signal("request::rules", function()
             class = {
                 "Arandr",
                 "Blueman-manager",
+                "Dragon-drop",
                 "Gpick",
                 "Kruler",
                 "MessageWin",       -- kalarm.
@@ -67,6 +68,7 @@ ruled.client.connect_signal("request::rules", function()
         rule_any = {
             class = {
                 "Qalculate-gtk",
+                "Dragon-drop",
             },
         },
         properties = {

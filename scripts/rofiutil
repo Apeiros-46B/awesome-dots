@@ -70,9 +70,13 @@ else
 			-w|--window)
 				rofi -show window "${OPTS[@]}"
 				;;
+			-e|--emoji)
+				rofi -modi emoji -show emoji "${OPTS[@]}"
+				;;
 			-q|--qalculate)
 				hash qalc >/dev/null 2>&1 || { echo "Requires 'libqalculate' installed"; exit 1; }
-				rofi -modi "calc:qalc +u8 -nocurrencies -t" -show "calc:qalc +u8 -nocurrencies -t" "${OPTS[@]}"
+				# rofi -modi "calc:qalc +u8 -nocurrencies -t" -show "calc:qalc +u8 -nocurrencies -t" "${OPTS[@]}"
+				rofi -modi "calc" -show "calc" "${OPTS[@]}"
 				;;
 			-c|--clipboard)
 				hash greenclip >/dev/null 2>&1 || { echo "Requires 'greenclip' installed"; exit 1; }
@@ -85,11 +89,12 @@ else
 						-dmenu -mesg 'Tab for Autocomplete' -i -p 'Web Search')"
 				;;
 			-l|--logout)
+                lockscreen="$HOME/.config/awesome/scripts/lockscreen"
+
 				case "$(rofi -sep '|' -dmenu -i -p 'system' -width 20 -hide-scrollbar \
 					-line-padding 4 -padding 20 -lines 5 <<< 'lock|suspend|reboot|shutdown')" in
-                    *lock) bash "$HOME/.config/awesome/scripts/lockscreen" ;;
-                    # *logout) awesome-client "awesome.quit()" ;;
-					*suspend) loginctl suspend ;;
+                    *lock) bash "$lockscreen" ;;
+					*suspend) bash "$lockscreen" && loginctl suspend ;;
 					*reboot) loginctl reboot ;;
 					*shutdown) loginctl -i poweroff ;;
 				esac

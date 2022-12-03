@@ -6,8 +6,9 @@
 ## Script to Lock according to session on closing lid.
 
 ## Get colors -----------------
-FG="#d3c6aa"
 BG="#2b3339"
+FG="#d3c6aa"
+FG2="#9da9a0"
 
 BLACK="#384348"
 RED="#e67e80"
@@ -18,50 +19,57 @@ MAGENTA="#d699b6"
 CYAN="#83c092"
 WHITE="#d3c6aa"
 
-## Exec	-----------------
-i3lock \
---color="${BG}D9"			\
-\
---insidever-color=${GREEN}	\
---insidewrong-color=${RED}	\
---inside-color=${BG}	\
-\
---ringver-color=${GREEN}	\
---ringwrong-color=${RED}	\
---ring-color=${BLUE}		\
-\
---line-color=${BG}			\
---separator-color=${BG}		\
-\
---keyhl-color=${MAGENTA}		\
---bshl-color=${RED}			\
-\
---verif-color=${BG}			\
---wrong-color=${BG}			\
---layout-color=${FG}		\
-\
---time-color=${FG}			\
---date-color=${FG}			\
-\
---pass-media-keys			\
---pass-screen-keys			\
---pass-power-keys			\
---pass-volume-keys			\
---{time,date,layout,verif,wrong,greeter}-font="JetBrains Mono Medium"			\
---{layout,verif,wrong,greeter}-size=18							\
---time-size=34													\
---date-size=18													\
---greeter-color=${CYAN}				\
---verif-text="verifying..."			\
---wrong-text="wrong"				\
---noinput-text="empty"				\
---lock-text="locking..."			\
---lockfailed-text="failed to lock"	\
---radius 120				\
---ring-width 8.0			\
---screen 1					\
---clock						\
---indicator					\
---time-str="%H:%M"		\
---date-str="%m/%d/%Y:%u"		\
---blur 10
+## Exec    -----------------
+i3lock -e \
+    --color="${BG}D9" \
+    \
+    --insidever-color=${MAGENTA} \
+    --insidewrong-color=${RED}   \
+    --inside-color=${BG}         \
+    \
+    --ringver-color=${MAGENTA} \
+    --ringwrong-color=${RED}   \
+    --ring-color=${BLUE}       \
+    \
+    --line-color=${BG}      \
+    --separator-color=${BG} \
+    \
+    --keyhl-color=${GREEN} \
+    --bshl-color=${RED}    \
+    \
+    --verif-color=${BG}  \
+    --wrong-color=${BG}  \
+    --layout-color=${FG} \
+    \
+    --time-color=${FG}  \
+    --date-color=${FG2} \
+    \
+    --pass-media-keys  \
+    --pass-screen-keys \
+    --pass-power-keys  \
+    --pass-volume-keys \
+    \
+    --{time,date,layout,verif,wrong,greeter}-font="Work Sans" \
+    --{layout,verif,wrong,greeter}-size=18                    \
+    \
+    --time-size=34 \
+    --date-size=18 \
+    \
+    --greeter-color=${CYAN} \
+    \
+    --verif-text="verifying"           \
+    --wrong-text="wrong"               \
+    --noinput-text="empty"             \
+    --lock-text="locking"              \
+    --lockfailed-text="failed to lock" \
+    \
+    --radius 120     \
+    --ring-width 8.0 \
+    --screen 1       \
+    \
+    --clock                  \
+    --indicator              \
+    --composite              \
+    --time-str="%H:%M"       \
+    --date-str="%d/%m/%Y:%u" \
+    --blur 10
