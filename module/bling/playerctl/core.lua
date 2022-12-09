@@ -4,7 +4,6 @@
 -- {{{ Library imports
 local playerctl = require("bling").signal.playerctl.lib()
 local beautiful = require("beautiful")
-local naughty   = require("naughty")
 local gtable    = require("gears").table
 local table     = table
 -- }}}

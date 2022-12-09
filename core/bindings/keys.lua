@@ -11,7 +11,6 @@ local dpi       = require("beautiful.xresources").apply_dpi
 local script    = "bash " .. os.getenv("HOME") .. "/.config/awesome/scripts/"
 local notify    = require("module.notify")
 local vim_popup = require("module.vim_popup")
-local playerctl = require("bling").signal.playerctl.lib()
 -- }}}
 
 -- {{{ Global keybindings
@@ -322,27 +321,6 @@ awful.keyboard.append_global_keybindings({
     awful.key({ Ctl,              }, "F4",     function() awful.spawn(script .. "audioutil vol mute", false) end,
               {description = "toggle mute", group = "audio"}),
     -- }}}
-
-    -- {{{ Media
-    awful.key({ Ctl,              }, "F6",     function() awful.spawn(script .. "audioutil media prev", false) end,
-              {description = "previous song", group = "audio"}),
-
-    awful.key({ Ctl,              }, "F7",     function() awful.spawn(script .. "audioutil media toggle", false) end,
-              {description = "play/pause", group = "audio"}),
-
-    awful.key({ Ctl,              }, "F8",     function() awful.spawn(script .. "audioutil media next", false) end,
-              {description = "next song", group = "audio"}),
-
-    awful.key({ Alt,              }, "F6",     function()
-        playerctl:cycle_shuffle()
-    end,
-    {description = "toggle shuffle", group = "audio"}),
-
-    awful.key({ Alt,              }, "F8",     function()
-        playerctl:cycle_loop_status()
-    end,
-    {description = "cycle loop", group = "audio"}),
-    -- }}}
     -- }}}
 
     -- {{{ Brightness control
@@ -572,18 +550,6 @@ client.connect_signal("request::default_keybindings", function()
             c:raise()
         end ,
         {description = "toggle maximized", group = "client"}),
-
-        awful.key({ Modkey, Alt       }, "m",      function(c)
-            c.maximized_vertical = not c.maximized_vertical
-            c:raise()
-        end ,
-        {description = "toggle maximized vertically", group = "client"}),
-
-        awful.key({ Modkey, S, Alt    }, "m",      function(c)
-            c.maximized_horizontal = not c.maximized_horizontal
-            c:raise()
-        end ,
-        {description = "toggle maximized horizontally", group = "client"}),
         -- }}}
 
         -- {{{ Misc

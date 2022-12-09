@@ -385,9 +385,6 @@ return function(core, notify)
 
         -- Invert extras_visible property
         info.extras_visible = not extras_visible
-
-        -- Notify
-        notify({ title = "Playerctl widget", message = (extras_visible and "Extras disabled" or "Extras enabled" ), app_name = "playerctl_widget", replaces = true })
     end)
     -- }}}
 
