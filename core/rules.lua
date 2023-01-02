@@ -41,6 +41,7 @@ ruled.client.connect_signal("request::rules", function()
                 "Tor Browser",      -- Needs a fixed window size to avoid fingerprinting by screen size.
                 "veromix",
                 "vimpopup",         -- custom vim popup
+                "qalcpopup",        -- custom qalc popup
                 "Wpa_gui",
                 "xtightvncviewer",
             },

@@ -1,12 +1,12 @@
 -- {{{ Libraries
-local beautiful = require("beautiful")
+local beautiful = require('beautiful')
 local theme_assets = beautiful.theme_assets
 local xresources = beautiful.xresources
 local dpi = xresources.apply_dpi
 
-local naughty = require("naughty")
+local naughty = require('naughty')
 
-local gears = require("gears")
+local gears = require('gears')
 
 local shape = gears.shape
 local shape_load = gears.surface.load_from_shape
@@ -14,7 +14,7 @@ local recolor = gears.color.recolor_image
 -- }}}
 
 -- {{{ Util
-local themes_path = os.getenv("HOME") .. "/.config/awesome/themes/"
+local themes_path = os.getenv('HOME') .. '/.config/awesome/themes/'
 
 local theme = {}
 -- }}}
@@ -22,32 +22,32 @@ local theme = {}
 -- {{{ Colors
 local colors = {
     -- Gray
-    gray1  = "#2b3339",
-    gray2  = "#303c42",
-    gray3  = "#384348",
-    gray4  = "#445055",
-    gray5  = "#607279",
-    gray6  = "#7a8487",
-    gray7  = "#859289",
+    gray1  = '#2b3339',
+    gray2  = '#323c41',
+    gray3  = '#3a454a',
+    gray4  = '#445055',
+    gray5  = '#607279',
+    gray6  = '#7a8487',
+    gray7  = '#859289',
 
     -- Foreground
-    white  = "#d3c6aa",
+    white  = '#d3c6aa',
 
     -- Other colors
-    red    = "#e67e80",
-    orange = "#e69875",
-    yellow = "#ddbc7f",
-    green  = "#a7c080",
-    teal   = "#83c092",
-    blue   = "#7fbbb3",
-    purple = "#d699b6",
+    red    = '#e67e80',
+    orange = '#e69875',
+    yellow = '#ddbc7f',
+    green  = '#a7c080',
+    teal   = '#83c092',
+    blue   = '#7fbbb3',
+    purple = '#d699b6',
 }
 
 theme.colorscheme = colors
 -- }}}
 
 -- {{{ Font(s)
-theme.font          = "JetBrainsMono Nerd Font Bold 10"
+theme.font          = 'JetBrainsMono Nerd Font Bold 10'
 -- }}}
 
 -- {{{ Background
@@ -92,19 +92,19 @@ theme.window_switcher_client_width = 400                             -- The widt
 theme.window_switcher_client_height = 36                             -- The height of one client widget
 theme.window_switcher_client_margins = 12                            -- The margin between the content and the border of the widget
 theme.window_switcher_thumbnail_margins = 6                          -- The margin between one client thumbnail and the rest of the widget
-theme.thumbnail_scale = false                                        -- If set to true, the thumbnails fit policy will be set to "fit" instead of "auto"
+theme.thumbnail_scale = false                                        -- If set to true, the thumbnails fit policy will be set to 'fit' instead of 'auto'
 theme.window_switcher_name_margins = 6                               -- The margin of one clients title to the rest of the widget
-theme.window_switcher_name_valign = "center"                         -- How to vertically align one clients title
+theme.window_switcher_name_valign = 'center'                         -- How to vertically align one clients title
 theme.window_switcher_name_forced_width = 350                        -- The width of one title
-theme.window_switcher_name_font = "JetBrainsMono Nerd Font Bold 10"  -- The font of all titles
+theme.window_switcher_name_font = 'JetBrainsMono Nerd Font Bold 10'  -- The font of all titles
 theme.window_switcher_name_normal_color = colors.white               -- The color of one title if the client is unfocused
 theme.window_switcher_name_focus_color = colors.blue                 -- The color of one title if the client is focused
-theme.window_switcher_icon_valign = "center"                         -- How to vertically align the one icon
+theme.window_switcher_icon_valign = 'center'                         -- How to vertically align the one icon
 theme.window_switcher_icon_width = 30                                -- The width of one icon
 -- }}}
 
 -- {{{ Playerctl
-theme.playerctl_player = {"spotify", "%any"}
+theme.playerctl_player = {'spotify', '%any'}
 theme.playerctl_update_on_activity = false
 -- }}}
 
@@ -121,7 +121,7 @@ theme.notification_max_width = dpi(640)
 
 -- Icon scale
 theme.notification_icon_size = dpi(48)
-theme.notification_icon_resize_strategy = "scale"
+theme.notification_icon_resize_strategy = 'scale'
 
 -- Padding and spacing
 theme.notification_padding = dpi(16)
@@ -140,11 +140,11 @@ theme.notification_bg = colors.gray2
 -- Fonts (text weight)
 theme.notification_font         = theme.font
 theme.notification_font_title   = theme.font
-theme.notification_font_message = theme.font:gsub("Bold", "Normal")
+theme.notification_font_message = theme.font:gsub('Bold', 'Normal')
 -- }}}
 
 -- {{{ Menu
-theme.menu_submenu_icon = themes_path.."default/icons/misc/submenu.png"
+theme.menu_submenu_icon = themes_path..'default/icons/misc/submenu.png'
 theme.menu_height = dpi(15)
 theme.menu_width  = dpi(125)
 theme.menu_border_width = 0
@@ -163,14 +163,14 @@ theme.tasklist_fg_minimized     = colors.gray5
 theme.tasklist_fg_normal        = colors.white
 
 -- no longer needed, custom taglist exists :euphoria:
--- theme.tasklist_sticky = ""
--- theme.tasklist_ontop = "ﱢ "
--- theme.tasklist_above = "ﲗ "
--- theme.tasklist_below = "ﲔ "
--- theme.tasklist_floating = "ﰉ "
--- theme.tasklist_maximized = " "
--- theme.tasklist_maximized_horizontal = " "
--- theme.tasklist_maximized_vertical = ""
+-- theme.tasklist_sticky = ''
+-- theme.tasklist_ontop = 'ﱢ '
+-- theme.tasklist_above = 'ﲗ '
+-- theme.tasklist_below = 'ﲔ '
+-- theme.tasklist_floating = 'ﰉ '
+-- theme.tasklist_maximized = ' '
+-- theme.tasklist_maximized_horizontal = ' '
+-- theme.tasklist_maximized_vertical = ''
 -- }}}
 
 -- {{{ Taglist
@@ -189,13 +189,13 @@ theme.taglist_bg_empty = colors.gray3
 -- {{{ Custom tasklist
 local tasklist_base_icons = {}
 
-tasklist_base_icons.floating     = themes_path.."default/icons/tasklist/floating.svg"
-tasklist_base_icons.max          = themes_path.."default/icons/tasklist/max.svg"
-tasklist_base_icons.max_horiz    = themes_path.."default/icons/tasklist/max_horiz.svg"
-tasklist_base_icons.max_vert     = themes_path.."default/icons/tasklist/max_vert.svg"
-tasklist_base_icons.ontop        = themes_path.."default/icons/tasklist/ontop.svg"
-tasklist_base_icons.min          = themes_path.."default/icons/tasklist/min.svg"
-tasklist_base_icons.sticky       = themes_path.."default/icons/tasklist/sticky.svg"
+tasklist_base_icons.floating     = themes_path..'default/icons/tasklist/floating.svg'
+tasklist_base_icons.max          = themes_path..'default/icons/tasklist/max.svg'
+tasklist_base_icons.max_horiz    = themes_path..'default/icons/tasklist/max_horiz.svg'
+tasklist_base_icons.max_vert     = themes_path..'default/icons/tasklist/max_vert.svg'
+tasklist_base_icons.ontop        = themes_path..'default/icons/tasklist/ontop.svg'
+tasklist_base_icons.min          = themes_path..'default/icons/tasklist/min.svg'
+tasklist_base_icons.sticky       = themes_path..'default/icons/tasklist/sticky.svg'
 
 local tasklist_style = {}
 
@@ -253,17 +253,17 @@ theme.tasklist_style = tasklist_style
 local geolist_base_icons = {}
 
 geolist_base_icons.rhomb = {
-    filled = themes_path.."default/icons/geolist/rhomb_filled.svg",
-    hollow = themes_path.."default/icons/geolist/rhomb_hollow.svg",
+    filled = themes_path..'default/icons/geolist/rhomb_filled.svg',
+    hollow = themes_path..'default/icons/geolist/rhomb_hollow.svg',
 }
 
 geolist_base_icons.circle = {
-    filled = themes_path.."default/icons/geolist/circle_filled.svg",
-    hollow = themes_path.."default/icons/geolist/circle_hollow.svg",
+    filled = themes_path..'default/icons/geolist/circle_filled.svg',
+    hollow = themes_path..'default/icons/geolist/circle_hollow.svg',
 }
 
-geolist_base_icons.square = themes_path.."default/icons/geolist/square.svg"
-geolist_base_icons.triangle = themes_path.."default/icons/geolist/triangle.svg"
+geolist_base_icons.square = themes_path..'default/icons/geolist/square.svg'
+geolist_base_icons.triangle = themes_path..'default/icons/geolist/triangle.svg'
 
 local geolist_style = {}
 
@@ -387,29 +387,29 @@ theme.titlebar_ontop_button_focus_active  = shape_load(
 -- }}}
 
 -- {{{ Layout icons
-theme.layout_fairv = themes_path.."default/icons/layouts/fairv.png"
-theme.layout_floating  = themes_path.."default/icons/layouts/floating.png"
-theme.layout_tile = themes_path.."default/icons/layouts/tile.png"
-theme.layout_spiral  = themes_path.."default/icons/layouts/spiral.png"
-theme.layout_dwindle = themes_path.."default/icons/layouts/dwindle.png"
+theme.layout_fairv = themes_path..'default/icons/layouts/fairv.png'
+theme.layout_floating  = themes_path..'default/icons/layouts/floating.png'
+theme.layout_tile = themes_path..'default/icons/layouts/tile.png'
+theme.layout_spiral  = themes_path..'default/icons/layouts/spiral.png'
+theme.layout_dwindle = themes_path..'default/icons/layouts/dwindle.png'
 -- }}}
 
 -- {{{ Wibar icons
 -- Playerctl
-theme.playerctl_shuffle_off = recolor(themes_path.."default/icons/media/mdi-shuffle-off.svg", colors.gray1)
-theme.playerctl_shuffle     = recolor(themes_path.."default/icons/media/mdi-shuffle.svg",     colors.gray1)
+theme.playerctl_shuffle_off = recolor(themes_path..'default/icons/media/mdi-shuffle-off.svg', colors.gray1)
+theme.playerctl_shuffle     = recolor(themes_path..'default/icons/media/mdi-shuffle.svg',     colors.gray1)
 
-theme.playerctl_previous    = recolor(themes_path.."default/icons/media/fa-previous.svg",     colors.gray1)
-theme.playerctl_play        = recolor(themes_path.."default/icons/media/fa-play.svg",         colors.gray1)
-theme.playerctl_pause       = recolor(themes_path.."default/icons/media/fa-pause.svg",        colors.gray1)
-theme.playerctl_next        = recolor(themes_path.."default/icons/media/fa-next.svg",         colors.gray1)
+theme.playerctl_previous    = recolor(themes_path..'default/icons/media/fa-previous.svg',     colors.gray1)
+theme.playerctl_play        = recolor(themes_path..'default/icons/media/fa-play.svg',         colors.gray1)
+theme.playerctl_pause       = recolor(themes_path..'default/icons/media/fa-pause.svg',        colors.gray1)
+theme.playerctl_next        = recolor(themes_path..'default/icons/media/fa-next.svg',         colors.gray1)
 
-theme.playerctl_loop_off    = recolor(themes_path.."default/icons/media/mdi-loop-off.svg",    colors.gray1)
-theme.playerctl_loop_one    = recolor(themes_path.."default/icons/media/mdi-loop-one.svg",    colors.gray1)
-theme.playerctl_loop        = recolor(themes_path.."default/icons/media/mdi-loop.svg",        colors.gray1)
+theme.playerctl_loop_off    = recolor(themes_path..'default/icons/media/mdi-loop-off.svg',    colors.gray1)
+theme.playerctl_loop_one    = recolor(themes_path..'default/icons/media/mdi-loop-one.svg',    colors.gray1)
+theme.playerctl_loop        = recolor(themes_path..'default/icons/media/mdi-loop.svg',        colors.gray1)
 
 -- Textclock
-theme.textclock_icon = recolor(themes_path.."default/icons/datetime/fa-clock.svg", colors.gray1)
+theme.textclock_icon = recolor(themes_path..'default/icons/datetime/fa-clock.svg', colors.gray1)
 
 -- Battery
 local battery_icons = {
@@ -418,48 +418,48 @@ local battery_icons = {
 }
 
 for i = 1, 10, 1 do
-    battery_icons.charging[i] = recolor(themes_path.."default/icons/sysinfo/battery/mdi-battery-charging-"..i.."0.svg", colors.gray1)
-    battery_icons.discharging[i] = recolor(themes_path.."default/icons/sysinfo/battery/mdi-battery-"..i.."0.svg", colors.gray1)
+    battery_icons.charging[i] = recolor(themes_path..'default/icons/sysinfo/battery/mdi-battery-charging-'..i..'0.svg', colors.gray1)
+    battery_icons.discharging[i] = recolor(themes_path..'default/icons/sysinfo/battery/mdi-battery-'..i..'0.svg', colors.gray1)
 end
 
 theme.battery_icons = battery_icons
 
 -- CPU
-theme.sysinfo_cpu_icon = recolor(themes_path.."default/icons/sysinfo/fa-cpu.svg", colors.gray1)
+theme.sysinfo_cpu_icon = recolor(themes_path..'default/icons/sysinfo/fa-cpu.svg', colors.gray1)
 
 -- Memory
-theme.sysinfo_mem_icon = recolor(themes_path.."default/icons/sysinfo/fa-mem.svg", colors.gray1)
+theme.sysinfo_mem_icon = recolor(themes_path..'default/icons/sysinfo/fa-mem.svg', colors.gray1)
 -- }}
 
 -- {{{ Misc icons
 -- Awesome icons
 theme.awesome_icon = theme_assets.awesome_icon(64, theme.bg_focus, theme.fg_focus)
-theme.awesome_icon_alt = themes_path.."default/icons/misc/awesome-icon-largegap.png"
+theme.awesome_icon_alt = themes_path..'default/icons/misc/awesome-icon-largegap.png'
 -- }}}
 -- }}}
-
--- {{{ Other
--- Icon theme
-theme.icon_theme = nil
 
 -- {{{ Wallpaper
 -- Whether or not to select a random wallpaper
 theme.random_wallpaper = false
 
 -- {{{ Manual selection of wallpapers
--- theme.wallpaper        = themes_path.."default/walls/car_everforest.png"
-theme.wallpaper        = themes_path.."default/walls/everforest_stairs.jpg"
--- theme.wallpaper        = themes_path.."default/walls/fog_forest_everforest.jpg"
--- theme.wallpaper        = themes_path.."default/walls/light_floral_everforest.png"
+-- theme.wallpaper        = themes_path .. 'default/walls/car.png'
+-- theme.wallpaper        = themes_path .. 'default/walls/stairs.jpg'
+-- theme.wallpaper        = themes_path .. 'default/walls/fog_forest.jpg'
+theme.wallpaper        = themes_path .. 'default/walls/flowers.png'
 -- }}}
 
 -- Wallpaper path for randomized wallpapers
-theme.wallpaper_path   = themes_path.."default/walls/"
+theme.wallpaper_path   = themes_path .. 'default/walls/'
 
 -- Position and scale
-theme.wallpaper_position = "fit" -- Can be one of "centered" "fit" "maximized" or "tiled"
+theme.wallpaper_position = 'fit' -- Can be one of 'centered' 'fit' 'maximized' or 'tiled'
 theme.wallpaper_scale    = 1
 -- }}}
+
+-- {{{ Other
+-- Icon theme
+theme.icon_theme = nil
 -- }}}
 
 -- {{{ Return

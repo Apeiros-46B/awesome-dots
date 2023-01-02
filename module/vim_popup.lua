@@ -8,7 +8,7 @@ local class_arg = " -c vimpopup"
 
 return function(dir)
     -- Determine filename
-    local filename = (dir or "/tmp/") .. os.date("vimpopup-%Y-%b-%d.%H-%M-%S")
+    local filename = dir .. os.date("%Y-%m-%d.%H-%M-%S.txt")
 
     -- Open the popup
     awful.spawn.easy_async(Terminal .. class_arg .. " -e " .. Editor .. " " .. filename, function()

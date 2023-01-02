@@ -7,10 +7,11 @@ local naughty = require("naughty")
 local hotkeys_popup = require("awful.hotkeys_popup")
 
 -- Misc
-local dpi       = require("beautiful.xresources").apply_dpi
-local script    = "bash " .. os.getenv("HOME") .. "/.config/awesome/scripts/"
-local notify    = require("module.notify")
-local vim_popup = require("module.vim_popup")
+local dpi        = require("beautiful.xresources").apply_dpi
+local script     = "bash " .. os.getenv("HOME") .. "/.config/awesome/scripts/"
+local notify     = require("module.notify")
+local vim_popup  = require("module.vim_popup")
+local qalc_popup = require("module.qalc_popup")
 -- }}}
 
 -- {{{ Global keybindings
@@ -145,8 +146,11 @@ awful.keyboard.append_global_keybindings({
     awful.key({ Ctl, S            }, "Escape", function() awful.spawn(Terminal_start_cmd .. "btop", false) end,
               {description = "task manager", group = "launcher"}),
 
-    awful.key({ Modkey,           }, "v",      function() vim_popup(os.getenv("HOME") .. "/.cache/awesome/vimpopup/")  end,
+    awful.key({ Modkey,           }, "v",      function() vim_popup(os.getenv("HOME") .. "/.cache/awesome/vim_popup/")  end,
               {description = "vim popup", group = "launcher"}),
+
+    awful.key({ Modkey, S         }, "c",      function() qalc_popup(os.getenv("HOME") .. "/.cache/awesome/qalc_popup/") end,
+              {description = "qalc popup", group = "launcher"}),
 
     awful.key({ Modkey,           }, "space",  function() awful.spawn(script .. "rofiutil", false) end,
               {description = "run menu", group = "launcher"}),
@@ -156,9 +160,6 @@ awful.keyboard.append_global_keybindings({
 
     awful.key({ Modkey,           }, "x",      function() awful.spawn(script .. "rofiutil -l", false) end,
               {description = "system menu", group = "launcher"}),
-
-    awful.key({ Modkey, S         }, "c",      function() awful.spawn(script .. "rofiutil -q", false) end,
-              {description = "calculator menu", group = "launcher"}),
 
     awful.key({ Modkey, S         }, "e",      function() awful.spawn(script .. "rofiutil -e", false) end,
               {description = "emoji menu", group = "launcher"}),
@@ -260,9 +261,7 @@ awful.keyboard.append_global_keybindings({
     -- {{{ Key repeat
     awful.key({ Modkey,           }, "r",      function()
         awful.spawn("xset r rate 350 75", false)
-        awful.spawn('xmodmap -e "clear lock"', false)
-        awful.spawn('xmodmap -e "keycode 9 = Caps_Lock NoSymbol Caps_Lock"', false)
-        awful.spawn('xmodmap -e "keycode 66 = Escape NoSymbol Escape"', false)
+        awful.spawn('setxkbmap -option caps:escape', false)
     end,
     {description = "reset keys", group = "misc"}),
     -- }}}
@@ -391,7 +390,7 @@ awful.keyboard.append_global_keybindings({
         local c = awful.client.restore()
         if c then
             c:emit_signal(
-                "request::activate", "key.unminimize", {raise = true}
+            "request::activate", "key.unminimize", { raise = true }
             )
         end
     end,
