@@ -1,13 +1,14 @@
 -- {{{ Library imports
-local awful = require("awful")
-local ruled = require("ruled")
+local awful = require('awful')
+local ruled = require('ruled')
+local dpi   = require('beautiful.xresources').apply_dpi
 -- }}}
 
 -- {{{ Rules to apply to all clients
-ruled.client.connect_signal("request::rules", function()
+ruled.client.connect_signal('request::rules', function()
     -- {{{ All clients will match this rule.
     ruled.client.append_rule {
-        id         = "global",
+        id         = 'global',
         rule       = {},
         properties = {
             focus     = awful.client.focus.filter,
@@ -22,38 +23,38 @@ ruled.client.connect_signal("request::rules", function()
     ruled.client.append_rule {
         rule_any = {
             instance = {
-                "DTA",              -- Firefox addon DownThemAll.
-                "copyq",            -- Includes session name in class.
-                "pinentry",
+                'DTA',              -- Firefox addon DownThemAll.
+                'copyq',            -- Includes session name in class.
+                'pinentry',
             },
             class = {
-                "Arandr",
-                "Blueman-manager",
-                "Dragon-drop",
-                "Gpick",
-                "Kruler",
-                "MessageWin",       -- kalarm.
-                "mpv",              -- media player
-                "Nsxiv",            -- image viewer
-                "preview",          -- media preview script
-                "Qalculate-gtk",    -- qalculate-gtk
-                "Sxiv",             -- image viewer
-                "Tor Browser",      -- Needs a fixed window size to avoid fingerprinting by screen size.
-                "veromix",
-                "vimpopup",         -- custom vim popup
-                "qalcpopup",        -- custom qalc popup
-                "Wpa_gui",
-                "xtightvncviewer",
+                'Arandr',
+                'Blueman-manager',
+                'Dragon-drop',
+                'Gpick',
+                'Kruler',
+                'MessageWin',       -- kalarm.
+                'mpv',              -- media player
+                'Nsxiv',            -- image viewer
+                'preview',          -- media preview script
+                'Qalculate-gtk',    -- qalculate-gtk
+                'Sxiv',             -- image viewer
+                'Tor Browser',      -- Needs a fixed window size to avoid fingerprinting by screen size.
+                'veromix',
+                'vimpopup',         -- custom vim popup
+                'qalcpopup',        -- custom qalc popup
+                'Wpa_gui',
+                'xtightvncviewer',
             },
             -- Note that the name property shown in xprop might be set slightly after creation of the client
             -- and the name shown there might not match defined rules here.
             name = {
-                "Event Tester",     -- xev.
+                'Event Tester',     -- xev.
             },
             role = {
-                "AlarmWindow",      -- Thunderbird's calendar.
-                "ConfigManager",    -- Thunderbird's about:config.
-                "pop-up",           -- e.g. Google Chrome's (detached) Developer Tools.
+                'AlarmWindow',      -- Thunderbird's calendar.
+                'ConfigManager',    -- Thunderbird's about:config.
+                'pop-up',           -- e.g. Google Chrome's (detached) Developer Tools.
             }
         },
         properties = {
@@ -68,8 +69,8 @@ ruled.client.connect_signal("request::rules", function()
     ruled.client.append_rule {
         rule_any = {
             class = {
-                "Qalculate-gtk",
-                "Dragon-drop",
+                'Qalculate-gtk',
+                'Dragon-drop',
             },
         },
         properties = {
@@ -82,10 +83,27 @@ ruled.client.connect_signal("request::rules", function()
     -- {{{ Titlebars
     ruled.client.append_rule {
         rule_any = {
-            type = { "normal", "dialog" }
+            type = { 'normal', 'dialog' }
         },
         properties = {
             titlebars_enabled = true
+        }
+    }
+    -- }}}
+
+    -- {{{ Special
+    ruled.client.append_rule {
+        rule_any = {
+            class = { 'peaclock' }
+        },
+        properties = {
+            titlebars_enabled = false,
+            border_width      = dpi(2),
+            floating          = true,
+            ontop             = true,
+            placement         = awful.placement.centered,
+            width             = 440,
+            height            = 240,
         }
     }
     -- }}}

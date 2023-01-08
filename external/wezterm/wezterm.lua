@@ -9,12 +9,11 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_wid
         }
     else
         return {
-            {Background={Color="#384348"}},
+            {Background={Color="#3a454a"}},
             {Foreground={Color="#d3c6aa"}},
             {Text="  " .. tab.active_pane.title .. "  "},
         }
     end
-    return tab.active_pane.title
 end)
 
 return {
@@ -25,21 +24,21 @@ return {
         { key="Enter", mods="ALT", action="DisableDefaultAssignment" }
     },
 
-    font = wezterm.font('JetBrainsMono Nerd Font'),
+    font = wezterm.font('JetBrainsMono Nerd Font Mono'),
     font_size = 13.0,
     font_rules = {
         {
             italic = true,
-            font = wezterm.font('JetBrainsMono Nerd Font', { italic = true }),
+            font = wezterm.font('JetBrainsMono Nerd Font Mono', { italic = true }),
         },
         {
             italic = true,
             intensity = 'Bold',
-            font = wezterm.font('JetBrainsMono Nerd Font', { italic = true, bold = true }),
+            font = wezterm.font('JetBrainsMono Nerd Font Mono', { italic = true, bold = true }),
         },
         {
             intensity = 'Bold',
-            font = wezterm.font('JetBrainsMono Nerd Font', { bold = true }),
+            font = wezterm.font('JetBrainsMono Nerd Font Mono', { bold = true }),
         },
     },
     warn_about_missing_glyphs = false,
@@ -72,8 +71,8 @@ return {
             },
 
             new_tab = {
-                bg_color = "#384348",
-                fg_color = "#607279",
+                bg_color = "#3a454a",
+                fg_color = "#859289",
             },
         }
     },
@@ -106,8 +105,8 @@ return {
 
             split = '#2b3339',
 
-            ansi = { '#384348', '#e67e80', '#a7c080', '#ddbc7f', '#7fbbb3', '#d699b6', '#83c092', '#d3c6aa' },
-            brights = { '#607279', '#e67e80', '#a7c080', '#ddbc7f', '#7fbbb3', '#d699b6', '#83c092', '#d3c6aa' },
+            ansi = { '#3a454a', '#e67e80', '#a7c080', '#ddbc7f', '#7fbbb3', '#d699b6', '#83c092', '#d3c6aa' },
+            brights = { '#859289', '#e67e80', '#a7c080', '#ddbc7f', '#7fbbb3', '#d699b6', '#83c092', '#d3c6aa' },
 
             -- indexed = { [136] = '#af8700' },
         },
