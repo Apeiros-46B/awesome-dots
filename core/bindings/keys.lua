@@ -152,7 +152,7 @@ awful.keyboard.append_global_keybindings({
     awful.key({ Modkey, S         }, 'c',      function() qalc_popup(os.getenv('HOME') .. '/.cache/awesome/qalc_popup/') end,
               {description = 'qalc popup', group = 'launcher'}),
 
-    awful.key({ Modkey, Ctl       }, 'c',      function() awful.spawn(Terminal .. ' -c peaclock -e peaclock') end,
+    awful.key({ Modkey, Ctl       }, 'c',      function() awful.spawn(Terminal .. ' -c peaclock -e peaclock --config-dir ' .. os.getenv('HOME') .. '/.config/peaclock') end,
               {description = 'peaclock', group = 'launcher'}),
 
     awful.key({ Modkey,           }, 'space',  function() awful.spawn(script .. 'rofiutil', false) end,

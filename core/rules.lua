@@ -102,7 +102,7 @@ ruled.client.connect_signal('request::rules', function()
             floating          = true,
             ontop             = true,
             placement         = awful.placement.centered,
-            width             = 440,
+            width             = 600,
             height            = 240,
         }
     }
