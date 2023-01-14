@@ -1,54 +1,70 @@
-#!/bin/bash
+#!/bin/sh
 
 usage() {
-    printf "Usage: picomutil <start|toggle>\n"
+    printf 'usage: picomutil <start|toggle|animation-toggle>\n'
     exit 1
 }
 
-kill() {
-    killall -q picom
-}
+get_animation_state() { [ "$(cat "$HOME/.cache/awesome/picom_animations")" = 'true' ]; }
+set_animation_state() { echo "$1" > "$HOME/.cache/awesome/picom_animations"; }
 
-start() {
-    picom --experimental-backends --config "$HOME/.config/awesome/external/picom/picom.conf" &
-}
+kill() { killall -q picom; }
+
+start() { picom --experimental-backends --config "$HOME/.config/awesome/external/picom/picom.conf" & }
+start_animations() { picom --animations --experimental-backends --config "$HOME/.config/awesome/external/picom/picom.conf" & }
+
+start_auto() { if get_animation_state; then start_animations; else start; fi }
 
 notif() {
-    icon="placeholder"
-    if [ $3 ]; then
+    icon='placeholder'
+    if [ "$3" ]; then
         icon="$3"
     fi
 
-    time="2000"
-    if [ $4 ]; then
+    time='2000'
+    if [ "$4" ]; then
         icon="$4"
     fi
 
     # this hint allows the notification to replace previous confirmation notifications
-    dunstify -h "string:x-canonical-private-synchronous:anything" -a "picomutil" -i "$icon" -u "normal" -t "$time" "$1" "$2"
+    dunstify -h 'string:x-canonical-private-synchronous:anything' -a 'picomutil' -i "$icon" -u 'normal' -t "$time" "$1" "$2"
 }
 
-if [[ ! $1 ]]; then
+if [ ! "$1" ]; then
     usage
 fi
 
 case $1 in
     start)
         kill
-        start
+        start_auto
         ;;
 
     toggle)
         if pgrep -x picom > /dev/null; then
             kill
-            notif "Compositor" "Picom disabled"
+            notif 'Compositor' 'Disabled'
         else
-            start
-            notif "Compositor" "Picom enabled"
+            start_auto
+            notif 'Compositor' 'Enabled'
         fi
         ;;
 
-    *)
-        usage
+    animation-toggle)
+        kill
+
+        if get_animation_state; then
+            start
+
+            set_animation_state 'false'
+            notif 'Compositor' 'Window animations disabled'
+        else
+            start_animations
+
+            set_animation_state 'true'
+            notif 'Compositor' 'Window animations enabled'
+        fi
         ;;
+
+    *) usage ;;
 esac
