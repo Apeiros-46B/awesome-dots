@@ -146,7 +146,10 @@ awful.keyboard.append_global_keybindings({
     awful.key({ Ctl, S            }, 'Escape', function() awful.spawn(Terminal_start_cmd .. 'btop', false) end,
               {description = 'task manager', group = 'launcher'}),
 
-    awful.key({ Modkey,           }, 'v',      function() vim_popup(os.getenv('HOME') .. '/.cache/awesome/vim_popup/')  end,
+    awful.key({ Modkey,           }, 'e',      function() awful.spawn(Editor_cmd) end,
+              {description = 'editor', group = 'launcher'}),
+
+    awful.key({ Modkey,           }, 'v',      function() vim_popup(os.getenv('HOME') .. '/.cache/awesome/vim_popup/') end,
               {description = 'vim popup', group = 'launcher'}),
 
     awful.key({ Modkey, S         }, 'c',      function() qalc_popup(os.getenv('HOME') .. '/.cache/awesome/qalc_popup/') end,
