@@ -97,13 +97,11 @@ ruled.client.connect_signal('request::rules', function()
             class = { 'peaclock' }
         },
         properties = {
-            titlebars_enabled = false,
-            border_width      = dpi(2),
             floating          = true,
             ontop             = true,
+            width             = 720,
+            height            = 300,
             placement         = awful.placement.centered,
-            width             = 600,
-            height            = 240,
         }
     }
     -- }}}

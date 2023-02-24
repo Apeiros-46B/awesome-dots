@@ -27,7 +27,7 @@ notif() {
     fi
 
     # this hint allows the notification to replace previous confirmation notifications
-    dunstify -h 'string:x-canonical-private-synchronous:anything' -a 'picomutil' -i "$icon" -u 'normal' -t "$time" "$1" "$2"
+    notify-send -h 'string:x-canonical-private-synchronous:anything' -a 'picomutil' -i "$icon" -u 'normal' -t "$time" "$1" "$2"
 }
 
 if [ ! "$1" ]; then

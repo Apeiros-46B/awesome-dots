@@ -41,6 +41,10 @@ return function(core, notify)
             notif_text    = "(on " .. album .. ") " .. notif_text
         end
 
+        -- fix '&apos;'
+        notif_title = notif_title:gsub('&apos;', "'")
+        notif_text = notif_text:gsub('&apos;', "'")
+
         notify({ title = notif_title, message = notif_text, image = album_path, app_name = "bling_playerctl_notifier", replaces = true })
     end)
 end
