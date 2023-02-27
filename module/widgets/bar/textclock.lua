@@ -11,8 +11,8 @@ local dpi = beautiful.xresources.apply_dpi
 local colors = beautiful.colorscheme
 
 -- Clock formats
-local format1 = " %m/%d:%u -> %R "
-local format2 = " %Y/%m/%d:%u -> %R:%S "
+local format1 = " %m.%d:%u -> %R "
+local format2 = " %Y.%m.%d:%u -> %R:%S "
 
 -- Analog clock
 local analog_clock = require('module.widgets.analog_clock')({
