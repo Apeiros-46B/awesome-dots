@@ -307,7 +307,7 @@ theme.geolist_style = geolist_style
 
 -- {{{ Titlebars
 -- Should focused titlebars be colored?
-local focus_highlight = true
+local focus_highlight = false
 
 -- BG and FG colors
 theme.titlebar_fg_focus  = (focus_highlight and colors.gray1 or colors.white)
