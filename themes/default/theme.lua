@@ -249,60 +249,41 @@ tasklist_style.urgent = colors.red
 theme.tasklist_style = tasklist_style
 -- }}}
 
--- {{{ Custom taglist (geolist)
-local geolist_base_icons = {}
+-- {{{ Taglist icons
+theme.geolist_style = {
+    empty = {
+        shape = function(cr, w, h)
+            -- 360 degree arc (hollow circ)
+            return shape.arc(cr, w, h, dpi(2), 0, math.pi * 2)
+        end,
+        fg = colors.gray5,
+        bg = colors.gray3,
+    },
 
-geolist_base_icons.rhomb = {
-    filled = themes_path..'default/icons/geolist/rhomb_filled.svg',
-    hollow = themes_path..'default/icons/geolist/rhomb_hollow.svg',
+    occupied = {
+        shape = shape.circle,
+        fg = colors.white,
+        bg = colors.gray3,
+    },
+
+    selected = {
+        shape = shape.losange,
+        fg = colors.gray1,
+        bg = colors.blue,
+    },
+
+    urgent = {
+        shape = shape.isosceles_triangle,
+        fg = colors.gray1,
+        bg = colors.red,
+    },
+
+    volatile = {
+        shape = shape.rectangle,
+        fg = colors.gray1,
+        bg = colors.yellow,
+    },
 }
-
-geolist_base_icons.circle = {
-    filled = themes_path..'default/icons/geolist/circle_filled.svg',
-    hollow = themes_path..'default/icons/geolist/circle_hollow.svg',
-}
-
-geolist_base_icons.square = themes_path..'default/icons/geolist/square.svg'
-geolist_base_icons.triangle = themes_path..'default/icons/geolist/triangle.svg'
-
-local geolist_style = {}
-
-geolist_style.empty = {
-    icon = recolor(geolist_base_icons.circle.hollow, colors.gray5),
-    bg = colors.gray3
-}
-
-geolist_style.occupied = {
-    icon = recolor(geolist_base_icons.circle.filled, colors.white),
-    bg = colors.gray3
-}
-
-geolist_style.omnipresent_unfocused = {
-    icon = recolor(geolist_base_icons.circle.hollow, colors.gray5),
-    bg = colors.gray3
-}
-
-geolist_style.omnipresent_focused = {
-    icon = recolor(geolist_base_icons.rhomb.hollow, colors.white),
-    bg = colors.gray3
-}
-
-geolist_style.selected = {
-    icon = recolor(geolist_base_icons.rhomb.filled, colors.gray1),
-    bg = colors.blue
-}
-
-geolist_style.urgent = {
-    icon = recolor(geolist_base_icons.triangle, colors.gray1),
-    bg = colors.red
-}
-
-geolist_style.volatile = {
-    icon = recolor(geolist_base_icons.square, colors.gray1),
-    bg = colors.yellow
-}
-
-theme.geolist_style = geolist_style
 -- }}}
 
 -- {{{ Titlebars

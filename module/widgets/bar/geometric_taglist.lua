@@ -22,7 +22,7 @@ end
 -- }}}
 
 -- {{{ Update callback
-local list_update = function(widget, buttons, label, data, objects)
+local list_update = function(widget, buttons, _, _, objects)
     -- Reset the widget
     widget:reset()
 
@@ -32,20 +32,18 @@ local list_update = function(widget, buttons, label, data, objects)
         local tag_widget = wibox.widget {
             {
                 {
-                    -- Tag's icon, image will be set later based on tag state
+                    -- color and shape set later
                     id = 'icon',
                     resize = true,
                     forced_width = dpi(11),
                     forced_height = dpi(11),
-                    widget = wibox.widget.imagebox,
+                    widget = wibox.container.background,
                 },
-                -- Place container to center the icon
                 id = 'container',
                 forced_width = dpi(27),
                 forced_height = dpi(27),
                 widget = wibox.container.place
             },
-            -- Background container, colors will be set later based on tag state
             id = 'background',
             bg = geolist_style.empty.bg,
             widget = wibox.container.background
@@ -53,6 +51,7 @@ local list_update = function(widget, buttons, label, data, objects)
         -- }}}
 
         -- {{{ Create buttons
+        ---@diagnostic disable-next-line: redefined-local
         local function create_buttons(buttons, object)
             if buttons then
                 local btns = {}
@@ -88,16 +87,24 @@ local list_update = function(widget, buttons, label, data, objects)
         -- {{{ Set bg color and fg image based on tag state
         if focused then
             tag_widget:set_bg(geolist_style.selected.bg)
-            tag_icon.image = geolist_style.selected.icon
+
+            tag_icon:set_bg(geolist_style.selected.fg)
+            tag_icon.shape = geolist_style.selected.shape
         elseif urgent then
             tag_widget:set_bg(geolist_style.urgent.bg)
-            tag_icon.image = geolist_style.urgent.icon
+
+            tag_icon:set_bg(geolist_style.urgent.fg)
+            tag_icon.shape = geolist_style.urgent.shape
         elseif has_clients then
             tag_widget:set_bg(geolist_style.occupied.bg)
-            tag_icon.image = geolist_style.occupied.icon
+
+            tag_icon:set_bg(geolist_style.occupied.fg)
+            tag_icon.shape = geolist_style.occupied.shape
         elseif not has_clients then
             tag_widget:set_bg(geolist_style.empty.bg)
-            tag_icon.image = geolist_style.empty.icon
+
+            tag_icon:set_bg(geolist_style.empty.fg)
+            tag_icon.shape = geolist_style.empty.shape
         end
         -- }}}
 

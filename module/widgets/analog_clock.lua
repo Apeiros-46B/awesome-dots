@@ -88,11 +88,9 @@ return function(options)
             draw_hands(_, cr, width, height, options)
         end,
 
-        -- Background color and shape type
         bg = options.background.color,
         shape = options.background.shape,
 
-        -- ID and widget type
         id = 'analog_clock',
         widget = wibox.container.background
     }
