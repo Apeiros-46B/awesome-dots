@@ -1,7 +1,7 @@
 ! -- Misc Options -- !
 
 ! dpi
-Xft.dpi: 96 
+Xft.dpi: 96
 
 ! cursor size
 Xcursor.size: 24
