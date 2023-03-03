@@ -264,7 +264,7 @@ awful.keyboard.append_global_keybindings({
     -- {{{ Key repeat
     awful.key({ Modkey,           }, 'r',      function()
         awful.spawn('xset r rate 350 75', false)
-        awful.spawn('setxkbmap -option caps:escape', false)
+        -- awful.spawn('setxkbmap -option caps:escape', false)
     end,
     {description = 'reset keys', group = 'misc'}),
     -- }}}
