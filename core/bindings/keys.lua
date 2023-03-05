@@ -330,11 +330,11 @@ awful.keyboard.append_global_keybindings({
     -- }}}
 
     -- {{{ Brightness control
-    awful.key({ Ctl,              }, 'F11',    function() awful.spawn('brightnessctl s 10%-', false) end,
-              {description = 'brightness down', group = 'system'}),
+    awful.key({ Ctl }, 'F11', function() awful.spawn('brightnessctl s 10%-', false) end, { description = 'brightness down', group = 'system' }),
+    awful.key({ Ctl }, 'F12', function() awful.spawn('brightnessctl s +10%', false) end, { description = 'brightness up',   group = 'system' }),
 
-    awful.key({ Ctl,              }, 'F12',    function() awful.spawn('brightnessctl s +10%', false) end,
-              {description = 'brightness up', group = 'system'}),
+    awful.key({}, 'XF86MonBrightnessDown', function() awful.spawn('brightnessctl s 10%-', false) end, {}),
+    awful.key({}, 'XF86MonBrightnessUp',   function() awful.spawn('brightnessctl s +10%', false) end, {}),
     -- }}}
 
 })
