@@ -12,6 +12,12 @@ local script     = 'bash ' .. os.getenv('HOME') .. '/.config/awesome/scripts/'
 local notify     = require('module.notify')
 local vim_popup  = require('module.vim_popup')
 local qalc_popup = require('module.qalc_popup')
+
+local function audio(arg)
+    return function()
+        awful.spawn(script .. 'audioutil vol ' .. arg, false)
+    end
+end
 -- }}}
 
 -- {{{ Global keybindings
@@ -308,20 +314,18 @@ awful.keyboard.append_global_keybindings({
 
     -- {{{ Audio control
     -- {{{ Volume
-    awful.key({ Ctl,              }, 'F1',     function() awful.spawn(script .. 'audioutil vol inc_sink', false) end,
-              {description = 'cycle default sink (up)', group = 'audio'}),
+    awful.key({ Ctl, S }, 'F1', audio('dec_sink'), { description = 'cycle default sink (down)', group = 'audio' }),
+    awful.key({ Ctl,   }, 'F1', audio('inc_sink'), { description = 'cycle default sink (up)',   group = 'audio' }),
+    awful.key({ Ctl,   }, 'F2', audio('dec'),      { description = 'vol down',                  group = 'audio' }),
+    awful.key({ Ctl,   }, 'F3', audio('inc'),      { description = 'vol up',                    group = 'audio' }),
+    awful.key({ Ctl,   }, 'F4', audio('mute'),     { description = 'toggle mute',               group = 'audio' }),
 
-    awful.key({ Ctl, S            }, 'F1',     function() awful.spawn(script .. 'audioutil vol dec_sink', false) end,
-              {description = 'cycle default sink (down)', group = 'audio'}),
-
-    awful.key({ Ctl,              }, 'F2',     function() awful.spawn(script .. 'audioutil vol dec', false) end,
-              {description = 'vol down', group = 'audio'}),
-
-    awful.key({ Ctl,              }, 'F3',     function() awful.spawn(script .. 'audioutil vol inc', false) end,
-              {description = 'vol up', group = 'audio'}),
-
-    awful.key({ Ctl,              }, 'F4',     function() awful.spawn(script .. 'audioutil vol mute', false) end,
-              {description = 'toggle mute', group = 'audio'}),
+    -- XF86 keys
+    awful.key({ Alt }, 'XF86AudioLowerVolume', audio('dec_sink'),  {}),
+    awful.key({ Ctl }, 'XF86AudioLowerVolume', audio('inc_sink'),  {}),
+    awful.key({     }, 'XF86AudioLowerVolume', audio('dec'),       {}),
+    awful.key({     }, 'XF86AudioRaiseVolume', audio('inc'),       {}),
+    awful.key({     }, 'XF86AudioMute',        audio('mute'),      {}),
     -- }}}
     -- }}}
 
