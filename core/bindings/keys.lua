@@ -321,8 +321,8 @@ awful.keyboard.append_global_keybindings({
     awful.key({ Ctl,   }, 'F4', audio('mute'),     { description = 'toggle mute',               group = 'audio' }),
 
     -- XF86 keys
-    awful.key({ Alt }, 'XF86AudioLowerVolume', audio('dec_sink'),  {}),
-    awful.key({ Ctl }, 'XF86AudioLowerVolume', audio('inc_sink'),  {}),
+    awful.key({ Ctl }, 'XF86AudioLowerVolume', audio('dec_sink'),  {}),
+    awful.key({ Ctl }, 'XF86AudioRaiseVolume', audio('inc_sink'),  {}),
     awful.key({     }, 'XF86AudioLowerVolume', audio('dec'),       {}),
     awful.key({     }, 'XF86AudioRaiseVolume', audio('inc'),       {}),
     awful.key({     }, 'XF86AudioMute',        audio('mute'),      {}),
