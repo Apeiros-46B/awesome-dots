@@ -34,7 +34,7 @@ local function set_wallpaper(s)
         )
     end
 
-    gears.wallpaper.maximized(file, s, true)
+    gears.wallpaper.centered(file, s, beautiful.colorscheme.gray1)
 end
 -- }}}
 

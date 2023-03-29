@@ -427,7 +427,8 @@ theme.random_wallpaper = false
 -- theme.wallpaper        = themes_path .. 'default/walls/car.png'
 -- theme.wallpaper        = themes_path .. 'default/walls/stairs.jpg'
 -- theme.wallpaper        = themes_path .. 'default/walls/fog_forest.jpg'
-theme.wallpaper        = themes_path .. 'default/walls/flowers.png'
+-- theme.wallpaper        = themes_path .. 'default/walls/flowers.png'
+theme.wallpaper        = themes_path .. 'default/walls/waves.png'
 -- }}}
 
 -- Wallpaper path for randomized wallpapers
