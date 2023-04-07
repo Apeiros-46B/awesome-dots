@@ -1,0 +1,14 @@
+#!/bin/sh
+# from https://discord.com/channels/635612648934735892/761279800312332328/1091157754506379264
+
+# Get the list of available sinks, prepending each with an index
+sink_list=$(pactl list sinks)
+devices=$(printf '%s\n' "${sink_list}" | awk -F'= ' '/device.description/ {print ++i, $2}' | tr -d '"')
+
+# Prompt the user for a device, storing the id of the selected option
+selected_id=$(printf '%s\n' "${devices}" | rofi -dmenu -i -p "Choose Device ::" | awk '{print $1}')
+[ -n "${selected_id}" ] || exit
+
+# Get the sink id of the selected device and change the default sink
+sink_id=$(printf '%s\n' "${sink_list}" | awk -F'= ' '/object.serial/ {print $2}' | tr -d '"' | sed -n "${selected_id}p")
+pactl set-default-sink "${sink_id}"
