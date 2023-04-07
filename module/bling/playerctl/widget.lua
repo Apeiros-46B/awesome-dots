@@ -67,22 +67,6 @@ return function(core, notify)
                         widget = wibox.container.place
                     },
                     -- }}}
-                    -- {{{ Previous
-                    {
-                        {
-                            id = "previous",
-                            image = beautiful.playerctl_previous,
-                            forced_width = dpi(16),
-                            forced_height = dpi(16),
-                            widget = wibox.widget.imagebox
-                        },
-                        id = "previousmargin",
-                        forced_width = dpi(26),
-                        forced_height = dpi(27),
-                        buttons = buttons.previous,
-                        widget = wibox.container.place
-                    },
-                    -- }}}
                     -- {{{ Play-pause
                     {
                         {
@@ -96,22 +80,6 @@ return function(core, notify)
                         forced_width = dpi(26),
                         forced_height = dpi(27),
                         buttons = buttons.play_pause,
-                        widget = wibox.container.place
-                    },
-                    -- }}}
-                    -- {{{ Next
-                    {
-                        {
-                            id = "next",
-                            image = beautiful.playerctl_next,
-                            forced_width = dpi(16),
-                            forced_height = dpi(16),
-                            widget = wibox.widget.imagebox
-                        },
-                        id = "nextmargin",
-                        forced_width = dpi(26),
-                        forced_height = dpi(27),
-                        buttons = buttons.next,
                         widget = wibox.container.place
                     },
                     -- }}}
@@ -137,8 +105,8 @@ return function(core, notify)
                 },
                 id = "buttonsmargin",
                 -- Compensate for weird spacing issue on buttons
-                left = dpi(6),
-                right = dpi(1),
+                left = dpi(5),
+                right = dpi(-1),
                 widget = wibox.container.margin
             },
             id = "buttonsbg",
@@ -375,10 +343,10 @@ return function(core, notify)
 
         -- Fix margins
         if extras_visible then
-            margin.left = dpi(6)
-            margin.right = dpi(2)
+            margin.left = dpi(5)
+            margin.right = dpi(-1)
         else
-            margin.left = 0
+            margin.left = dpi(1)
             margin.right = dpi(8)
         end
         -- }}}
