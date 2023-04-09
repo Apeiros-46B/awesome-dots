@@ -110,16 +110,16 @@ awful.keyboard.append_global_keybindings({
     -- }}}
 
     -- {{{ Screens
-    awful.key({ Modkey, Alt       }, 'l', function() awful.screen.focus_relative( 1) end,
+    awful.key({ Modkey, S, Alt    }, 'l', function() awful.screen.focus_relative( 1) end,
               {description = 'focus the next screen', group = 'screen'}),
 
-    awful.key({ Modkey, Alt       }, 'h', function() awful.screen.focus_relative(-1) end,
+    awful.key({ Modkey, S, Alt    }, 'h', function() awful.screen.focus_relative(-1) end,
               {description = 'focus the previous screen', group = 'screen'}),
 
-    awful.key({ Modkey, Alt       }, 'k', function() awful.screen.focus_relative( 1) end,
+    awful.key({ Modkey, S, Alt    }, 'k', function() awful.screen.focus_relative( 1) end,
               {description = 'focus the next screen', group = 'screen'}),
 
-    awful.key({ Modkey, Alt       }, 'j', function() awful.screen.focus_relative(-1) end,
+    awful.key({ Modkey, S, Alt    }, 'j', function() awful.screen.focus_relative(-1) end,
               {description = 'focus the previous screen', group = 'screen'}),
     -- }}}
 
@@ -496,7 +496,7 @@ client.connect_signal('request::default_keybindings', function()
         -- }}}
 
         -- {{{ Resize / mwfact
-        awful.key({ Alt               }, 'h',      function(c)
+        awful.key({ Modkey, Alt       }, 'h',      function(c)
             if c.floating then
                 c:relative_move(0, 0, -19, 0)
             else
@@ -505,7 +505,7 @@ client.connect_signal('request::default_keybindings', function()
         end,
         {description = 'decrease width / resize left',  group = 'client'}),
 
-        awful.key({ Alt               }, 'l',      function(c)
+        awful.key({ Modkey, Alt       }, 'l',      function(c)
             if c.floating then
                 c:relative_move(0, 0, 19, 0)
             else
@@ -514,12 +514,12 @@ client.connect_signal('request::default_keybindings', function()
         end,
         {description = 'increase width / resize right',  group = 'client'}),
 
-        awful.key({ Alt               }, 'k',      function(c)
+        awful.key({ Modkey, Alt       }, 'k',      function(c)
             c:relative_move(0, 0, 0, -19)
         end,
         {description = 'resize up', group = 'client'}),
 
-        awful.key({ Alt               }, 'j',      function(c)
+        awful.key({ Modkey, Alt       }, 'j',      function(c)
             c:relative_move(0, 0, 0, 19)
         end,
         {description = 'resize down', group = 'client'}),
