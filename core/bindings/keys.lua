@@ -386,10 +386,10 @@ awful.keyboard.append_global_keybindings({
     -- }}}
 
     -- {{{ Window switcher
-    awful.key({ Alt }, 'Tab', function()
-        awesome.emit_signal('bling::window_switcher::turn_on')
-    end,
-    {description = 'window switcher', group = 'client'}),
+    -- awful.key({ Alt }, 'Tab', function()
+    --     awesome.emit_signal('bling::window_switcher::turn_on')
+    -- end,
+    -- {description = 'window switcher', group = 'client'}),
     -- }}}
 
     -- {{{ Unminimize
@@ -509,18 +509,26 @@ client.connect_signal('request::default_keybindings', function()
             if c.floating then
                 c:relative_move(0, 0, 19, 0)
             else
-                awful.tag.incmwfact( 0.01)
+                awful.tag.incmwfact(0.01)
             end
         end,
         {description = 'increase width / resize right',  group = 'client'}),
 
         awful.key({ Modkey, Alt       }, 'k',      function(c)
-            c:relative_move(0, 0, 0, -19)
+            if c.floating then
+                c:relative_move(0, 0, 0, -19)
+            else
+                awful.client.incwfact(-0.05)
+            end
         end,
         {description = 'resize up', group = 'client'}),
 
         awful.key({ Modkey, Alt       }, 'j',      function(c)
-            c:relative_move(0, 0, 0, 19)
+            if c.floating then
+                c:relative_move(0, 0, 0, 19)
+            else
+                awful.client.incwfact(0.05)
+            end
         end,
         {description = 'resize down', group = 'client'}),
         -- }}}
