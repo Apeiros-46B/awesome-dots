@@ -9,6 +9,7 @@ Terminal = "st"
 Terminal_start_cmd = Terminal .. " -e "
 Editor = os.getenv("EDITOR") or "nvim"
 Editor_cmd = Terminal_start_cmd .. Editor
+Editor_alt = "emacsclient -a '' -c"
 
 -- Modkeys
 Modkey = "Mod4"
