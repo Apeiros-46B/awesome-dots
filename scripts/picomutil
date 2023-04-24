@@ -34,6 +34,8 @@ if [ ! "$1" ]; then
     usage
 fi
 
+export DRI_PRIME=0
+
 case $1 in
     start)
         kill
