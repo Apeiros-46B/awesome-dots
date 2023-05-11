@@ -23,7 +23,7 @@ return function(core, notify)
         -- if not title_exists  then return end
 
         -- Prefix for title
-        local notif_title = " "
+        local notif_title = "󰎈 "
 
         if title_exists and artist_exists then
             -- Add "artist - title" under normal conditions

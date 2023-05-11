@@ -7,22 +7,21 @@ local awful = require("awful")
 local class_arg = " -c vimpopup"
 
 return function(dir)
-    -- Determine filename
-    local filename = dir .. os.date("%Y-%m-%d.%H-%M-%S.txt")
+  local filename = dir .. os.date("%Y.%m.%d_%H-%M-%S.txt")
 
-    -- Open the popup
-    awful.spawn.easy_async(Terminal .. class_arg .. " -e " .. Editor .. " " .. filename, function()
-        -- Check file contents
-        awful.spawn.easy_async("cat " .. filename, function(stdout)
-            -- Check if the file only contains whitespace
-            stdout = stdout:gsub("%s+", "")
-            if stdout == nil or stdout == '' then
-                -- Remove the file to prevent clutter
-                awful.spawn("rm " .. filename, false)
-            else
-                -- Copy the resulting output to clipboard
-                awful.spawn("xclip -r -sel clip " .. filename, false)
-            end
-        end)
+  -- popup
+  awful.spawn.easy_async(Terminal .. class_arg .. " -e " .. Editor .. " " .. filename, function()
+    -- check file contents
+    awful.spawn.easy_async("cat " .. filename, function(stdout)
+      stdout = stdout:gsub("%s+", "")
+
+      if stdout == nil or stdout == '' then
+        -- remove the file if empty (or whitespace only)
+        awful.spawn("rm " .. filename, false)
+      else
+        -- copy file contents to clipboard
+        awful.spawn("xclip -r -sel clip " .. filename, false)
+      end
     end)
+  end)
 end

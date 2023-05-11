@@ -232,7 +232,7 @@ return function(core, notify)
             info:set_markup_silently("Nothing playing")
         else
             -- Create the text
-            local text = " "
+            local text = "󰎈 "
 
             if title_exists and artist_exists then
                 -- Add "artist - title" under normal conditions
