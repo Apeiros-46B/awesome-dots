@@ -6,5 +6,4 @@ configuration {
 	hide-scrollbar: false;
 	kb-cancel: "Escape,Alt+F1";
 }
-@import "~/.config/awesome/external/rofi/squared-everforest.rasi"
-@theme "~/.config/awesome/external/rofi/squared-everforest.rasi"
+@theme "squared-everforest.rasi"

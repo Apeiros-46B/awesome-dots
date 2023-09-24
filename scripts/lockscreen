@@ -5,21 +5,21 @@
 
 ## Script to Lock according to session on closing lid.
 
+## Don't lock if already locked
+pgrep -u "$USER" -x i3lock && exit 1
+
 ## Get colors -----------------
 BG="#2b3339"
 FG="#d3c6aa"
 FG2="#9da9a0"
 
-BLACK="#384348"
 RED="#e67e80"
 GREEN="#a7c080"
-YELLOW="#ddbc7f"
 BLUE="#7fbbb3"
 MAGENTA="#d699b6"
 CYAN="#83c092"
-WHITE="#d3c6aa"
 
-## Exec    -----------------
+## Exec -----------------------
 i3lock -e \
     --color="${BG}D9" \
     \

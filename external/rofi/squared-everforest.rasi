@@ -26,7 +26,6 @@
 window {
     location:   center;
     width:      480;
-    y-offset:   -160;
 
     background-color:   @bg0;
 }
@@ -95,5 +94,3 @@ element-icon {
 element-text {
     text-color: inherit;
 }
-
-// vim:ft=css
