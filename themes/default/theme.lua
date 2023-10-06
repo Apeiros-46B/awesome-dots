@@ -104,7 +104,8 @@ theme.window_switcher_icon_width = 30                                -- The widt
 -- }}}
 
 -- {{{ Playerctl
-theme.playerctl_player = {'spotify', '%any'}
+-- theme.playerctl_player = { 'spotify', '%any' }
+theme.playerctl_player = { 'mpv', 'spotify', '%any' }
 theme.playerctl_update_on_activity = false
 -- }}}
 
