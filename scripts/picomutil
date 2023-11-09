@@ -10,8 +10,8 @@ set_animation_state() { echo "$1" > "$HOME/.cache/awesome/picom_animations"; }
 
 kill() { killall -q picom; }
 
-start() { picom --experimental-backends --config "$HOME/.config/awesome/external/picom/picom.conf" & }
-start_animations() { picom --animations --experimental-backends --config "$HOME/.config/awesome/external/picom/picom.conf" & }
+start() { picom --config "$HOME/.config/awesome/external/picom/picom.conf" & }
+start_animations() { picom --animations --config "$HOME/.config/awesome/external/picom/picom.conf" & }
 
 start_auto() { if get_animation_state; then start_animations; else start; fi }
 
