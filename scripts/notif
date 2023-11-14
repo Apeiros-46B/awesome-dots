@@ -1,0 +1,10 @@
+#!/bin/sh
+
+[ $# -lt 1 ] && exit 1
+app_id="$1"
+shift
+
+id_file="$HOME/.cache/awesome/${app_id}_notif"
+touch "$id_file"
+read -r id < "$id_file" || id=0
+notify-send -p -r "$id" "$@" > "$id_file"

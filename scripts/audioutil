@@ -79,14 +79,14 @@ vol() {
             pactl set-sink-mute @DEFAULT_SINK@ toggle
 
             # notify new mute status
-            mute="$("$0" vol get_mute)"; if [ "$mute" == "yes" ]; then prefix=" "; vol="Muted"; else prefix=" "; vol="$("$0" vol get)"; fi
+            mute="$("$0" vol get_mute)"; if [ "$mute" = "yes" ]; then prefix=" "; vol="Muted"; else prefix=" "; vol="$("$0" vol get)"; fi
             notify "${prefix}Volume: ${vol}"
             ;;
 
         *)
             # don't adjust volume if muted
             mute="$("$0" vol get_mute)"
-            [ "$mute" == "no" ] && pactl set-sink-volume @DEFAULT_SINK@ "$1" || return 0
+            [ "$mute" = "no" ] && pactl set-sink-volume @DEFAULT_SINK@ "$1" || return 0
 
             # notify new volume
             vol="$("$0" vol get)"
@@ -110,8 +110,8 @@ change_sink() {
 
     # increase or decrease
     case $1 in
-        +) new_fnr="$(expr "$(idx_to_fnr "$sinks" "$sink")" + 1)" ;;
-        -) new_fnr="$(expr "$(idx_to_fnr "$sinks" "$sink")" - 1)" ;;
+        +) new_fnr=$(("$(idx_to_fnr "$sinks" "$sink")" + 1)) ;;
+        -) new_fnr=$(("$(idx_to_fnr "$sinks" "$sink")" - 1)) ;;
         *) return 1                                               ;;
     esac
 
@@ -133,8 +133,8 @@ change_sink() {
     new_sink_name="$(sink_name)"
     new_sink_desc="$(sink_desc)"
 
-    echo $new_sink_name
-    echo $new_sink_desc
+    echo "$new_sink_name"
+    echo "$new_sink_desc"
 
     # move glava if it's running
     echo "begin glava"
@@ -149,10 +149,10 @@ change_sink() {
 
 # {{{ notify user
 notify() {
-    [ $3 ] && icon="$3" || icon=""
-    [ $4 ] && time="$4" || time="2000"
+    [ "$3" ] && icon="$3" || icon=""
+    [ "$4" ] && time="$4" || time="2000"
 
-    notify-send -h "string:x-canonical-private-synchronous:anything" -a "audioutil" -i "$icon" -t "$time" "$1" "$2"
+    "$HOME/.config/awesome/scripts/notif" audioutil -i "$icon" -t "$time" "$1" "$2"
 }
 # }}}
 # }}}
