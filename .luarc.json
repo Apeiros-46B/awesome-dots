@@ -1,11 +1,24 @@
 {
-    "$schema": "https://raw.githubusercontent.com/sumneko/vscode-lua/master/setting/schema.json",
-    "Lua.diagnostics.globals": [
-        "vim",
-        "root",
-        "client",
-        "awesome",
-        "screen",
-        "tag"
-    ]
+	"$schema": "https://raw.githubusercontent.com/sumneko/vscode-lua/master/setting/schema.json",
+	"Lua.diagnostics.disable": [
+		"different-requires"
+	],
+	"diagnostics": {
+		"enable": true,
+		"globals": [
+			"root",
+			"awesome",
+			"client",
+			"screen",
+			"tag"
+		]
+	},
+	"workspace": {
+		"library": [
+			"/usr/share/awesome/lib/"
+		],
+		"maxPreload": 2000,
+		"preloadFileSize": 1000
+	},
+	"Lua.workspace.checkThirdParty": false
 }

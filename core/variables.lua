@@ -7,7 +7,7 @@ beautiful.init(themes_path .. "default" .. "/theme.lua")
 -- Default terminal emulator and editor
 Terminal = "st"
 Terminal_start_cmd = Terminal .. " -e "
-Editor = os.getenv("EDITOR") or "nvim"
+Editor = os.getenv("HOME") .. '/.local/share/bob/nvim-bin/nvim'
 Editor_cmd = Terminal_start_cmd .. Editor
 Editor_alt = "emacsclient -a '' -c"
 
