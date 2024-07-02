@@ -1,6 +1,17 @@
 require('awful.autofocus')
 
 local awful = require('awful')
+local ruled = require('ruled')
+
+ruled.client.connect_signal('request::rules', function()
+	ruled.client.append_rule {
+		id = 'titlebars',
+		rule_any = { type = { 'normal', 'dialog' } },
+		properties = { titlebars_enabled = true },
+	}
+end)
+
+client.connect_signal("request::titlebars", require('widgets.titlebar'))
 
 -- focus-follows-mouse
 client.connect_signal('mouse::enter', function(c)

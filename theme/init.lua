@@ -14,8 +14,8 @@ theme.border_width = 0
 theme.bg_normal = theme.colors.bg1
 theme.taglist_bg_focus = theme.colors.blue
 theme.taglist_bg_urgent = theme.colors.red
-theme.taglist_bg_occupied = theme.colors.bg3
-theme.taglist_bg_empty = theme.colors.bg3
+theme.taglist_bg_occupied = theme.colors.bg4
+theme.taglist_bg_empty = theme.colors.bg2
 
 theme.wallpaper = os.getenv('HOME') .. '/.config/awesome/wallpapers/foggy_valley.png'
 

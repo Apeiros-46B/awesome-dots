@@ -9,11 +9,11 @@ local dpi = require('beautiful.xresources').apply_dpi
 local battery = wibox.widget {
 	layout = wibox.container.rotate,
 	direction = 'east',
-	forced_height = dpi(256),
+	forced_height = dpi(200),
 	{
 		id = 'battery',
 		widget = wibox.widget.progressbar,
-		background_color = theme.colors.bg4,
+		background_color = theme.colors.bg3,
 		color = theme.colors.green,
 		max_value = 100,
 		value = 100,
@@ -21,7 +21,7 @@ local battery = wibox.widget {
 }
 
 -- TODO: switch to upowerd instead of watching acpi
-awful.widget.watch('acpi', 10, function(_, stdout)
+awful.widget.watch('acpi', 5, function(_, stdout)
 	local remaining = tonumber(string.match(stdout, '(%d?%d?%d)%%'))
 	local status = string.match(stdout, ': (%w+)')
 

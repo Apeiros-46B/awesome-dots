@@ -68,6 +68,16 @@ awful.keyboard.append_global_keybindings {
 		wrap(awful.layout.inc, 1),
 		'switch layout', 'tag'
 	),
+	bind(
+		{ k.sup, 'u' },
+		awful.tag.viewnext,
+		'switch layout', 'tag'
+	),
+	bind(
+		{ k.sup, 'i' },
+		awful.tag.viewprev,
+		'switch layout', 'tag'
+	),
 	bind_group(
 		{ k.sup, 'numrow' },
 		function(i)
@@ -138,7 +148,7 @@ client.connect_signal('request::default_keybindings', function()
 		bind(
 			{ k.sup, 'm' },
 			function(c)
-				c.minimize = true
+				c.minimized = true
 			end,
 			'minimize', 'client'
 		),

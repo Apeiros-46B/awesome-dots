@@ -15,5 +15,4 @@ require('theme')  -- theme & user settings
 require('screen') -- wallpaper, bar, widgets, etc
 require('notif')  -- notifications
 require('binds')  -- key and mouse binds
-require('rules')  -- client rules
-require('misc')   -- misc
+require('client') -- client rules and signals
