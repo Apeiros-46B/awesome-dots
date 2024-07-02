@@ -52,19 +52,24 @@ local function move_or_swap(keys, dx, dy, dir, help_desc, help_group)
 end
 -- }}}
 
+local theme = require('beautiful').get()
+local settings = theme.settings
+local k = theme.keys
+
 awful.keyboard.append_global_keybindings {
-	bind({ K.mod, K.shift, 'r' }, awesome.restart, 'reload wm', 'sys'),
-	bind({ K.mod, K.ret }, spawner(SETTINGS.term), 'terminal', 'app'),
-	bind({ K.mod, K.spc }, spawner('rofi -show run'), 'launcher', 'app'),
+	bind({ k.sup, k.sft, 'r' }, awesome.restart, 'reload wm', 'sys'),
+	bind({ k.sup, k.ret }, spawner(settings.term), 'terminal', 'app'),
+	bind({ k.sup, k.spc }, spawner('rofi -show run'), 'launcher', 'app'),
+	bind({ k.sup, 'e' }, spawner(settings.gui_editor), 'editor', 'app'),
 
 	-- {{{ tag
 	bind(
-		{ K.mod, 'y' },
+		{ k.sup, 'y' },
 		wrap(awful.layout.inc, 1),
 		'switch layout', 'tag'
 	),
 	bind_group(
-		{ K.mod, 'numrow' },
+		{ k.sup, 'numrow' },
 		function(i)
 			local tag = awful.screen.focused().tags[i]
 			if tag then
@@ -74,7 +79,7 @@ awful.keyboard.append_global_keybindings {
 		'switch to', 'tag'
 	),
 	bind_group(
-		{ K.mod, K.ctrl, 'numrow' },
+		{ k.sup, k.ctl, 'numrow' },
 		function(i)
 			local tag = awful.screen.focused().tags[i]
 			if tag then
@@ -84,7 +89,7 @@ awful.keyboard.append_global_keybindings {
 		'toggle', 'tag'
 	),
 	bind_group(
-		{ K.mod, K.shift, 'numrow' },
+		{ k.sup, k.sft, 'numrow' },
 		function(i)
 			local tag = awful.screen.focused().tags[i]
 			if tag then
@@ -97,24 +102,24 @@ awful.keyboard.append_global_keybindings {
 
 	-- {{{ client
 	bind(
-		{ K.mod, 'h' }, wrap(awful.client.focus.bydirection, 'left'),
+		{ k.sup, 'h' }, wrap(awful.client.focus.bydirection, 'left'),
 		'focus left', 'client'
 	),
 	bind(
-		{ K.mod, 'j' }, wrap(awful.client.focus.bydirection, 'down'),
+		{ k.sup, 'j' }, wrap(awful.client.focus.bydirection, 'down'),
 		'focus down', 'client'
 	),
 	bind(
-		{ K.mod, 'k' }, wrap(awful.client.focus.bydirection, 'up'),
+		{ k.sup, 'k' }, wrap(awful.client.focus.bydirection, 'up'),
 		'focus up', 'client'
 	),
 	bind(
-		{ K.mod, 'l' }, wrap(awful.client.focus.bydirection, 'right'),
+		{ k.sup, 'l' }, wrap(awful.client.focus.bydirection, 'right'),
 		'focus right', 'client'
 	),
 
 	bind(
-		{ K.mod, K.shift, 'm' },
+		{ k.sup, k.sft, 'm' },
 		function()
 			local c = awful.client.restore()
 			if c then
@@ -129,16 +134,16 @@ awful.keyboard.append_global_keybindings {
 -- {{{ client-specific
 client.connect_signal('request::default_keybindings', function()
 	awful.keyboard.append_client_keybindings {
-		bind({ K.mod, 'c' }, wrap_c('kill'), 'close', 'client'),
+		bind({ k.sup, 'c' }, wrap_c('kill'), 'close', 'client'),
 		bind(
-			{ K.mod, 'm' },
+			{ k.sup, 'm' },
 			function(c)
 				c.minimize = true
 			end,
 			'minimize', 'client'
 		),
 		bind(
-			{ K.mod, K.ctrl, 'm' },
+			{ k.sup, k.ctl, 'm' },
 			function(c)
 				c.maximized = not c.maximized
 				c:raise(0)
@@ -146,7 +151,7 @@ client.connect_signal('request::default_keybindings', function()
 			'toggle maximize', 'client'
 		),
 		bind(
-			{ K.mod, 'f' },
+			{ k.sup, 'f' },
 			function(c)
 				c.fullscreen = not c.fullscreen
 				c:raise()
@@ -154,7 +159,7 @@ client.connect_signal('request::default_keybindings', function()
 			'toggle fullscreen', 'client'
 		),
 		bind(
-			{ K.mod, K.shift, 'f' },
+			{ k.sup, k.sft, 'f' },
 			function(c)
 				c.floating = not c.floating
 				c.ontop = c.floating
@@ -163,22 +168,22 @@ client.connect_signal('request::default_keybindings', function()
 		),
 
 		move_or_swap(
-			{ K.mod, K.shift, 'h' },
+			{ k.sup, k.sft, 'h' },
 			-20, 0, 'left',
 			'move left', 'client'
 		),
 		move_or_swap(
-			{ K.mod, K.shift, 'j' },
+			{ k.sup, k.sft, 'j' },
 			0, 20, 'down',
 			'move down', 'client'
 		),
 		move_or_swap(
-			{ K.mod, K.shift, 'k' },
+			{ k.sup, k.sft, 'k' },
 			0, -20, 'up',
 			'move up', 'client'
 		),
 		move_or_swap(
-			{ K.mod, K.shift, 'l' },
+			{ k.sup, k.sft, 'l' },
 			20, 0, 'right',
 			'move right', 'client'
 		),
@@ -188,15 +193,15 @@ end)
 client.connect_signal('request::default_mousebindings', function()
 	awful.mouse.append_client_mousebindings {
 		awful.button({}, 1, wrap_c('activate', { context = 'mouse_click' })),
-		awful.button({ K.mod }, 1, wrap_c('activate', {
+		awful.button({ k.sup }, 1, wrap_c('activate', {
 			context = 'mouse_click',
 			action  = 'mouse_move',
 		})),
-		awful.button({ K.mod }, 2, wrap_c('activate', {
+		awful.button({ k.sup }, 2, wrap_c('activate', {
 			context = 'mouse_click',
 			action  = 'toggle_minimization',
 		})),
-		awful.button({ K.mod }, 3, wrap_c('activate', {
+		awful.button({ k.sup }, 3, wrap_c('activate', {
 			context = 'mouse_click',
 			action  = 'mouse_resize',
 		})),

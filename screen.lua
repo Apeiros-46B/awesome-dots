@@ -1,6 +1,8 @@
 local awful = require('awful')
+local gears = require('gears')
 local wibox = require('wibox')
-local beautiful = require('beautiful')
+
+local theme = require('beautiful').get()
 
 tag.connect_signal('request::default_layouts', function()
 	awful.layout.append_default_layouts {
@@ -11,45 +13,19 @@ end)
 
 screen.connect_signal('request::desktop_decoration', function(s)
 	awful.tag({ '1', '2', '3', '4', '5', '6', '7', '8' }, s, awful.layout.layouts[1])
+	require('widgets.wibar')(s)
 
-	-- TODO: separate widget into separate file
-	s.wibar = awful.wibar {
-		position = 'bottom',
-		screen   = s,
-		widget   = {
-			layout = wibox.layout.align.horizontal,
-			-- left
-			{
-				layout = wibox.layout.fixed.horizontal,
-
-				awful.widget.taglist {
-					screen = s,
-					filter = awful.widget.taglist.filter.all,
-				},
-			},
-			nil,
-			{
-				layout = wibox.layout.fixed.horizontal,
-				wibox.widget.textclock(),
-			},
-		},
-	}
+	-- TODO: dashboard widget
 end)
 
 screen.connect_signal('request::wallpaper', function(s)
 	awful.wallpaper {
 		screen = s,
 		widget = {
-			{
-				image     = beautiful.wallpaper,
-				upscale   = true,
-				downscale = true,
-				widget    = wibox.widget.imagebox,
-			},
-			valign = 'center',
-			halign = 'center',
-			tiled  = false,
-			widget = wibox.container.tile,
+			image     = theme.wallpaper,
+			resize    = true,
+			horizontal_fit_policy = 'fit',
+			widget    = wibox.widget.imagebox,
 		},
 	}
 end)

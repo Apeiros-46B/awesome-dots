@@ -1,41 +1,19 @@
 -- autoload luarocks modules
 pcall(require, 'luarocks.loader')
 
+-- notify on error
 local naughty = require('naughty')
-local beautiful = require('beautiful')
-
-naughty.connect_signal('request::display_error', function(message, startup)
+naughty.connect_signal('request::display_error', function(msg, startup)
 	naughty.notification {
 		urgency = 'critical',
 		title   = 'ERROR' .. (startup and ' [during startup]:' or ':'),
-		message = message
+		message = msg
 	}
 end)
 
-beautiful.init(os.getenv('HOME') .. '/.config/awesome/theme.lua')
-SETTINGS = {
-	mod = 'Mod4',
-	term = 'st',
-	editor = 'nvim',
-}
-K = {
-	mod = SETTINGS.mod,
-	alt = 'Mod1',
-	ctrl = 'Control',
-	shift = 'Shift',
-
-	tab = 'Tab',
-	spc = 'Space',
-	esc = 'Escape',
-	ret = 'Return',
-}
-
-require('screen')
-
-require('binds')
-
-require('misc')
-
--- TODO: rules
-
--- TODO: notifications
+require('theme')  -- theme & user settings
+require('screen') -- wallpaper, bar, widgets, etc
+require('notif')  -- notifications
+require('binds')  -- key and mouse binds
+require('rules')  -- client rules
+require('misc')   -- misc

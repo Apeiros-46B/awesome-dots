@@ -15,10 +15,10 @@
 	},
 	"workspace": {
 		"library": [
-			"/usr/share/awesome/lib/"
+			"../awesome_lib"
 		],
 		"maxPreload": 2000,
 		"preloadFileSize": 1000
 	},
-	"Lua.workspace.checkThirdParty": false
+	"Lua.workspace.checkThirdParty": true
 }
