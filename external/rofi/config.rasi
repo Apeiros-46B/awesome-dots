@@ -1,9 +1,0 @@
-configuration {
-	font: "JetBrains Mono Nerd Font 12";
-	padding: 20;
-	line-padding: 2;
-	separator-style: "solid";
-	hide-scrollbar: false;
-	kb-cancel: "Escape,Alt+F1";
-}
-@theme "squared-everforest.rasi"

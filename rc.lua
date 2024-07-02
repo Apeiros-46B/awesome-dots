@@ -1,26 +1,41 @@
--- Autoload luarocks modules
-pcall(require, "luarocks.loader")
+-- autoload luarocks modules
+pcall(require, 'luarocks.loader')
 
--- Error handling
-require("core.error_handling")
+local naughty = require('naughty')
+local beautiful = require('beautiful')
 
--- Theme & variables
-require("core.variables")
+naughty.connect_signal('request::display_error', function(message, startup)
+	naughty.notification {
+		urgency = 'critical',
+		title   = 'ERROR' .. (startup and ' [during startup]:' or ':'),
+		message = message
+	}
+end)
 
--- Bling, menu, & garbage collection
-require("core.misc")
+beautiful.init(os.getenv('HOME') .. '/.config/awesome/theme.lua')
+SETTINGS = {
+	mod = 'Mod4',
+	term = 'st',
+	editor = 'nvim',
+}
+K = {
+	mod = SETTINGS.mod,
+	alt = 'Mod1',
+	ctrl = 'Control',
+	shift = 'Shift',
 
--- Screen setup (wallpaper, tags, layouts, & wibar)
-require("core.screen_setup")
+	tab = 'Tab',
+	spc = 'Space',
+	esc = 'Escape',
+	ret = 'Return',
+}
 
--- Key & mouse buttons
-require("core.bindings.init")
+require('screen')
 
--- Client rules
-require("core.rules")
+require('binds')
 
--- Manage signal, border colors, titlebars
-require("core.signal")
+require('misc')
 
--- Start external programs (e.g. picom)
-require("core.autostart")
+-- TODO: rules
+
+-- TODO: notifications
