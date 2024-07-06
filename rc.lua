@@ -11,8 +11,11 @@ naughty.connect_signal('request::display_error', function(msg, startup)
 	}
 end)
 
-require('theme')  -- theme & user settings
-require('screen') -- wallpaper, bar, widgets, etc
-require('notif')  -- notifications
-require('binds')  -- key and mouse binds
-require('client') -- client rules and signals
+require('theme')   -- theme & user settings
+require('screen')  -- wallpaper, bar, widgets, etc
+require('notif')   -- notifications
+require('binds')   -- key and mouse binds
+require('client')  -- client rules and signals
+require('signals') -- signals (upower, playerctl)
+
+require('awful').spawn('picom')

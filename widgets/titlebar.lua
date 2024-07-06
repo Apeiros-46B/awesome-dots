@@ -5,7 +5,7 @@ local theme = require('beautiful').get()
 
 return function(c)
 	local titlebar = awful.titlebar(c, {
-		size = theme.useless_gap * 2,
+		size = theme.gaps.m,
 		position = 'left',
 		bg_normal = theme.colors.bg2,
 		bg_focus = theme.colors.bg4,

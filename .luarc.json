@@ -1,8 +1,5 @@
 {
 	"$schema": "https://raw.githubusercontent.com/sumneko/vscode-lua/master/setting/schema.json",
-	"Lua.diagnostics.disable": [
-		"different-requires"
-	],
 	"diagnostics": {
 		"enable": true,
 		"globals": [
@@ -15,10 +12,10 @@
 	},
 	"workspace": {
 		"library": [
-			"../awesome_lib"
+			"../../../awesome_lib"
 		],
 		"maxPreload": 2000,
-		"preloadFileSize": 1000
+		"preloadFileSize": 1000,
+		"checkThirdParty": "Ask"
 	},
-	"Lua.workspace.checkThirdParty": true
 }

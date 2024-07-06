@@ -1,40 +1,39 @@
-local awful = require('awful')
 local wibox = require('wibox')
 
--- local upower = require('lgi').require('UPowerGlib')
-
 local theme = require('beautiful').get()
-local dpi = require('beautiful.xresources').apply_dpi
+
+local upower = require('signals.upower')
 
 local battery = wibox.widget {
 	layout = wibox.container.rotate,
 	direction = 'east',
-	forced_height = dpi(200),
+	forced_height = theme.battery_height,
+
 	{
 		id = 'battery',
 		widget = wibox.widget.progressbar,
+
 		background_color = theme.colors.bg3,
 		color = theme.colors.green,
+
 		max_value = 100,
 		value = 100,
 	}
 }
 
--- TODO: switch to upowerd instead of watching acpi
-awful.widget.watch('acpi', 5, function(_, stdout)
-	local remaining = tonumber(string.match(stdout, '(%d?%d?%d)%%'))
-	local status = string.match(stdout, ': (%w+)')
+awesome.connect_signal('upower::update', function(dev)
+	local amt = dev.percentage
 
 	local bar = battery:get_children_by_id('battery')[1]
-	bar.value = remaining
+	bar.value = amt
 
-	if status ~= "Discharging" then
+	if upower.is_plugged_in(dev) then
 		bar.color = theme.colors.purple
-	elseif remaining <= 20 then
+	elseif amt <= 20 then
 		bar.color = theme.colors.red
-	elseif remaining <= 30 then
+	elseif amt <= 30 then
 		bar.color = theme.colors.orange
-	elseif remaining <= 40 then
+	elseif amt <= 40 then
 		bar.color = theme.colors.yellow
 	else
 		bar.color = theme.colors.green

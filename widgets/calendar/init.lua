@@ -4,18 +4,21 @@ local wibox = require('wibox')
 local theme = require('beautiful').get()
 
 return function(s)
-	local taglist = require('widgets.taglist')(s)
-	local battery = require('widgets.battery')
+	local taglist = require('widgets.wibar.taglist')(s)
+	local battery = require('widgets.wibar.battery')
+	local clock = require('widgets.wibar.clock')
 
 	s.wibar = awful.wibar {
 		position = 'left',
-		width    = theme.useless_gap * 2,
+		width    = theme.bar_thickness,
 		screen   = s,
 		widget   = {
 			layout = wibox.layout.align.vertical,
+			expand = 'none',
+
 			taglist, -- top
-			nil,     -- center
-			battery, -- bottom
+			battery, -- center
+			clock,   -- bottom
 		},
 	}
 end

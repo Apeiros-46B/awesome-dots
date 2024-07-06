@@ -22,6 +22,8 @@ client.connect_signal('mouse::enter', function(c)
 end)
 
 client.connect_signal('manage', function(c)
+	c:move_to_screen(awful.screen.focused())
+
 	-- put windows at the end instead of replacing main
 	if not awesome.startup then awful.client.setslave(c) end
 

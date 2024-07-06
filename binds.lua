@@ -19,7 +19,6 @@ local function bind_group(keys, f, help_desc, help_group)
 	}
 end
 
--- TODO: check pack/unpack behaviour
 local function wrap(f, ...)
 	local args = {...}
 	return function()
@@ -58,9 +57,54 @@ local k = theme.keys
 
 awful.keyboard.append_global_keybindings {
 	bind({ k.sup, k.sft, 'r' }, awesome.restart, 'reload wm', 'sys'),
+	bind({ k.sup, k.sft, 'b' }, require('awful.hotkeys_popup').show_help, 'help', 'sys'),
+	bind(
+		{ k.sup, 't' },
+		function()
+			require('naughty').notification {
+				title = os.date('%Y/%m/%d -> %H:%M:%S')
+			}
+		end,
+		'time', 'sys'
+	),
+
 	bind({ k.sup, k.ret }, spawner(settings.term), 'terminal', 'app'),
-	bind({ k.sup, k.spc }, spawner('rofi -show run'), 'launcher', 'app'),
 	bind({ k.sup, 'e' }, spawner(settings.gui_editor), 'editor', 'app'),
+	bind({ k.sup, k.sft, 's' }, spawner('flameshot gui'), 'screenshot', 'app'),
+	bind({ k.sup, k.spc }, spawner('rofi -show run'), 'launcher', 'app'),
+
+	-- {{{ screen
+	bind(
+		{ k.sup, k.sft, 'u' },
+		wrap(awful.screen.focus_relative, 1),
+		'focus the next screen', 'screen'
+	),
+	bind(
+		{ k.sup, k.sft, 'i' },
+		wrap(awful.screen.focus_relative, 1),
+		'focus the previous screen', 'screen'
+	),
+	bind(
+		{ k.sup, k.ctl, k.sft, 'h' },
+		wrap(awful.screen.focus_bydirection, 'left'),
+		'focus the screen to the left', 'screen'
+	),
+	bind(
+		{ k.sup, k.ctl, k.sft, 'j' },
+		wrap(awful.screen.focus_bydirection, 'down'),
+		'focus the screen below', 'screen'
+	),
+	bind(
+		{ k.sup, k.ctl, k.sft, 'k' },
+		wrap(awful.screen.focus_bydirection, 'up'),
+		'focus the screen above', 'screen'
+	),
+	bind(
+		{ k.sup, k.ctl, k.sft, 'l' },
+		wrap(awful.screen.focus_bydirection, 'right'),
+		'focus the screen to the right', 'screen'
+	),
+	-- }}}
 
 	-- {{{ tag
 	bind(
@@ -177,6 +221,11 @@ client.connect_signal('request::default_keybindings', function()
 			'toggle floating', 'client'
 		),
 
+		bind(
+			{ k.sup, 'o' },
+			wrap_c('move_to_screen'),
+			'move to next screen', 'client'
+		),
 		move_or_swap(
 			{ k.sup, k.sft, 'h' },
 			-20, 0, 'left',

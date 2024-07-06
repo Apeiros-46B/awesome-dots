@@ -1,11 +1,7 @@
+local dpi = require('beautiful.xresources').apply_dpi
+
 local M = {}
 
-M.settings = {
-	mod = 'Mod4',
-	term = 'st',
-	editor = 'nvim',
-	gui_editor = "emacsclient -a '' -c"
-}
 M.colors = {
 	bg1 = '#2b3339',
 	bg2 = '#323c41',
@@ -22,6 +18,27 @@ M.colors = {
 	aqua   = '#83c092',
 	blue   = '#7fbbb3',
 	purple = '#d699b6',
+}
+M.sizes = {
+	gaps = {
+		xs = 2,
+		s = 4,
+		m = 8,
+		l = 12,
+		xl = 16,
+		xxl = 32,
+	},
+}
+for k, v in pairs(M.sizes.gaps) do
+	M.sizes.gaps[k] = dpi(v)
+end
+
+M.settings = {
+	mod = 'Mod4',
+	term = 'st',
+	editor = 'nvim',
+	gui_editor = "emacsclient -a '' -c",
+	calendar_path = os.getenv('HOME') .. '/.awesome_calendar'
 }
 M.keys = {
 	sup = M.settings.mod,
