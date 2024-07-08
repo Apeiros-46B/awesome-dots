@@ -7,7 +7,7 @@ local draw = require('widgets.wibar.clock.draw')
 
 -- {{{ widget definition
 local clock = wibox.widget {
-	layout = wibox.container.rotate,
+	widget = wibox.container.rotate,
 	direction = 'east', -- lowest hour is at the bottom
 
 	forced_height = theme.clock.total_height,
@@ -22,7 +22,7 @@ local clock = wibox.widget {
 local container = clock:get_children_by_id('horizontal')[1]
 local function new_hour_bar(draw_callback)
 	return wibox.widget {
-		layout = wibox.container.margin,
+		widget = wibox.container.margin,
 		left = 0,
 
 		{
@@ -140,7 +140,7 @@ gears.timer {
 	timeout = 360,
 	autostart = true,
 	call_now = true,
-	callback = update_clock
+	callback = update_clock,
 }
 awesome.connect_signal('system::resume', update_clock)
 

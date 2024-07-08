@@ -2,10 +2,10 @@ local wibox = require('wibox')
 
 local theme = require('beautiful').get()
 
-local upower = require('signals.upower')
+local upower = require('lib').upower
 
 local battery = wibox.widget {
-	layout = wibox.container.rotate,
+	widget = wibox.container.rotate,
 	direction = 'east',
 	forced_height = theme.battery_height,
 

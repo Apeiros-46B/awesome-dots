@@ -33,6 +33,8 @@ theme.clock = {
 }
 theme.clock.total_height = theme.clock.bar_length * 12 + theme.clock.gap * 20
 
+theme.osd_width = dpi(200)
+
 -- awesome themevars
 theme.font = 'JetBrainsMono Nerd Font Mono Semibold 10'
 theme.font_bold = 'JetBrainsMono Nerd Font Mono Bold 10'
@@ -58,7 +60,5 @@ theme.hotkeys_label_fg = theme.colors.bg1
 theme.hotkeys_label_bg = theme.colors.blue
 theme.hotkeys_border_width = theme.gaps.m
 theme.hotkeys_border_color = theme.bg_normal
-
-theme.wallpaper = os.getenv('HOME') .. '/.config/awesome/wallpapers/foggy_valley.png'
 
 require('beautiful').init(theme)

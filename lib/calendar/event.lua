@@ -1,3 +1,5 @@
+local gtable = require('gears.table')
+
 local theme = require('beautiful').get()
 
 local util = require('util')
@@ -44,7 +46,7 @@ local function new(args)
 end
 
 function Event:new(args)
-	local o = util.deepcopy(args)
+	local o = gtable.clone(args)
 	return new(o)
 end
 
@@ -52,7 +54,7 @@ end
 --- @param args table?
 --- @return Event
 function Event:new_from_now(seconds, args)
-	args = args and util.deepcopy(args) or {}
+	args = args and gtable.clone(args) or {}
 	args.start_time = os.time() + seconds
 	return Event:new(args)
 end
@@ -60,7 +62,7 @@ end
 --- @param seconds number
 --- @return Event
 function Event:new_from_self(seconds)
-	local this = util.deepcopy(self)
+	local this = gtable.clone(self)
 	this.start_time = this.start_time + seconds
 	return Event:new(this)
 end

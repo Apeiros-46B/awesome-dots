@@ -38,7 +38,11 @@ M.settings = {
 	term = 'st',
 	editor = 'nvim',
 	gui_editor = "emacsclient -a '' -c",
-	calendar_path = os.getenv('HOME') .. '/.awesome_calendar'
+	wallpaper = os.getenv('HOME') .. '/.config/awesome/theme/wallpapers/foggy_valley.png',
+
+	-- TODO: make this take a data directory instead
+	-- then we can have another file for todos
+	calendar_path = os.getenv('HOME') .. '/.awesome_calendar',
 }
 M.keys = {
 	sup = M.settings.mod,

@@ -1,0 +1,7 @@
+- OSD:
+	- Alt+Tab
+	- Audio sinks/sources (integrate with lib backend)
+	- Playing music (integrate with lib backend)
+	- Brightness
+- Power menu
+- Lock screen

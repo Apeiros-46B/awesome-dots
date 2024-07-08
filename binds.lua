@@ -32,7 +32,7 @@ local function wrap_c(name, ...)
 	end
 end
 local function spawner(cmd)
-	return wrap(awful.spawn, cmd)
+	return wrap(awful.spawn, cmd, false --[[disable startup notifications]])
 end
 
 local function move_or_swap(keys, dx, dy, dir, help_desc, help_group)
@@ -55,6 +55,8 @@ local theme = require('beautiful').get()
 local settings = theme.settings
 local k = theme.keys
 
+local pactl = require('lib').pactl
+
 awful.keyboard.append_global_keybindings {
 	bind({ k.sup, k.sft, 'r' }, awesome.restart, 'reload wm', 'sys'),
 	bind({ k.sup, k.sft, 'b' }, require('awful.hotkeys_popup').show_help, 'help', 'sys'),
@@ -67,6 +69,11 @@ awful.keyboard.append_global_keybindings {
 		end,
 		'time', 'sys'
 	),
+	bind({ 'XF86AudioRaiseVolume' }, pactl.inc_volume),
+	bind({ 'XF86AudioLowerVolume' }, pactl.dec_volume),
+	bind({ 'XF86AudioMute'        }, pactl.mute),
+
+	bind({ k.sup, 'd' }, require('widgets').dashboard.toggle, 'dashboard', 'app'),
 
 	bind({ k.sup, k.ret }, spawner(settings.term), 'terminal', 'app'),
 	bind({ k.sup, 'e' }, spawner(settings.gui_editor), 'editor', 'app'),

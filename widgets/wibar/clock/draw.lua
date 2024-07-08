@@ -1,6 +1,6 @@
 local theme = require('beautiful').get()
 
-local calendar = require('signals.calendar')
+local calendar = require('lib').calendar
 
 local util  = require('util')
 
@@ -160,7 +160,7 @@ function M.make_callback(hour12)
 			if not finished_draw[evt.id] then
 				local ok, err = pcall(draw, cr, h, evt)
 				if not ok then
-					util.inspect(err)
+					require('naughty').emit_signal('request::display_error', err)
 				end
 			end
 		end

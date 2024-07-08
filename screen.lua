@@ -12,19 +12,16 @@ end)
 
 screen.connect_signal('request::desktop_decoration', function(s)
 	awful.tag({ '1', '2', '3', '4', '5', '6', '7', '8' }, s, awful.layout.layouts[1])
-	require('widgets.wibar')(s)
-
-	-- TODO: dashboard widget
+	require('widgets').init(s)
 end)
 
 screen.connect_signal('request::wallpaper', function(s)
 	awful.wallpaper {
 		screen = s,
 		widget = {
-			image     = theme.wallpaper,
-			resize    = true,
-			horizontal_fit_policy = 'fit',
-			widget    = wibox.widget.imagebox,
+			widget = wibox.widget.imagebox,
+			image  = theme.settings.wallpaper,
+			resize = true,
 		},
 	}
 end)

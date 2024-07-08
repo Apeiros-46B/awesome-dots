@@ -1,6 +1,6 @@
 local theme = require('beautiful').get()
 
-local Event = require('signals.calendar.event')
+local Event = require('lib.calendar.event')
 local util = require('util')
 
 local M = {}

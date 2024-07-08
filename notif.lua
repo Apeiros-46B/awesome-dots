@@ -59,11 +59,11 @@ naughty.connect_signal('request::display', function(notif, _)
 			},
 
 			widget_template = {
-				layout = wibox.container.background,
+				widget = wibox.container.background,
 				bg     = theme.colors.bg3,
 
 				{
-					layout  = wibox.container.margin,
+					widget  = wibox.container.margin,
 					margins = theme.gaps.m,
 
 					{
@@ -92,7 +92,7 @@ naughty.connect_signal('request::display', function(notif, _)
 	naughty.layout.box {
 		notification = notif,
 		widget_template = {
-			layout = wibox.container.background,
+			widget = wibox.container.background,
 			bg = theme.colors.bg2,
 			widget,
 		},

@@ -4,14 +4,8 @@ local awful = require('awful')
 local ruled = require('ruled')
 
 ruled.client.connect_signal('request::rules', function()
-	ruled.client.append_rule {
-		id = 'titlebars',
-		rule_any = { type = { 'normal', 'dialog' } },
-		properties = { titlebars_enabled = true },
-	}
+	-- TODO
 end)
-
-client.connect_signal("request::titlebars", require('widgets.titlebar'))
 
 -- focus-follows-mouse
 client.connect_signal('mouse::enter', function(c)
@@ -22,10 +16,13 @@ client.connect_signal('mouse::enter', function(c)
 end)
 
 client.connect_signal('manage', function(c)
-	c:move_to_screen(awful.screen.focused())
+	if not awesome.startup then
+		-- move to focused screen
+		c:move_to_screen(awful.screen.focused())
 
-	-- put windows at the end instead of replacing main
-	if not awesome.startup then awful.client.setslave(c) end
+		-- put windows at the end instead of replacing main
+		awful.client.setslave(c)
+	end
 
 	if awesome.startup
 		and not c.size_hints.user_position

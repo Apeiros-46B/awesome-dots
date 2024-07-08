@@ -14,10 +14,10 @@ return function(s)
 
 		widget_template = {
 			id     = 'background_role',
-			layout = wibox.container.background,
+			widget = wibox.container.background,
 
 			{
-				layout = wibox.container.margin,
+				widget = wibox.container.margin,
 				top    = theme.taglist.bar_length,
 				nil,
 			},

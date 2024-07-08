@@ -19,27 +19,6 @@ function M.uuid()
 end
 
 -- {{{ table utilities
----@return any
-function M.deepcopy(obj, seen)
-	if type(obj) ~= 'table' then
-		return obj
-	end
-
-  if seen and seen[obj] then
-		return seen[obj]
-	end
-
-  local s = seen or {}
-  local res = setmetatable({}, getmetatable(obj))
-  s[obj] = res
-
-  for k, v in pairs(obj) do
-		res[M.deepcopy(k, s)] = M.deepcopy(v, s)
-	end
-
-  return res
-end
-
 -- assumes no circular reference
 ---@param set table<any, boolean>
 ---@return any[]
@@ -89,5 +68,11 @@ function M.inspect(o, msg)
 	return o
 end
 -- }}}
+
+function M.spawn_multi(cmds)
+	for _, cmd in pairs(cmds) do
+		require('awful').spawn(cmd, false)
+	end
+end
 
 return M

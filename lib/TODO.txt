@@ -1,0 +1,4 @@
+- Event-like backend for TODOs instead of events
+- Signalling for:
+	- music (either playerctl or mpd) (potentially with last.fm integration)
+	- audio levels (pactl)
