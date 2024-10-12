@@ -1,4 +1,3 @@
-- Event-like backend for TODOs instead of events
-- Signalling for:
-	- music (either playerctl or mpd) (potentially with last.fm integration)
-	- audio levels (pactl)
+- Backend for todo items instead of calendar events
+- Integrate calendar with calDAV
+- Signalling for music player (either playerctl or mpd) (potentially with last.fm integration)

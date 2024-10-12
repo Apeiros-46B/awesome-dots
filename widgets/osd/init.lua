@@ -2,48 +2,51 @@ local awful = require('awful')
 local gears = require('gears')
 local wibox = require('wibox')
 
-local theme = require('beautiful').get()
-
 local M = {}
+
+local function rot(widget)
+	return wibox.widget {
+		widget = wibox.container.rotate,
+		direction = 'east',
+		widget
+	}
+end
 
 function M.init(s)
 	local volume = require('widgets.osd.volume')
+	local brightness = require('widgets.osd.brightness')
 
 	s.osd = awful.popup {
 		screen    = s,
-		placement = function(drawable, args)
-			gears.table.crush(args, {
-				margins = {
-					top = theme.gaps.xl
-				}
-			})
-			return awful.placement.top(drawable, args)
-		end,
+		placement = awful.placement.left,
 		visible   = false,
 		ontop     = true,
 
 		input_passthrough = true,
 
-		-- TODO: switch between volume and brightness slider
-		widget = volume.widget,
+		widget = rot(volume.widget),
 	}
 
 	local hide_timer = gears.timer {
-		timeout = 2,
+		timeout = 1,
 		autostart = false,
 		call_now = false,
 		single_shot = true,
 		callback = function()
-			s.osd.visible = false
+			for scr in screen do
+				scr.osd.visible = false
+			end
 		end,
 	}
 
-	local function show_osd()
-		s.osd.visible = true
+	local function show_osd(widget)
+		awful.screen.focused().osd.widget = rot(widget)
+		awful.screen.focused().osd.visible = true
 		hide_timer:again()
 	end
 
 	volume.register_osd_signal(show_osd)
+	brightness.register_osd_signal(show_osd)
 end
 
 return M

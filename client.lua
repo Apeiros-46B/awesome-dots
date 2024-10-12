@@ -4,7 +4,45 @@ local awful = require('awful')
 local ruled = require('ruled')
 
 ruled.client.connect_signal('request::rules', function()
-	-- TODO
+	ruled.client.append_rule {
+		id = 'global',
+		rule = {},
+		properties = {
+			raise = true,
+			focus = awful.client.focus.filter,
+			screen = awful.screen.preferred,
+			placement = awful.placement.no_overlap + awful.placement.no_offscreen,
+		},
+	}
+
+	-- mouse floating
+	ruled.client.append_rule {
+		rule_any = {
+			class = {
+				'Dragon',
+				'mpv',
+			},
+		},
+		properties = {
+			floating = true,
+			ontop = true,
+			placement = awful.placement.under_mouse,
+		},
+	}
+
+	-- center floating
+	ruled.client.append_rule {
+		rule_any = {
+			class = {
+				'Gcr-prompter'
+			}
+		},
+		properties = {
+			floating = true,
+			ontop = true,
+			placement = awful.placement.centered
+		},
+	}
 end)
 
 -- focus-follows-mouse

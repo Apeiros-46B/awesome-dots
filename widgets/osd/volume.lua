@@ -1,20 +1,8 @@
-local wibox = require('wibox')
-
 local theme = require('beautiful').get()
 
 local M = {}
 
-M.widget = wibox.widget {
-	widget = wibox.widget.progressbar,
-	forced_height = theme.gaps.m,
-	forced_width = theme.osd_width,
-
-	background_color = theme.colors.bg3,
-	color = theme.colors.green,
-
-	max_value = 100,
-	value = 100,
-}
+M.widget = require('wibox').widget(require('widgets.osd.bar')(theme.colors.aqua))
 
 function M.register_osd_signal(show_callback)
 	awesome.connect_signal('pactl::volume', function(volume, muted)
@@ -23,10 +11,10 @@ function M.register_osd_signal(show_callback)
 		if muted then
 			M.widget.color = theme.colors.fg2
 		else
-			M.widget.color = theme.colors.green
+			M.widget.color = theme.colors.aqua
 		end
 
-		show_callback()
+		show_callback(M.widget)
 	end)
 end
 

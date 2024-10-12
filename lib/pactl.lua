@@ -8,7 +8,7 @@ local M = {}
 local volume = -1
 local muted = false
 
-local function signal_volume()
+local function signal()
 	awesome.emit_signal('pactl::volume', volume, muted)
 end
 
@@ -52,17 +52,18 @@ function M.init()
 			end
 
 			volume = tonumber(line:match('(%d%.%d+)')) * 100
-			muted = line:match('MUTED')
+			muted = line:match('MUTED') and true or false
 
 			first = false
 		end,
 	})
 end
 
+-- TODO: after externally switching sink, the volume is different
 function M.set_volume(delta)
 	volume = util.clamp(volume + delta, 0, 100)
-	awful.spawn(('wpctl set-volume @DEFAULT_SINK@ %d%%'):format(volume))
-	signal_volume()
+	awful.spawn(('wpctl set-volume @DEFAULT_SINK@ %d%%'):format(volume), false)
+	signal()
 end
 
 function M.inc_volume()
@@ -75,8 +76,8 @@ end
 
 function M.mute()
 	muted = not muted
-	awful.spawn('wpctl set-mute @DEFAULT_SINK@ toggle')
-	signal_volume()
+	awful.spawn('wpctl set-mute @DEFAULT_SINK@ toggle', false)
+	signal()
 end
 
 -- function M.select_sink_relative(delta)

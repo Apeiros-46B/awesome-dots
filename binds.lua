@@ -55,7 +55,7 @@ local theme = require('beautiful').get()
 local settings = theme.settings
 local k = theme.keys
 
-local pactl = require('lib').pactl
+local lib = require('lib')
 
 awful.keyboard.append_global_keybindings {
 	bind({ k.sup, k.sft, 'r' }, awesome.restart, 'reload wm', 'sys'),
@@ -63,15 +63,22 @@ awful.keyboard.append_global_keybindings {
 	bind(
 		{ k.sup, 't' },
 		function()
-			require('naughty').notification {
-				title = os.date('%Y/%m/%d -> %H:%M:%S')
-			}
+			awful.spawn.easy_async('acpi', function(stdout)
+				require('naughty').notification {
+					title = os.date('%Y/%m/%d -> %H:%M:%S'),
+					message = stdout:gsub('\n', ''):gsub('Battery %d+: ', ''),
+				}
+			end)
 		end,
-		'time', 'sys'
+		'time and battery', 'sys'
 	),
-	bind({ 'XF86AudioRaiseVolume' }, pactl.inc_volume),
-	bind({ 'XF86AudioLowerVolume' }, pactl.dec_volume),
-	bind({ 'XF86AudioMute'        }, pactl.mute),
+	bind({ 'XF86AudioRaiseVolume'  }, lib.pactl.inc_volume),
+	bind({ 'XF86AudioLowerVolume'  }, lib.pactl.dec_volume),
+	bind({ 'XF86AudioMute'         }, lib.pactl.mute),
+	bind({ 'XF86MonBrightnessUp'   }, lib.brightnessctl.inc_brightness),
+	bind({ 'XF86MonBrightnessDown' }, lib.brightnessctl.dec_brightness),
+
+	bind({ 'XF86Calculator' }, spawner(settings.term .. ' -e qalc')),
 
 	bind({ k.sup, 'd' }, require('widgets').dashboard.toggle, 'dashboard', 'app'),
 

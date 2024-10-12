@@ -12,9 +12,11 @@ function M.init()
 	local dev = upower.Client():get_display_device()
 	dev.on_notify = signal
 
-	require('gears').timer.delayed_call(function()
+	local function signal_dev()
 		signal(dev)
-	end)
+	end
+	require('gears').timer.delayed_call(signal_dev)
+	awesome.connect_signal('system::resume', signal_dev)
 end
 
 -- distinct from charging, battery may be full/at stop threshold (PENDING_CHARGE)

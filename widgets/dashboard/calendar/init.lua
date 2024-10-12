@@ -2,29 +2,26 @@ local wibox = require('wibox')
 
 local theme = require('beautiful').get()
 
--- TODO: update current date
-local current_date = os.date('*t')
+local M = {}
 
-local calendar = wibox.widget {
+local function decorate_cell(widget, flag, date)
+	
+end
+
+M.widget = wibox.widget {
 	widget = wibox.container.margin,
 	margins = theme.gaps.xl,
 	{
 		-- TODO: style this widget
 		widget = wibox.widget.calendar.month,
-		date = current_date,
+		date = os.date('*t'),
 		font = 'monospace 14',
 	},
 	-- TODO: add per-day events view
 }
 
-require('gears').timer {
-	-- a day
-	timeout = 24 * 60 * 60,
-	autostart = true,
-	call_now = true,
-	callback = function()
-		current_date = os.date('*t')
-	end,
-}
+function M.pre_show()
+	M.widget.children[1].date = os.date('*t')
+end
 
-return calendar
+return M
