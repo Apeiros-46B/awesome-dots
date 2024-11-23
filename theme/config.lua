@@ -51,7 +51,7 @@ M.keys = {
 	sft = 'Shift',
 
 	tab = 'Tab',
-	spc = 'Space',
+	spc = 'space',
 	esc = 'Escape',
 	ret = 'Return',
 }

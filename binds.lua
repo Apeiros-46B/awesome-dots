@@ -85,7 +85,7 @@ awful.keyboard.append_global_keybindings {
 	bind({ k.sup, k.ret }, spawner(settings.term), 'terminal', 'app'),
 	bind({ k.sup, 'e' }, spawner(settings.gui_editor), 'editor', 'app'),
 	bind({ k.sup, k.sft, 's' }, spawner('flameshot gui'), 'screenshot', 'app'),
-	bind({ k.sup, k.spc }, spawner('rofi -show run'), 'launcher', 'app'),
+	bind({ k.sup, k.spc }, spawner('/home/apeiros/dev/rs/pitstop/target/debug/pitstop open'), 'launcher', 'app'),
 
 	-- {{{ screen
 	bind(
@@ -160,7 +160,7 @@ awful.keyboard.append_global_keybindings {
 		{ k.sup, k.sft, 'numrow' },
 		function(i)
 			local tag = awful.screen.focused().tags[i]
-			if tag then
+			if tag and client.focus then
 				client.focus:move_to_tag(tag)
 			end
 		end,

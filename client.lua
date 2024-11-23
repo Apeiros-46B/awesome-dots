@@ -15,12 +15,19 @@ ruled.client.connect_signal('request::rules', function()
 		},
 	}
 
+	-- urxvt free size
+	ruled.client.append_rule {
+		rule_any = { class = { 'URxvt' } },
+		properties = { size_hints_honor = false },
+	}
+
 	-- mouse floating
 	ruled.client.append_rule {
 		rule_any = {
 			class = {
 				'Dragon',
 				'mpv',
+				'qalculate',
 			},
 		},
 		properties = {
@@ -34,13 +41,26 @@ ruled.client.connect_signal('request::rules', function()
 	ruled.client.append_rule {
 		rule_any = {
 			class = {
-				'Gcr-prompter'
+				'Gcr-prompter',
 			}
 		},
 		properties = {
 			floating = true,
 			ontop = true,
 			placement = awful.placement.centered
+		},
+	}
+
+	-- sticky
+	ruled.client.append_rule {
+		rule_any = {
+			class = {
+				'Dragon',
+				'qalculate',
+			}
+		},
+		properties = {
+			sticky = true,
 		},
 	}
 end)
