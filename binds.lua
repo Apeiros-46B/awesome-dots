@@ -43,7 +43,7 @@ local function move_or_swap(keys, dx, dy, dir, help_desc, help_group)
 				c:relative_move(dx, dy, 0, 0)
 			else
 				-- NOTE: replace with global if need multiple monitor
-				awful.client.swap.bydirection(dir)
+				awful.client.swap.global_bydirection(dir)
 			end
 		end,
 		help_desc, help_group
@@ -72,6 +72,19 @@ awful.keyboard.append_global_keybindings {
 		end,
 		'time and battery', 'sys'
 	),
+	bind(
+		{ 'XF86WLAN' },
+		function()
+			awful.spawn.easy_async_with_shell([[rfkill | awk '{if($2=="wlan"){print$4}}']], function(stdout)
+				require('naughty').notification {
+					title = 'WiFi',
+					message = stdout:gsub('\n', ''):gsub('unblocked', 'ON'):gsub('blocked', 'OFF'),
+				}
+			end)
+		end
+	),
+
+	bind({ 'XF86AudioPlay'         }, spawner('mpc toggle')),
 	bind({ 'XF86AudioRaiseVolume'  }, lib.pactl.inc_volume),
 	bind({ 'XF86AudioLowerVolume'  }, lib.pactl.dec_volume),
 	bind({ 'XF86AudioMute'         }, lib.pactl.mute),
@@ -85,9 +98,13 @@ awful.keyboard.append_global_keybindings {
 	bind({ k.sup, k.ret }, spawner(settings.term), 'terminal', 'app'),
 	bind({ k.sup, 'e' }, spawner(settings.gui_editor), 'editor', 'app'),
 	bind({ k.sup, k.sft, 's' }, spawner('flameshot gui'), 'screenshot', 'app'),
-	bind({ k.sup, k.spc }, spawner('/home/apeiros/dev/rs/pitstop/target/debug/pitstop open'), 'launcher', 'app'),
 
 	-- {{{ screen
+	bind(
+		{ k.sup, 'o' },
+		wrap(awful.screen.focus_relative, 1),
+		'focus the next screen', 'screen'
+	),
 	bind(
 		{ k.sup, k.sft, 'u' },
 		wrap(awful.screen.focus_relative, 1),
@@ -129,12 +146,12 @@ awful.keyboard.append_global_keybindings {
 	bind(
 		{ k.sup, 'u' },
 		awful.tag.viewnext,
-		'switch layout', 'tag'
+		'focus the next tag', 'tag'
 	),
 	bind(
 		{ k.sup, 'i' },
 		awful.tag.viewprev,
-		'switch layout', 'tag'
+		'focus the previous tag', 'tag'
 	),
 	bind_group(
 		{ k.sup, 'numrow' },
@@ -170,19 +187,19 @@ awful.keyboard.append_global_keybindings {
 
 	-- {{{ client
 	bind(
-		{ k.sup, 'h' }, wrap(awful.client.focus.bydirection, 'left'),
+		{ k.sup, 'h' }, wrap(awful.client.focus.global_bydirection, 'left'),
 		'focus left', 'client'
 	),
 	bind(
-		{ k.sup, 'j' }, wrap(awful.client.focus.bydirection, 'down'),
+		{ k.sup, 'j' }, wrap(awful.client.focus.global_bydirection, 'down'),
 		'focus down', 'client'
 	),
 	bind(
-		{ k.sup, 'k' }, wrap(awful.client.focus.bydirection, 'up'),
+		{ k.sup, 'k' }, wrap(awful.client.focus.global_bydirection, 'up'),
 		'focus up', 'client'
 	),
 	bind(
-		{ k.sup, 'l' }, wrap(awful.client.focus.bydirection, 'right'),
+		{ k.sup, 'l' }, wrap(awful.client.focus.global_bydirection, 'right'),
 		'focus right', 'client'
 	),
 
@@ -236,7 +253,7 @@ client.connect_signal('request::default_keybindings', function()
 		),
 
 		bind(
-			{ k.sup, 'o' },
+			{ k.sup, k.sft, 'o' },
 			wrap_c('move_to_screen'),
 			'move to next screen', 'client'
 		),
